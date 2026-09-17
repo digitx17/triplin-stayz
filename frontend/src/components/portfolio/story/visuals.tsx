@@ -265,12 +265,10 @@ export function EventsVisual() {
   );
 }
 
-/* Chapter 07 — hospitality experience cards */
+/* Chapter 07 — hospitality experience cards (light, compact) */
 export function HospitalityCard({
   org,
   role,
-  image,
-  imageAlt,
   locations,
   tags,
   details,
@@ -280,8 +278,6 @@ export function HospitalityCard({
 }: {
   org: string;
   role: string;
-  image: string;
-  imageAlt: string;
   locations?: string;
   tags: string[];
   details: string[];
@@ -295,37 +291,32 @@ export function HospitalityCard({
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.9, ease: EASE }}
-      className="overflow-hidden rounded-lg border border-white/10 bg-coal"
+      className="rounded-lg border border-ink/10 bg-white p-6 shadow-sm sm:p-7"
       data-testid={testId}
     >
-      <div className="img-frame group h-48 sm:h-56">
-        <img src={image} alt={imageAlt} loading="lazy" className="h-full w-full object-cover group-hover:scale-105" />
-      </div>
-      <div className="p-6 sm:p-8">
-        <h4 className="font-heading text-2xl font-medium tracking-tight sm:text-3xl">{org}</h4>
-        <p className="mt-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: ORANGE }}>
-          {role}
-        </p>
-        {locations && (
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-white/45">{locations}</p>
-        )}
-        {metric}
-        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-5 flex flex-wrap gap-1.5">
-          {tags.map((t) => (
-            <span key={t} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70">
-              {t}
-            </span>
-          ))}
-        </motion.div>
-        <motion.ul variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} className="mt-6 space-y-2 border-t border-white/10 pt-5">
-          {details.map((d) => (
-            <motion.li key={d} variants={fadeUp} className="flex items-start gap-3 text-[13px] leading-relaxed text-white/65">
-              <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full" style={{ background: ORANGE }} />
-              {d}
-            </motion.li>
-          ))}
-        </motion.ul>
-      </div>
+      <h4 className="font-heading text-2xl font-medium tracking-tight">{org}</h4>
+      <p className="mt-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: ORANGE }}>
+        {role}
+      </p>
+      {locations && (
+        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">{locations}</p>
+      )}
+      {metric}
+      <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 flex flex-wrap gap-1.5">
+        {tags.map((t) => (
+          <span key={t} className="rounded-full border border-ink/10 bg-ink/[0.04] px-3 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-ink/70">
+            {t}
+          </span>
+        ))}
+      </motion.div>
+      <motion.ul variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} className="mt-5 space-y-2 border-t border-ink/10 pt-4">
+        {details.map((d) => (
+          <motion.li key={d} variants={fadeUp} className="flex items-start gap-3 text-[13px] leading-relaxed text-ink/65">
+            <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full" style={{ background: ORANGE }} />
+            {d}
+          </motion.li>
+        ))}
+      </motion.ul>
     </motion.div>
   );
 }
@@ -348,8 +339,9 @@ export function TriplinDiagram() {
           <motion.div
             variants={fadeUp}
             className={`rounded-full px-7 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg ${
-              i === TRIPLIN_FLOW.length - 1 ? "bg-white text-ink" : "bg-[#141414] text-[#F7F2E8]"
+              i === TRIPLIN_FLOW.length - 1 ? "text-ink" : "bg-[#141414] text-[#F7F2E8]"
             }`}
+            style={i === TRIPLIN_FLOW.length - 1 ? { background: ORANGE } : undefined}
           >
             {s}
           </motion.div>

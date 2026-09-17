@@ -2,7 +2,6 @@ import { useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import { IMG } from "@/lib/data";
 import { MaskedLine } from "../Reveal";
 import {
   BodyText,
@@ -310,22 +309,19 @@ export function HowItStarted() {
         />
       </Chapter>
 
-      {/* CH 07 — Hospitality (dark, biggest) */}
+      {/* CH 07 — Hospitality (biggest) */}
       <Chapter
         num="07"
         year="Hospitality"
         title="My work moved from promoting businesses online to understanding how travel businesses actually operate."
-        dark
         wide
         testId="chapter-07"
       >
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
           <HospitalityCard
             org="Shalom Backpackers"
             role="Social Media Marketing Intern"
             locations="Rishikesh · Shimla · McLeodganj"
-            image={IMG.rishikeshRiver}
-            imageAlt="Backpacker hostel country — the Ganges through Rishikesh"
             tags={["Reels", "Posts", "Stories", "SEO", "Google Business", "Influencers", "Events", "Reviews"]}
             details={[
               "Created engaging reels, posts and stories",
@@ -343,13 +339,11 @@ export function HowItStarted() {
           <HospitalityCard
             org="Moustache Escapes"
             role="Marketing Executive — F&B"
-            image={IMG.chefPlating}
-            imageAlt="Chef plating a dish in a restaurant kitchen"
             metric={
-              <div className="mt-5 rounded-md border border-white/10 bg-white/5 p-4">
+              <div className="mt-4 rounded-md border border-ink/10 bg-[#F7F2E8] p-4">
                 <p className="flex items-baseline gap-2">
-                  <CountUp to={100} suffix="%" className="text-4xl font-bold tracking-tight" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">
+                  <CountUp to={100} suffix="%" className="text-3xl font-bold tracking-tight sm:text-4xl" />
+                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
                     F&amp;B Bar &amp; À La Carte revenue target
                   </span>
                 </p>
@@ -372,42 +366,42 @@ export function HowItStarted() {
         </div>
       </Chapter>
 
-      {/* CH 08 — The Turn (orange climax) */}
-      <Chapter num="08" year="2026" label="The Turn" title="I'm building Triplin." wide bg="bg-[#FF6B1A] text-[#141414]" testId="chapter-08">
-        <motion.p variants={fadeUp} className="mt-6 font-heading text-2xl italic leading-snug sm:text-4xl">
+      {/* CH 08 — The Turn */}
+      <Chapter num="08" year="2026" label="The Turn" title="I'm building Triplin." wide bg="bg-white text-ink" testId="chapter-08">
+        <motion.p variants={fadeUp} className="mt-5 font-heading text-xl italic leading-snug sm:text-2xl">
           “A travel company built for travelers.”
         </motion.p>
         <BodyText dark={false}>
-          <span className="block text-[#141414]/75">
+          <span className="block text-ink/70">
             After working across digital marketing, e-commerce, content, events and hospitality, I
             wanted to bring everything together.
           </span>
-          <span className="mt-3 block text-[#141414]/75">
+          <span className="mt-3 block text-ink/70">
             So I started building Triplin — a travel company focused on making travel easier.
           </span>
         </BodyText>
-        <motion.div variants={fadeUp} className="mt-12 text-center">
-          <p className="font-bold tracking-tight text-[#141414]" style={{ fontFamily: "'Poppins', sans-serif", fontSize: "clamp(3rem, 9vw, 6rem)", lineHeight: 1 }}>
+        <motion.div variants={fadeUp} className="mt-10 text-center">
+          <p className="font-bold tracking-tight text-ink" style={{ fontFamily: "'Poppins', sans-serif", fontSize: "clamp(2.5rem, 7vw, 4.5rem)", lineHeight: 1 }}>
             TRIPLIN
           </p>
-          <p className="mt-2 font-mono text-xs font-semibold uppercase tracking-[0.3em] text-[#141414]/70">
+          <p className="mt-2 font-mono text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: ORANGE }}>
             Travel Made Easier
           </p>
         </motion.div>
-        <div className="mt-12">
+        <div className="mt-10">
           <TriplinDiagram />
         </div>
-        <motion.div variants={fadeUp} className="mt-12 flex flex-col items-center gap-4">
+        <motion.div variants={fadeUp} className="mt-10 flex flex-col items-center gap-4">
           <a
             href="https://triplin.co.in"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#141414] px-9 py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#F7F2E8] shadow-xl transition-transform duration-300 hover:-translate-y-1"
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-9 py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-paper shadow-xl transition-transform duration-300 hover:-translate-y-1"
             data-testid="triplin-cta"
           >
             Explore Triplin <ArrowUpRight className="h-4 w-4" />
           </a>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#141414]/60">triplin.co.in</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">triplin.co.in</span>
         </motion.div>
       </Chapter>
       </div>
