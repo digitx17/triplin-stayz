@@ -48,15 +48,16 @@ export function HeroSection() {
         >
           Hello!
         </motion.span>
-        <h1 className="mt-6 font-heading font-medium tracking-tight text-ink" data-testid="hero-headline">
+        <h1
+          className="mt-6 font-bold tracking-tight text-ink"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+          data-testid="hero-headline"
+        >
           <MaskedLine delay={0.5} className="text-4xl sm:text-5xl lg:text-6xl">
             I'm <em className="not-italic text-terracotta">Vaibhav</em> 👋,
           </MaskedLine>
-          <MaskedLine delay={0.68} className="mt-2 text-2xl sm:text-4xl lg:text-5xl">
-            A Tourism &amp; Hospitality
-          </MaskedLine>
-          <MaskedLine delay={0.82} className="text-2xl sm:text-4xl lg:text-5xl">
-            Marketing Professional
+          <MaskedLine delay={0.68} className="mt-3 text-xl sm:text-3xl lg:text-4xl">
+            A Tourism &amp; Hospitality Marketing Professional
           </MaskedLine>
         </h1>
       </motion.div>

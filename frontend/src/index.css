@@ -4,6 +4,8 @@
 @import "@fontsource-variable/playfair-display";
 @import "@fontsource-variable/dm-sans";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
 
 @custom-variant dark (&:is(.dark *));
 
