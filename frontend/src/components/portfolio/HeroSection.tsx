@@ -16,11 +16,11 @@ interface Tag {
 }
 
 const TAGS: Tag[] = [
-  { label: "Social Media", icon: Megaphone, className: "left-[2%] top-[14%] sm:left-[6%] sm:top-[20%]", delay: 1.5, float: 0 },
-  { label: "Hospitality", icon: Building2, className: "left-[1%] top-[44%] sm:left-[3%] sm:top-[48%]", delay: 1.65, float: 0.6, hideOnMobile: true },
-  { label: "Brand Strategy", icon: Star, className: "left-[6%] bottom-[28%] sm:left-[12%] sm:bottom-[26%]", delay: 1.8, float: 1.2 },
-  { label: "Content", icon: Clapperboard, className: "right-[3%] top-[46%] sm:right-[7%] sm:top-[50%]", delay: 1.95, float: 0.9 },
-  { label: "Travel Marketing", icon: Plane, className: "right-[2%] top-[10%] sm:right-[5%] sm:bottom-[20%] sm:top-auto", delay: 2.1, float: 1.5 },
+  { label: "Social Media", icon: Megaphone, className: "left-[0%] top-[2%] sm:left-[1%] sm:top-[6%]", delay: 1.5, float: 0 },
+  { label: "Hospitality", icon: Building2, className: "left-[1%] top-[30%] sm:left-[5%] sm:top-[34%]", delay: 1.65, float: 0.6 },
+  { label: "Brand Strategy", icon: Star, className: "left-[2%] bottom-[16%] sm:left-[3%] sm:bottom-[18%]", delay: 1.8, float: 1.2 },
+  { label: "Content", icon: Clapperboard, className: "right-[0%] top-[28%] sm:right-[0%] sm:top-[34%]", delay: 1.95, float: 0.9 },
+  { label: "Travel Marketing", icon: Plane, className: "right-[0%] top-[62%] sm:right-[0%] sm:bottom-[18%] sm:top-auto", delay: 2.1, float: 1.5 },
 ];
 
 export function HeroSection() {
@@ -34,7 +34,7 @@ export function HeroSection() {
     <section
       ref={ref}
       id="top"
-      className="relative flex min-h-svh flex-col overflow-hidden bg-paper pt-20 sm:pt-24"
+      className="relative flex min-h-svh flex-col overflow-hidden bg-white pt-20 sm:pt-24"
       data-testid="hero-section"
     >
       {/* headline block */}
@@ -54,7 +54,7 @@ export function HeroSection() {
           data-testid="hero-headline"
         >
           <MaskedLine delay={0.5} className="text-4xl sm:text-5xl lg:text-6xl">
-            I'm <em className="not-italic text-terracotta">Vaibhav</em> 👋,
+            I'm <em className="not-italic text-[#FF6B1A]">Vaibhav</em> 👋,
           </MaskedLine>
           <MaskedLine delay={0.68} className="mt-3 text-xl sm:text-3xl lg:text-4xl">
             A Tourism &amp; Hospitality Marketing Professional
@@ -64,13 +64,13 @@ export function HeroSection() {
 
       {/* portrait + orbit */}
       <div className="relative z-10 mx-auto mt-2 w-full max-w-6xl flex-1 px-4 sm:px-6">
-        <motion.div style={reduce ? undefined : { y: portraitY }} className="relative mx-auto h-[400px] max-w-3xl sm:h-[460px]">
-          {/* terracotta sun */}
+        <motion.div style={reduce ? undefined : { y: portraitY }} className="relative mx-auto h-[440px] max-w-4xl sm:h-[540px]">
+          {/* vivid orange sun behind the head */}
           <motion.div
             initial={{ scale: 0.6, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.9, ease: EASE }}
-            className="absolute bottom-0 left-1/2 aspect-square w-[280px] -translate-x-1/2 rounded-full bg-[#E87A54] sm:w-[400px]"
+            className="absolute left-1/2 top-[4%] aspect-square w-[220px] -translate-x-1/2 rounded-full bg-[#FF6B1A] sm:w-[320px]"
             aria-hidden="true"
           />
           {/* portrait — background-removed cutout */}
@@ -80,7 +80,7 @@ export function HeroSection() {
             initial={{ y: 90, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.2, delay: 1.05, ease: EASE }}
-            className="absolute bottom-0 left-1/2 h-[92%] -translate-x-1/2 object-contain object-bottom"
+            className="absolute bottom-0 left-1/2 h-full -translate-x-1/2 object-contain object-bottom"
             data-testid="hero-portrait"
           />
 
@@ -97,64 +97,54 @@ export function HeroSection() {
               <motion.span
                 animate={reduce ? undefined : { y: [0, -9, 0] }}
                 transition={{ repeat: Infinity, duration: 3.4 + t.float, ease: "easeInOut", delay: t.float }}
-                className="flex items-center gap-2 rounded-full bg-night px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white shadow-lg sm:text-[11px]"
+                className="flex items-center gap-2.5 rounded-full bg-[#111111] px-4 py-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-white shadow-xl sm:px-6 sm:py-3.5 sm:text-xs"
               >
-                <t.icon className="h-3.5 w-3.5 text-[#E87A54]" />
+                <t.icon className="h-4 w-4 text-[#FF6B1A] sm:h-4.5 sm:w-4.5" strokeWidth={2.2} />
                 {t.label}
               </motion.span>
             </motion.span>
           ))}
 
-          {/* left positioning note */}
+          {/* left positioning quote */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 1.9, ease: EASE }}
-            className="absolute bottom-[30%] -left-6 z-20 hidden w-40 lg:block xl:-left-10 xl:w-44"
+            className="absolute -left-16 top-[52%] z-20 hidden w-52 lg:block xl:-left-20"
             data-testid="hero-positioning-note"
           >
-            <span className="font-heading text-5xl leading-none text-terracotta">“</span>
-            <p className="-mt-3 text-[13px] leading-relaxed text-ink/70">
+            <span
+              className="text-5xl leading-none text-[#FF6B1A]"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              “
+            </span>
+            <p
+              className="-mt-2 text-[15px] font-semibold leading-relaxed text-ink/80"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               I market travel businesses — and I build the systems behind them.
             </p>
           </motion.div>
 
-          {/* right experience note */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 2.05, ease: EASE }}
-            className="absolute right-0 top-[6%] z-20 hidden w-52 text-right lg:block"
-            data-testid="hero-experience-note"
-          >
-            <p className="font-heading text-3xl font-medium tracking-tight text-ink">3 Systems</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Triplin · Travel CRM · Hospitality CRM
-            </p>
-            <p className="mt-5 font-heading text-3xl font-medium tracking-tight text-ink">2 Brands</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Shalom Backpackers · Moustache Escapes
-            </p>
-          </motion.div>
-
-          {/* CTA pill overlapping the circle */}
+          {/* split CTA pill */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 2.2, ease: EASE }}
-            className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2"
+            className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2"
           >
-            <div className="flex overflow-hidden rounded-full border border-ink/70 bg-paper/80 backdrop-blur-sm">
+            <div className="flex overflow-hidden rounded-full border-2 border-[#111111] shadow-lg">
               <button
                 onClick={() => scrollToId("built")}
-                className="flex items-center gap-2 whitespace-nowrap bg-[#E87A54] px-5 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-night transition-colors duration-300 hover:bg-terracotta hover:text-white sm:px-6 sm:py-3.5 sm:text-[11px]"
+                className="flex items-center gap-2 whitespace-nowrap bg-[#FF6B1A] px-6 py-3.5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#111111] transition-colors duration-300 hover:bg-[#e55a10] sm:px-9 sm:py-4 sm:text-xs"
                 data-testid="hero-cta-work"
               >
-                Explore my work <ArrowUpRight className="h-4 w-4" />
+                Explore my work <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
               </button>
               <button
                 onClick={() => scrollToId("contact")}
-                className="whitespace-nowrap px-5 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-ink transition-colors duration-300 hover:bg-ink hover:text-paper sm:px-6 sm:py-3.5 sm:text-[11px]"
+                className="whitespace-nowrap bg-white px-6 py-3.5 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#111111] transition-colors duration-300 hover:bg-[#111111] hover:text-white sm:px-9 sm:py-4 sm:text-xs"
                 data-testid="hero-cta-connect"
               >
                 Let's connect
