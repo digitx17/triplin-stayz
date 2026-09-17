@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useRef } from "react";
 import type { ReactNode } from "react";
 import { EASE, fadeUp } from "@/lib/anim";
 
@@ -13,14 +14,15 @@ export function MaskedLine({
   inView?: boolean;
   className?: string;
 }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const seen = useInView(ref, { once: true, margin: "-60px" });
+  const show = inView ? seen : true;
   return (
-    <span className={`block overflow-hidden pb-[0.1em] -mb-[0.1em] ${className}`}>
+    <span ref={ref} className={`block overflow-hidden pb-[0.1em] -mb-[0.1em] ${className}`}>
       <motion.span
         className="block will-change-transform"
         initial={{ y: "115%" }}
-        {...(inView
-          ? { whileInView: { y: "0%" }, viewport: { once: true, margin: "-60px" } }
-          : { animate: { y: "0%" } })}
+        animate={show ? { y: "0%" } : { y: "115%" }}
         transition={{ duration: 1.05, delay, ease: EASE }}
       >
         {children}
@@ -52,7 +54,7 @@ export function SectionHeading({
       <p className={`mb-4 font-mono text-xs font-semibold uppercase tracking-[0.25em] ${dark ? "text-[#E87A54]" : "text-terracotta"}`}>
         {eyebrow}
       </p>
-      <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight leading-snug">
+      <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-serif font-medium tracking-tight leading-snug">
         {title}
       </h2>
     </motion.div>

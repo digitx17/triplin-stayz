@@ -1,31 +1,34 @@
 import { motion } from "motion/react";
 import { ArrowDown, Play } from "lucide-react";
 import { EASE } from "@/lib/anim";
-import { IMG } from "@/lib/data";
-import { CountUp, ORANGE, ParallaxImg, fadeUp, staggerParent } from "./shared";
+import { CountUp, ORANGE, fadeUp, staggerParent } from "./shared";
 
-/* Chapter 01 — desk / digital marketing */
+/* Chapter 01 — desk / digital marketing (typographic browser card) */
 export function DeskVisual() {
+  const rows = ["social media management", "search engine optimization", "online advertising", "brand building"];
   return (
-    <div className="relative pb-10">
-      <ParallaxImg
-        src={IMG.deskWorkspace}
-        alt="Top view of a laptop workspace"
-        className="aspect-[4/3] rounded-md"
-      />
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="absolute -bottom-4 left-4 rounded-md border border-ink/10 bg-white px-4 py-3 shadow-lg"
-      >
-        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Freelance desk</p>
-        <p className="mt-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: ORANGE }}>
-          Social · SEO · Ads
-        </p>
-      </motion.div>
-    </div>
+    <motion.div
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      className="rounded-md border border-ink/10 bg-white shadow-xl"
+      data-testid="desk-visual"
+    >
+      <div className="flex items-center gap-1.5 border-b border-ink/10 px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full" style={{ background: ORANGE }} />
+        <span className="ml-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">freelance — 2020</span>
+      </div>
+      <div className="space-y-3 p-5">
+        {rows.map((r, i) => (
+          <motion.p key={r} variants={fadeUp} className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.15em] text-ink/70">
+            <span className="font-bold" style={{ color: ORANGE }}>0{i + 1}</span> {r}
+          </motion.p>
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
@@ -34,37 +37,35 @@ const ECOM_STEPS = ["Brand Setup", "Product Listing", "Search Optimization", "Ad
 
 export function EcomVisual() {
   return (
-    <div className="relative pb-20">
-      <ParallaxImg
-        src={IMG.ecomBoxes}
-        alt="Cardboard boxes prepared for order fulfillment"
-        className="aspect-[4/3] rounded-md"
-      />
-      <motion.div
-        variants={staggerParent}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        className="absolute inset-x-2 -bottom-14 rounded-md border border-ink/10 bg-white p-4 shadow-xl sm:inset-x-6"
-        data-testid="ecom-process"
-      >
-        <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-muted-foreground">The process</p>
-        <div className="mt-2.5 flex flex-wrap items-center gap-y-2">
-          {ECOM_STEPS.map((s, i) => (
-            <motion.span key={s} variants={fadeUp} className="flex items-center">
-              <span className="rounded-full border border-ink/15 bg-white px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-ink/80">
-                {s}
+    <motion.div
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      className="rounded-md border border-ink/10 bg-white p-5 shadow-xl"
+      data-testid="ecom-process"
+    >
+      <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-muted-foreground">The process</p>
+      <div className="mt-3 flex flex-wrap items-center gap-y-2">
+        {ECOM_STEPS.map((s, i) => (
+          <motion.span key={s} variants={fadeUp} className="flex items-center">
+            <span className="rounded-full border border-ink/15 bg-white px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-ink/80">
+              {s}
+            </span>
+            {i < ECOM_STEPS.length - 1 && (
+              <span className="mx-1 text-[11px] font-bold" style={{ color: ORANGE }} aria-hidden="true">
+                →
               </span>
-              {i < ECOM_STEPS.length - 1 && (
-                <span className="mx-1 text-[11px] font-bold" style={{ color: ORANGE }} aria-hidden="true">
-                  →
-                </span>
-              )}
-            </motion.span>
-          ))}
-        </div>
-      </motion.div>
-    </div>
+            )}
+          </motion.span>
+        ))}
+      </div>
+      <div className="mt-4 border-t border-dashed border-ink/15 pt-3">
+        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
+          Amazon · Flipkart · IndiaMART
+        </p>
+      </div>
+    </motion.div>
   );
 }
 
@@ -119,31 +120,12 @@ export function IndiaMapVisual() {
   );
 }
 
-/* Chapter 04 — social media card + travel collage */
+/* Chapter 04 — social media card (typographic, no photos) */
 export function SocialVisual() {
+  const rows = ["Destination reels", "Travel guides", "Local stories", "Hidden places"];
   return (
-    <div className="relative mx-auto max-w-sm pb-8">
-      <div className="absolute -left-6 top-10 h-44 w-44 rounded-full" style={{ background: ORANGE, opacity: 0.22 }} aria-hidden="true" />
-      <motion.img
-        src={IMG.varanasiGhats}
-        alt="Boats along the Varanasi ghats"
-        loading="lazy"
-        initial={{ opacity: 0, x: -30, rotate: -14 }}
-        whileInView={{ opacity: 1, x: 0, rotate: -8 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
-        className="absolute -left-10 -top-6 z-0 w-28 rounded-sm border-4 border-white object-cover shadow-lg sm:w-32"
-      />
-      <motion.img
-        src={IMG.templeTower}
-        alt="Heritage temple architecture"
-        loading="lazy"
-        initial={{ opacity: 0, x: 30, rotate: 12 }}
-        whileInView={{ opacity: 1, x: 0, rotate: 6 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.9, delay: 0.45, ease: EASE }}
-        className="absolute -bottom-4 -right-8 z-0 w-28 rounded-sm border-4 border-white object-cover shadow-lg sm:w-32"
-      />
+    <div className="relative mx-auto max-w-sm">
+      <div className="absolute -left-6 top-10 h-44 w-44 rounded-full" style={{ background: ORANGE, opacity: 0.18 }} aria-hidden="true" />
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -162,16 +144,14 @@ export function SocialVisual() {
           <CountUp to={10} suffix="K+" className="text-4xl font-bold tracking-tight" />
           <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50">Followers</span>
         </p>
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          {[IMG.rishikeshRiver, IMG.mountainVillage, IMG.templeCarvings, IMG.varanasiBoats].map((src, i) => (
-            <div key={i} className="group relative h-20 overflow-hidden rounded-md">
-              <img src={src} alt="Travel content thumbnail" loading="lazy" className="h-full w-full object-cover" />
-              <span className="absolute bottom-1.5 right-1.5 rounded-full bg-black/60 p-1">
-                <Play className="h-2.5 w-2.5 fill-white text-white" />
-              </span>
-            </div>
+        <motion.ul variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 space-y-2">
+          {rows.map((r) => (
+            <motion.li key={r} variants={fadeUp} className="flex items-center justify-between rounded-md border border-white/10 bg-white/5 px-3.5 py-2.5">
+              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/75">{r}</span>
+              <Play className="h-3 w-3 fill-white/60 text-white/60" />
+            </motion.li>
           ))}
-        </div>
+        </motion.ul>
         <p className="mt-4 border-t border-white/10 pt-3 font-mono text-[8px] uppercase tracking-[0.2em] text-white/40">
           Reels · Guides · Local stories
         </p>
@@ -180,34 +160,34 @@ export function SocialVisual() {
   );
 }
 
-/* Chapter 05 — academic / travel visual */
+/* Chapter 05 — academic / travel visual (ticket card, no photo) */
 export function MbaVisual() {
   return (
-    <div className="relative pb-14">
-      <ParallaxImg
-        src={IMG.travelNotebook}
-        alt="Travel planning notebook and map flat lay"
-        className="aspect-[4/3] rounded-md"
-      />
+    <div className="flex justify-center py-6">
       <motion.div
         initial={{ opacity: 0, y: 30, rotate: 2 }}
         whileInView={{ opacity: 1, y: 0, rotate: -2 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.8, delay: 0.25, ease: EASE }}
-        className="absolute -bottom-6 right-2 w-64 rounded-md border border-ink/10 bg-white p-5 shadow-xl"
+        className="w-72 rounded-md border border-ink/10 bg-white p-6 shadow-xl"
         data-testid="iittm-ticket"
       >
         <p className="font-mono text-[9px] uppercase tracking-[0.25em]" style={{ color: ORANGE }}>
-          Admission · Travel & Tourism
+          Admission · Travel &amp; Tourism
         </p>
-        <p className="mt-2 font-heading text-2xl font-medium tracking-tight">IITTM</p>
-        <p className="text-[11px] leading-snug text-muted-foreground">
+        <p className="mt-2 font-heading text-3xl font-medium tracking-tight">IITTM</p>
+        <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
           Indian Institute of Travel and Tourism Management
         </p>
-        <div className="my-3 border-t border-dashed border-ink/20" />
+        <div className="my-4 border-t border-dashed border-ink/20" />
         <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.15em] text-ink/70">
           <span>MBA · T&amp;T Mgmt</span>
           <span>2023–2026</span>
+        </div>
+        <div className="mt-4 flex gap-1" aria-hidden="true">
+          {Array.from({ length: 24 }).map((_, i) => (
+            <span key={i} className="h-6 w-[3px] bg-ink/80" style={{ opacity: i % 3 === 0 ? 1 : 0.35 }} />
+          ))}
         </div>
       </motion.div>
     </div>

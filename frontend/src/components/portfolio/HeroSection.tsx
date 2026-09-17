@@ -124,17 +124,14 @@ export function HeroSection() {
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 2.05, ease: EASE }}
-            className="absolute right-0 top-[6%] z-20 hidden w-52 text-right lg:block"
+            className="absolute right-0 top-[10%] z-20 hidden w-52 text-right lg:block"
             data-testid="hero-experience-note"
           >
-            <p className="font-heading text-3xl font-medium tracking-tight text-ink">3 Systems</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Triplin · Travel CRM · Hospitality CRM
+            <p className="font-heading text-5xl font-medium tracking-tight text-ink">6 Years</p>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              In Digital Marketing
             </p>
-            <p className="mt-5 font-heading text-3xl font-medium tracking-tight text-ink">2 Brands</p>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Shalom Backpackers · Moustache Escapes
-            </p>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-terracotta">2020 → Today</p>
           </motion.div>
 
           {/* CTA pill overlapping the circle */}

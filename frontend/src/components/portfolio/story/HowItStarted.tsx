@@ -2,6 +2,7 @@ import { useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import { EASE } from "@/lib/anim";
 import { MaskedLine } from "../Reveal";
 import {
   BodyText,
@@ -58,16 +59,14 @@ function Chapter({
     <article
       ref={ref}
       data-testid={testId}
-      className={`relative flex min-h-screen items-center overflow-hidden py-24 md:py-28 ${
-        dark ? "bg-night text-[#F5F5F3]" : ""
-      } ${bg}`}
+      className={`relative overflow-hidden py-16 md:py-20 ${dark ? "bg-night text-[#F5F5F3]" : ""} ${bg}`}
     >
       <motion.span
         aria-hidden="true"
         style={{ y: numY }}
-        className={`pointer-events-none absolute top-4 select-none font-heading leading-none ${
+        className={`pointer-events-none absolute -top-4 select-none font-heading leading-none ${
           flip ? "-right-6 md:-right-12" : "-left-6 md:-left-12"
-        } text-[38vw] md:text-[24vw] ${dark || bg ? "text-black/[0.07]" : "text-ink/[0.05]"}`}
+        } text-[30vw] md:text-[18vw] ${dark || bg ? "text-black/[0.06]" : "text-ink/[0.045]"}`}
       >
         {num}
       </motion.span>
@@ -76,7 +75,7 @@ function Chapter({
         whileInView={{ scale: 1 }}
         viewport={{ once: true, margin: "-35%" }}
         transition={{ duration: 0.4 }}
-        className="absolute left-3 top-1/2 z-10 h-3 w-3 -translate-x-[5px] -translate-y-1/2 rounded-full border-2 md:left-1/2 md:-translate-x-1.5"
+        className="absolute left-3 top-20 z-10 h-3 w-3 -translate-x-[5px] rounded-full border-2 md:left-1/2 md:top-24 md:-translate-x-1.5"
         style={{ borderColor: ORANGE, background: dark ? "#121415" : "#F7F2E8" }}
         aria-hidden="true"
       />
@@ -111,28 +110,6 @@ function Chapter({
   );
 }
 
-function Statement() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.45, 1], [0.85, 1, 1.06]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], [0, 1, 1, 0.15]);
-  return (
-    <div ref={ref} className="relative h-[170vh]" data-testid="story-statement">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center px-6 text-center">
-        <motion.h3
-          style={{ scale, opacity }}
-          className="font-heading text-4xl leading-[1.08] tracking-tight sm:text-6xl lg:text-7xl"
-        >
-          8 CHAPTERS.
-          <br />
-          ONE DIRECTION <span style={{ color: ORANGE }}>→ TRAVEL.</span>
-        </motion.h3>
-        <SquiggleArrow className="mt-10 w-28 rotate-12" />
-      </div>
-    </div>
-  );
-}
-
 export function HowItStarted() {
   const chaptersRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: chaptersRef, offset: ["start 0.75", "end 0.9"] });
@@ -140,39 +117,54 @@ export function HowItStarted() {
   return (
     <section id="story" className="grain relative bg-[#F7F2E8] text-ink" data-testid="story-section">
 
-      {/* section intro */}
-      <div className="relative z-10 mx-auto max-w-5xl px-6 pb-8 pt-28 text-center sm:pt-36">
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="font-mono text-xs font-semibold uppercase tracking-[0.3em]"
-          style={{ color: ORANGE }}
-        >
-          Section 02
-        </motion.p>
-        <h2 className="mt-5 font-heading text-5xl font-medium tracking-tight sm:text-6xl lg:text-7xl" data-testid="story-heading">
-          <WordReveal text="HOW IT STARTED" />
-        </h2>
-        <div className="mx-auto mt-8 max-w-3xl font-heading text-xl italic leading-snug text-ink/80 sm:text-2xl">
-          <MaskedLine inView>“From learning digital marketing in 2020</MaskedLine>
-          <MaskedLine inView delay={0.15}>to building a travel company today.”</MaskedLine>
+      {/* section intro — left title, right statement */}
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-14 pt-24 sm:pt-28 md:grid-cols-2">
+        <div>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="font-mono text-xs font-semibold uppercase tracking-[0.3em]"
+            style={{ color: ORANGE }}
+          >
+            Section 02
+          </motion.p>
+          <h2 className="mt-4 font-heading text-4xl font-medium tracking-tight sm:text-5xl lg:text-6xl" data-testid="story-heading">
+            <WordReveal text="HOW IT STARTED" />
+          </h2>
+          <div className="mt-6 font-heading text-lg italic leading-snug text-ink/80 sm:text-xl">
+            <MaskedLine inView>“From learning digital marketing in 2020</MaskedLine>
+            <MaskedLine inView delay={0.15}>to building a travel company today.”</MaskedLine>
+          </div>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="mt-5 max-w-md text-sm leading-relaxed text-ink/60"
+          >
+            I started with digital marketing, experimented with e-commerce and SEO, moved into
+            travel content and tourism, worked with events and hospitality brands, and eventually
+            began building my own travel business.
+          </motion.p>
         </div>
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-ink/60 sm:text-base"
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 1, ease: EASE }}
+          className="md:text-right"
+          data-testid="story-statement"
         >
-          I started with digital marketing, experimented with e-commerce and SEO, moved into travel
-          content and tourism, worked with events and hospitality brands, and eventually began
-          building my own travel business.
-        </motion.p>
+          <p className="font-heading text-4xl leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+            8 CHAPTERS.
+            <br />
+            ONE DIRECTION <span style={{ color: ORANGE }}>→ TRAVEL.</span>
+          </p>
+          <SquiggleArrow className="mt-8 w-24 -scale-x-100 md:ml-auto" />
+        </motion.div>
       </div>
-
-      <Statement />
 
       {/* chapters + progress rail */}
       <div ref={chaptersRef} className="relative">
@@ -181,7 +173,7 @@ export function HowItStarted() {
         </div>
 
       {/* CH 01 — 2020 Digital Marketing */}
-      <Chapter num="01" year="2020" title="I started with Digital Marketing" visual={<DeskVisual />} testId="chapter-01">
+      <Chapter num="01" year="2020" title="I started with Digital Marketing" flip visual={<DeskVisual />} testId="chapter-01">
         <BodyText>
           I started learning digital marketing independently and began working as a freelance
           digital marketer.
@@ -245,7 +237,7 @@ export function HowItStarted() {
       </Chapter>
 
       {/* CH 03 — 2022 First website */}
-      <Chapter num="03" year="2022" title="I built my first website" visual={<IndiaMapVisual />} testId="chapter-03">
+      <Chapter num="03" year="2022" title="I built my first website" flip visual={<IndiaMapVisual />} testId="chapter-03">
         <BodyText>I built my first website using Wix and took responsibility for its SEO.</BodyText>
         <motion.p variants={fadeUp} className="mt-8 flex items-baseline gap-3">
           <CountUp to={13} suffix="+" className="text-6xl font-bold tracking-tight sm:text-7xl" />
@@ -260,7 +252,7 @@ export function HowItStarted() {
       </Chapter>
 
       {/* CH 04 — 2023 Travel stories */}
-      <Chapter num="04" year="2023" title="I started telling travel stories" flip visual={<SocialVisual />} testId="chapter-04">
+      <Chapter num="04" year="2023" title="I started telling travel stories" visual={<SocialVisual />} testId="chapter-04">
         <motion.p variants={fadeUp} className="mt-5 font-heading text-xl italic text-ink/85 sm:text-2xl">
           “Travel became more than an interest.”
         </motion.p>
@@ -272,7 +264,7 @@ export function HowItStarted() {
       </Chapter>
 
       {/* CH 05 — 2023–2026 Tourism */}
-      <Chapter num="05" year="2023–2026" title="I went deeper into Tourism" visual={<MbaVisual />} testId="chapter-05">
+      <Chapter num="05" year="2023–2026" title="I went deeper into Tourism" flip visual={<MbaVisual />} testId="chapter-05">
         <BodyText>I moved from learning about travel independently to studying it professionally.</BodyText>
         <motion.p variants={fadeUp} className="mt-8 font-bold leading-[1.05] tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
           <span className="block text-5xl sm:text-6xl">MBA</span>
@@ -287,7 +279,7 @@ export function HowItStarted() {
       </Chapter>
 
       {/* CH 06 — Events */}
-      <Chapter num="06" year="Events" label="UrbanHook" title="UrbanHook Events" flip visual={<EventsVisual />} testId="chapter-06">
+      <Chapter num="06" year="Events" label="UrbanHook" title="UrbanHook Events" visual={<EventsVisual />} testId="chapter-06">
         <motion.p variants={fadeUp} className="mt-4 font-heading text-xl italic text-ink/85">
           Where marketing met the real world.
         </motion.p>
