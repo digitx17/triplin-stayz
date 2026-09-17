@@ -13,7 +13,7 @@ export function ThingsIveBuilt({ onOpenCaseStudy }: { onOpenCaseStudy: (p: Proje
   return (
     <section id="built" className="bg-night py-24 text-[#F5F5F3] sm:py-32" data-testid="built-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="03 — Things I've built" title="Things I've built." dark testId="built-heading" />
+        <SectionHeading eyebrow="04 — Things I've built" title="Things I've built." dark testId="built-heading" />
         <motion.p
           variants={fadeUp}
           initial="hidden"

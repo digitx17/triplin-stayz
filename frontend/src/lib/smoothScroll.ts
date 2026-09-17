@@ -5,6 +5,7 @@ let lenis: Lenis | null = null;
 export function initSmoothScroll(): () => void {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
   lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+  (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
   let raf = 0;
   const loop = (time: number) => {
     lenis?.raf(time);

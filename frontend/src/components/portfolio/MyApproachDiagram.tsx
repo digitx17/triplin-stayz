@@ -17,7 +17,7 @@ export function MyApproachDiagram() {
   return (
     <section id="approach" className="bg-stone py-24 sm:py-32" data-testid="approach-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="06 — My Approach" title="Marketing connects the pieces." testId="approach-heading" />
+        <SectionHeading eyebrow="07 — My Approach" title="Marketing connects the pieces." testId="approach-heading" />
 
         <motion.p
           variants={fadeUp}

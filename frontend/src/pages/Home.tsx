@@ -6,7 +6,7 @@ import type { Project } from "@/lib/data";
 import { NavigationHeader } from "@/components/portfolio/NavigationHeader";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { Marquee } from "@/components/portfolio/Marquee";
-import { JourneyPathway } from "@/components/portfolio/JourneyPathway";
+import { HowItStarted } from "@/components/portfolio/story/HowItStarted";
 import { ExperienceTimeline } from "@/components/portfolio/ExperienceTimeline";
 import { ThingsIveBuilt } from "@/components/portfolio/ThingsIveBuilt";
 import { CaseStudyModal } from "@/components/portfolio/CaseStudyModal";
@@ -29,7 +29,7 @@ export default function Home() {
         <main>
           <HeroSection />
           <Marquee />
-          <JourneyPathway />
+          <HowItStarted />
           <ExperienceTimeline />
           <ThingsIveBuilt onOpenCaseStudy={setCaseStudy} />
           <MarketingGallery />

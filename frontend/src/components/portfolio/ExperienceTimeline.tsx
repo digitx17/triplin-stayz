@@ -8,7 +8,7 @@ export function ExperienceTimeline() {
   return (
     <section id="experience" className="bg-stone py-24 sm:py-32" data-testid="experience-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="02 — Experience" title="Where I've worked." testId="experience-heading" />
+        <SectionHeading eyebrow="03 — Experience" title="Where I've worked." testId="experience-heading" />
         <div className="space-y-20 sm:space-y-28">
           {EXPERIENCE.map((job, i) => (
             <article

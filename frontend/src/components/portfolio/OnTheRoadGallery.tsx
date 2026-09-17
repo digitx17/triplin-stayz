@@ -26,7 +26,7 @@ export function OnTheRoadGallery() {
     <div className="mx-auto mb-10 flex max-w-7xl flex-wrap items-end justify-between gap-6 px-4 sm:px-6 lg:px-8">
       <div>
         <p className="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-terracotta">
-          05 — Travel
+          06 — Travel
         </p>
         <h2 className="font-heading text-2xl font-medium tracking-tight sm:text-3xl lg:text-4xl">On the road.</h2>
       </div>

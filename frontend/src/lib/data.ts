@@ -42,6 +42,12 @@ export const IMG = {
     "https://images.unsplash.com/photo-1613445607898-f46e51645acf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHx2YXJhbmFzaSUyMGdoYXQlMjBzcGlyaXR1YWwlMjBpbmRpYSUyMHJpdmVyfGVufDB8fHx8MTc4OTAzMzg1MXww&ixlib=rb-4.1.0&q=85",
   varanasiBoats:
     "https://images.unsplash.com/photo-1706186839147-0d708602587b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHx2YXJhbmFzaSUyMGdoYXQlMjBzcGlyaXR1YWwlMjBpbmRpYSUyMHJpdmVyfGVufDB8fHx8MTc4OTAzMzg1MXww&ixlib=rb-4.1.0&q=85",
+  deskWorkspace:
+    "https://images.unsplash.com/photo-1516542076529-1ea3854896f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzV8MHwxfHNlYXJjaHwyfHxtaW5pbWFsJTIwZGVzayUyMGxhcHRvcCUyMHdvcmtzcGFjZSUyMHRvcCUyMHZpZXd8ZW58MHx8fHwxNzg5NjI5NTM0fDA&ixlib=rb-4.1.0&q=85",
+  ecomBoxes:
+    "https://images.unsplash.com/photo-1700165644892-3dd6b67b25bc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTN8MHwxfHNlYXJjaHwyfHxlY29tbWVyY2UlMjBjYXJkYm9hcmQlMjBib3hlcyUyMHBhY2tpbmclMjBvcmRlcnN8ZW58MHx8fHwxNzg5NjI5NTM0fDA&ixlib=rb-4.1.0&q=85",
+  travelNotebook:
+    "https://images.pexels.com/photos/7235894/pexels-photo-7235894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
   varanasiDusk:
     "https://images.unsplash.com/photo-1571536802807-30451e3955d8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHx2YXJhbmFzaSUyMGdoYXQlMjBzcGlyaXR1YWwlMjBpbmRpYSUyMHJpdmVyfGVufDB8fHx8MTc4OTAzMzg1MXww&ixlib=rb-4.1.0&q=85",
 };
