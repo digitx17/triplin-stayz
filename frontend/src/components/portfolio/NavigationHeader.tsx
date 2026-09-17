@@ -41,16 +41,14 @@ export function NavigationHeader() {
     scrollToId(id);
   };
 
-  const light = !scrolled && !open;
-
   return (
     <>
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
-          light ? "text-[#F5F5F3]" : "border-b border-sand bg-paper/85 text-ink backdrop-blur-md"
+        className={`fixed inset-x-0 top-0 z-50 text-ink transition-colors duration-500 ${
+          open ? "" : scrolled ? "border-b border-sand bg-paper/85 backdrop-blur-md" : ""
         }`}
         data-testid="nav-header"
       >
@@ -70,12 +68,8 @@ export function NavigationHeader() {
                 data-testid={`nav-link-${l.label.toLowerCase()}`}
                 className={`relative rounded-full px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] transition-colors duration-300 ${
                   active === l.id
-                    ? light
-                      ? "bg-white/15 text-white"
-                      : "bg-ink text-paper"
-                    : light
-                      ? "text-white/75 hover:text-white"
-                      : "text-muted-foreground hover:text-ink"
+                    ? "bg-ink text-paper"
+                    : "text-muted-foreground hover:text-ink"
                 }`}
               >
                 {l.label}

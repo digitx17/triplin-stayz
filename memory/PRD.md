@@ -25,6 +25,7 @@ Build a motion-first, cinematic, editorial personal portfolio for VAIBHAV KANHER
 Hero (masked line reveal, parallax) → Story journey (7 steps) → Experience (Shalom Backpackers, Moustache Escapes) → Things I've Built (Triplin, Travel CRM w/ low-margin warning, Hospitality CRM) → 9-chapter case studies → Marketing gallery (filterable) → On the road (horizontal scroll) → Approach diagram → Skills system → Why travel → Contact (form + Email/LinkedIn/WhatsApp CTAs). Sticky nav with active-section pill; full-screen mobile menu; slow editorial marquee.
 
 ## Implemented (2026-09-10)
+- Hero redesigned (2026-09-17): light editorial layout with real photo cutout of Vaibhav over terracotta circle, "Hello!" pill, "I'm Vaibhav 👋, A Tourism & Hospitality Marketing Professional" masked reveal, 5 floating skill tags (Social Media, Travel Marketing, Brand Strategy, Content, Hospitality), side stats (3 Systems / 2 Brands), split CTA pill (Explore my work / Let's connect). Portrait: /frontend/public/portrait.png (cutout from his real B&W photo).
 - Full single-page cinematic portfolio, all 11 sections, motion-led, reduced-motion support
 - Interactive workflow simulators for all 3 projects; LOW MARGIN — REVIEW PRICING toggle state on Travel CRM
 - CaseStudyModal: full-screen reader, 9 numbered chapters, sidebar jump nav, Esc to close, page scroll lock
