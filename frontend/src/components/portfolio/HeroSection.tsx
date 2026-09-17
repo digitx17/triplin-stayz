@@ -72,20 +72,16 @@ export function HeroSection() {
             className="absolute bottom-0 left-1/2 aspect-square w-[280px] -translate-x-1/2 rounded-full bg-[#E87A54] sm:w-[400px]"
             aria-hidden="true"
           />
-          {/* portrait in an editorial arch frame — original photo, no cutout */}
-          <motion.div
+          {/* portrait — background-removed cutout */}
+          <motion.img
+            src="/portrait.png"
+            alt="Vaibhav Kanhere"
             initial={{ y: 90, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.2, delay: 1.05, ease: EASE }}
-            className="absolute bottom-0 left-1/2 h-[88%] w-[240px] -translate-x-1/2 overflow-hidden rounded-t-full border-4 border-paper shadow-2xl sm:w-[300px]"
-          >
-            <img
-              src="/portrait-full.jpg"
-              alt="Vaibhav Kanhere"
-              className="h-full w-full object-cover"
-              data-testid="hero-portrait"
-            />
-          </motion.div>
+            className="absolute bottom-0 left-1/2 h-[92%] -translate-x-1/2 object-contain object-bottom"
+            data-testid="hero-portrait"
+          />
 
           {/* floating tags */}
           {TAGS.map((t) => (
