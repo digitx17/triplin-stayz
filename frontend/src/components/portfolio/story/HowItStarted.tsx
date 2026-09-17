@@ -239,8 +239,8 @@ export function HowItStarted() {
       {/* CH 03 — 2022 First website */}
       <Chapter num="03" year="2022" title="I built my first website" flip visual={<IndiaMapVisual />} testId="chapter-03">
         <BodyText>I built my first website using Wix and took responsibility for its SEO.</BodyText>
-        <motion.p variants={fadeUp} className="mt-8 flex items-baseline gap-3">
-          <CountUp to={13} suffix="+" className="text-6xl font-bold tracking-tight sm:text-7xl" />
+        <motion.p variants={fadeUp} className="mt-6 flex items-baseline gap-3">
+          <CountUp to={13} suffix="+" className="text-5xl font-bold tracking-tight sm:text-6xl" />
           <span className="font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: ORANGE }}>
             Cities ranked
           </span>

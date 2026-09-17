@@ -1,12 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ROAD_ITEMS } from "@/lib/data";
+import { useMedia } from "@/lib/media";
+
+type RoadCard = { image: string; caption: string; tag: string; kind: "image" | "video" };
 
 export function OnTheRoadGallery() {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [range, setRange] = useState(0);
+  const uploads = useMedia("travel").data ?? [];
+  const cards: RoadCard[] = [
+    ...uploads.map((m) => ({ image: m.url, caption: m.caption || "On the road", tag: "My upload", kind: m.kind })),
+    ...ROAD_ITEMS.map((r) => ({ ...r, kind: "image" as const })),
+  ];
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], [0, -range]);
@@ -20,7 +28,7 @@ export function OnTheRoadGallery() {
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, []);
+  }, [cards.length]);
 
   const heading = (
     <div className="mx-auto mb-10 flex max-w-7xl flex-wrap items-end justify-between gap-6 px-4 sm:px-6 lg:px-8">
@@ -37,19 +45,23 @@ export function OnTheRoadGallery() {
     </div>
   );
 
-  const card = (item: (typeof ROAD_ITEMS)[number], i: number) => (
+  const card = (item: RoadCard, i: number) => (
     <figure
-      key={item.caption}
+      key={`${item.caption}-${i}`}
       className="group w-[74vw] shrink-0 sm:w-[44vw] lg:w-[30vw]"
       data-testid={`road-card-${i}`}
     >
       <div className="img-frame aspect-[3/4] rounded-sm">
-        <img
-          src={item.image}
-          alt={item.caption}
-          loading="lazy"
-          className="h-full w-full object-cover group-hover:scale-105"
-        />
+        {item.kind === "video" ? (
+          <video src={item.image} controls preload="metadata" className="h-full w-full object-cover" />
+        ) : (
+          <img
+            src={item.image}
+            alt={item.caption}
+            loading="lazy"
+            className="h-full w-full object-cover group-hover:scale-105"
+          />
+        )}
       </div>
       <figcaption className="mt-3 flex items-baseline justify-between">
         <span className="font-heading text-lg">{item.caption}</span>
@@ -63,7 +75,7 @@ export function OnTheRoadGallery() {
       <section id="road" className="bg-paper py-24 sm:py-32" data-testid="road-section">
         {heading}
         <div className="flex gap-6 overflow-x-auto px-4 pb-4 sm:px-6 lg:px-8">
-          {ROAD_ITEMS.map(card)}
+          {cards.map(card)}
         </div>
       </section>
     );
@@ -74,7 +86,7 @@ export function OnTheRoadGallery() {
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
         {heading}
         <motion.div ref={trackRef} style={{ x }} className="flex w-max gap-6 pl-4 sm:pl-6 lg:pl-8">
-          {ROAD_ITEMS.map(card)}
+          {cards.map(card)}
         </motion.div>
         <div className="mx-auto mt-12 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="h-px w-full bg-sand">

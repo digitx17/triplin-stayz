@@ -87,7 +87,7 @@ export function IndiaMapVisual() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
-      className="rounded-md border border-ink/10 bg-white p-5 shadow-xl sm:p-7"
+      className="mx-auto max-w-xs rounded-md border border-ink/10 bg-white p-4 shadow-xl"
       data-testid="india-map-visual"
     >
       <div className="flex items-baseline justify-between">
@@ -96,7 +96,7 @@ export function IndiaMapVisual() {
           Simplified map
         </p>
       </div>
-      <svg viewBox="0 0 360 400" className="mt-4 w-full" role="img" aria-label="Simplified map of India with ranked city pins">
+      <svg viewBox="0 0 360 400" className="mx-auto mt-3 max-h-56 w-full" role="img" aria-label="Simplified map of India with ranked city pins">
         <path d={INDIA_PATH} fill="#F1EAD9" stroke="#141413" strokeOpacity={0.25} strokeWidth={2} strokeLinejoin="round" />
         {PINS.map(([x, y, name], i) => (
           <motion.g

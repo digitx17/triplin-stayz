@@ -17,11 +17,18 @@ load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
 from lib.db import client, db, ensure_indexes
+from routers.media import router as media_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.index_task = asyncio.create_task(ensure_indexes())
+    try:
+        from lib.storage import init_storage
+        await asyncio.to_thread(init_storage)
+        logger.info("Object storage initialized")
+    except Exception as e:
+        logger.error(f"Storage init failed: {e}")
     yield
     client.close()
 
@@ -72,6 +79,7 @@ async def create_contact_inquiry(input: ContactInquiryCreate):
     return inquiry
 
 
+api_router.include_router(media_router)
 app.include_router(api_router)
 
 app.add_middleware(

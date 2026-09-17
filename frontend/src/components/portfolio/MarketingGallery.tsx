@@ -2,11 +2,22 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { EASE } from "@/lib/anim";
 import { WORK_FILTERS, WORK_ITEMS } from "@/lib/data";
+import type { WorkItem } from "@/lib/data";
+import { useMedia } from "@/lib/media";
 import { SectionHeading } from "./Reveal";
 
 export function MarketingGallery() {
   const [filter, setFilter] = useState("All");
-  const items = filter === "All" ? WORK_ITEMS : WORK_ITEMS.filter((w) => w.categories.includes(filter));
+  const uploads = (useMedia("marketing").data ?? []).map<WorkItem>((m) => ({
+    title: m.caption || "Uploaded work",
+    categories: ["Marketing"],
+    medium: m.kind === "video" ? "Video — my upload" : "Photo — my upload",
+    image: m.url,
+    note: "Added from the media dashboard",
+    kind: m.kind,
+  }));
+  const base = filter === "All" ? WORK_ITEMS : WORK_ITEMS.filter((w) => w.categories.includes(filter));
+  const items = filter === "All" || filter === "Marketing" ? [...uploads, ...base] : base;
 
   return (
     <section id="gallery" className="py-24 sm:py-32" data-testid="work-gallery">
@@ -45,12 +56,16 @@ export function MarketingGallery() {
                 data-testid={`work-item-${it.title.toLowerCase().replace(/[^a-z]+/g, "-").slice(0, 30)}`}
               >
                 <div className="img-frame group aspect-[4/3] rounded-sm">
-                  <img
-                    src={it.image}
-                    alt={it.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover group-hover:scale-105"
-                  />
+                  {it.kind === "video" ? (
+                    <video src={it.image} controls preload="metadata" className="h-full w-full object-cover" />
+                  ) : (
+                    <img
+                      src={it.image}
+                      alt={it.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover group-hover:scale-105"
+                    />
+                  )}
                 </div>
                 <figcaption className="mt-4">
                   <div className="flex flex-wrap gap-1.5">

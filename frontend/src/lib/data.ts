@@ -292,6 +292,7 @@ export interface WorkItem {
   medium: string;
   image: string;
   note: string;
+  kind?: "image" | "video";
 }
 
 export const WORK_ITEMS: WorkItem[] = [
