@@ -7,7 +7,7 @@ export function WhyTravel() {
     <section id="why" className="border-y border-sand bg-paper py-24 sm:py-32" data-testid="why-section">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <p className="mb-8 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-terracotta">
-          09 — Why travel?
+          08 — Why travel?
         </p>
         <h2 className="font-heading text-3xl font-medium leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl" data-testid="why-headline">
           <MaskedLine inView>Travel was never just a subject.</MaskedLine>

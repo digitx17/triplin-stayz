@@ -7,7 +7,7 @@ export function SkillsMatrix() {
   return (
     <section id="skills" className="py-24 sm:py-32" data-testid="skills-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="08 — Skills" title="A system of skills." testId="skills-heading" />
+        <SectionHeading eyebrow="07 — Skills" title="A system of skills." testId="skills-heading" />
         <motion.p
           variants={fadeUp}
           initial="hidden"

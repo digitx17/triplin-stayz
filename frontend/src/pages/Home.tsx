@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MotionConfig } from "motion/react";
 import { Toaster } from "@/components/ui/sonner";
 import { initSmoothScroll } from "@/lib/smoothScroll";
-import type { Project } from "@/lib/data";
 import { NavigationHeader } from "@/components/portfolio/NavigationHeader";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { Marquee } from "@/components/portfolio/Marquee";
 import { HowItStarted } from "@/components/portfolio/story/HowItStarted";
 import { ExperienceTimeline } from "@/components/portfolio/ExperienceTimeline";
-import { ThingsIveBuilt } from "@/components/portfolio/ThingsIveBuilt";
-import { CaseStudyModal } from "@/components/portfolio/CaseStudyModal";
 import { MarketingGallery } from "@/components/portfolio/MarketingGallery";
 import { OnTheRoadGallery } from "@/components/portfolio/OnTheRoadGallery";
 import { MyApproachDiagram } from "@/components/portfolio/MyApproachDiagram";
@@ -18,8 +15,6 @@ import { WhyTravel } from "@/components/portfolio/WhyTravel";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 
 export default function Home() {
-  const [caseStudy, setCaseStudy] = useState<Project | null>(null);
-
   useEffect(() => initSmoothScroll(), []);
 
   return (
@@ -31,7 +26,6 @@ export default function Home() {
           <Marquee />
           <HowItStarted />
           <ExperienceTimeline />
-          <ThingsIveBuilt onOpenCaseStudy={setCaseStudy} />
           <MarketingGallery />
           <OnTheRoadGallery />
           <MyApproachDiagram />
@@ -39,7 +33,6 @@ export default function Home() {
           <WhyTravel />
           <ContactSection />
         </main>
-        <CaseStudyModal project={caseStudy} onClose={() => setCaseStudy(null)} />
         <Toaster />
       </div>
     </MotionConfig>

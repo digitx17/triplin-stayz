@@ -31,7 +31,7 @@ export function ContactSection() {
     <section id="contact" className="bg-night text-[#F5F5F3]" data-testid="contact-section">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
         <p className="mb-8 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-[#E87A54]">
-          10 — Contact
+          09 — Contact
         </p>
         <h2 className="max-w-4xl font-heading text-3xl font-medium leading-[1.12] tracking-tight sm:text-5xl" data-testid="contact-headline">
           <MaskedLine inView>Have a travel, hospitality</MaskedLine>
@@ -85,7 +85,7 @@ export function ContactSection() {
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </a>
               <button
-                onClick={() => scrollToId("built")}
+                onClick={() => scrollToId("gallery")}
                 className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-white/60 transition-colors duration-300 hover:text-white"
                 data-testid="contact-view-work-button"
               >

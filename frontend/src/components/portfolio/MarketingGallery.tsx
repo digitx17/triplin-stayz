@@ -22,7 +22,7 @@ export function MarketingGallery() {
   return (
     <section id="gallery" className="py-24 sm:py-32" data-testid="work-gallery">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow="05 — Marketing Work" title="Marketing work." testId="gallery-heading" />
+        <SectionHeading eyebrow="04 — Marketing Work" title="Marketing work." testId="gallery-heading" />
 
         <div className="mb-12 flex flex-wrap gap-2" role="tablist" aria-label="Filter work">
           {WORK_FILTERS.map((f) => (

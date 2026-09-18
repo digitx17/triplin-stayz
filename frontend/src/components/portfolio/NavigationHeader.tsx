@@ -5,7 +5,7 @@ import { scrollToId } from "@/lib/smoothScroll";
 import { EASE } from "@/lib/anim";
 
 const LINKS = [
-  { label: "Work", id: "built" },
+  { label: "Work", id: "gallery" },
   { label: "Experience", id: "experience" },
   { label: "About", id: "story" },
   { label: "Travel", id: "road" },

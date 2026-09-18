@@ -144,7 +144,7 @@ export function HeroSection() {
           >
             <div className="flex overflow-hidden rounded-full border border-ink/70 bg-paper/80 backdrop-blur-sm">
               <button
-                onClick={() => scrollToId("built")}
+                onClick={() => scrollToId("gallery")}
                 className="flex items-center gap-2 whitespace-nowrap bg-[#E87A54] px-5 py-3 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] text-night transition-colors duration-300 hover:bg-terracotta hover:text-white sm:px-6 sm:py-3.5 sm:text-[11px]"
                 data-testid="hero-cta-work"
               >
