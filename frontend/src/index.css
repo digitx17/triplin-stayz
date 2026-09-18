@@ -6,6 +6,7 @@
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
+@import "@fontsource-variable/caveat";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,6 +14,7 @@
     --font-heading: 'Playfair Display Variable', Georgia, serif;
     --font-sans: 'DM Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+    --font-hand: 'Caveat Variable', cursive;
     --color-ink: var(--ink);
     --color-paper: var(--paper);
     --color-stone: var(--stone);
