@@ -4,8 +4,7 @@ import { motion, useInView, useScroll } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { EASE, fadeUp, staggerParent } from "@/lib/anim";
 import { MaskedLine } from "../Reveal";
-import { CountUp, ORANGE, SquiggleArrow, Tag, WordReveal } from "./shared";
-import { IndiaMapVisual } from "./visuals";
+import { CountUp, ORANGE, Tag, WordReveal } from "./shared";
 
 function Chapter({
   num,
@@ -70,10 +69,12 @@ function Chapter({
 function Row({
   reverse = false,
   dots,
+  end,
   children,
 }: {
   reverse?: boolean;
   dots: number[];
+  end?: number;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -87,7 +88,7 @@ function Row({
         transition={{ duration: 1.5, ease: EASE }}
         aria-hidden="true"
         className={`absolute left-0 right-0 top-6 hidden h-[2px] rounded-full md:block ${reverse ? "origin-right" : "origin-left"}`}
-        style={{ background: ORANGE }}
+        style={{ background: ORANGE, ...(end ? { right: `${100 - end}%` } : {}) }}
       />
       {dots.map((x, i) => (
         <motion.span
@@ -145,22 +146,12 @@ export function HowItStarted() {
   return (
     <section id="story" className="grain relative bg-[#F7F2E8] text-ink" data-testid="story-section">
       {/* intro — left title, right statement */}
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-24 sm:pt-28 md:grid-cols-2">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-12 pt-16 sm:pt-20 md:grid-cols-2">
         <div>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="font-mono text-xs font-semibold uppercase tracking-[0.3em]"
-            style={{ color: ORANGE }}
-          >
-            Section 02
-          </motion.p>
-          <h2 className="mt-4 font-heading text-4xl font-medium tracking-tight sm:text-5xl lg:text-6xl" data-testid="story-heading">
+          <h2 className="font-heading text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl" data-testid="story-heading">
             <WordReveal text="HOW IT STARTED" />
           </h2>
-          <div className="mt-6 font-heading text-lg italic leading-snug text-ink/80 sm:text-xl">
+          <div className="mt-5 font-heading text-base italic leading-snug text-ink/80 sm:text-lg">
             <MaskedLine inView>“From learning digital marketing in 2020</MaskedLine>
             <MaskedLine inView delay={0.15}>to building a travel company today.”</MaskedLine>
           </div>
@@ -184,12 +175,13 @@ export function HowItStarted() {
           className="md:text-right"
           data-testid="story-statement"
         >
-          <p className="font-heading text-4xl leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+          <p className="font-heading text-3xl leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl">
             8 CHAPTERS.
             <br />
-            ONE DIRECTION <span style={{ color: ORANGE }}>→ TRAVEL.</span>
+            ONE DIRECTION
+            <span className="my-1 block leading-none" style={{ color: ORANGE }} aria-hidden="true">↓</span>
+            <span style={{ color: ORANGE }}>TRAVEL.</span>
           </p>
-          <SquiggleArrow className="mt-8 w-24 -scale-x-100 md:ml-auto" />
         </motion.div>
       </div>
 
@@ -230,7 +222,6 @@ export function HowItStarted() {
             meta="2022"
             title="Website &amp; SEO"
             tags={["Wix", "SEO"]}
-            visual={<IndiaMapVisual />}
             testId="chapter-03"
           >
             Built my first website on Wix and owned its SEO — ranked for location keywords across{" "}
@@ -249,11 +240,19 @@ export function HowItStarted() {
             order="md:order-3"
             tags={["Reels", "Storytelling"]}
             visual={
-              <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
-                <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@nagpurtaveler</span>
-                <span className="h-3 w-px bg-white/20" />
-                <CountUp to={10} suffix="K+" className="font-mono text-[10px] font-bold" />
-                <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
+              <div className="flex flex-wrap gap-2">
+                <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
+                  <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@nagpurtaveler</span>
+                  <span className="h-3 w-px bg-white/20" />
+                  <CountUp to={10} suffix="K+" className="font-mono text-[10px] font-bold" />
+                  <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
+                </div>
+                <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
+                  <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@par_yatanwala</span>
+                  <span className="h-3 w-px bg-white/20" />
+                  <span className="font-mono text-[10px] font-bold">1.5K</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
+                </div>
               </div>
             }
             testId="chapter-04"
@@ -263,14 +262,14 @@ export function HowItStarted() {
           </Chapter>
           <Chapter
             num="05"
-            meta="2023–2026"
+            meta="2024–2026"
             title="Tourism Education"
             order="md:order-2"
             tags={["MBA", "Travel & Tourism"]}
             visual={
               <div className="inline-block -rotate-2 rounded-md border border-ink/10 bg-white px-4 py-3 shadow-md">
                 <p className="font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
-                  Admission · 2023–2026
+                  Admission · 2024–2026
                 </p>
                 <p className="mt-1 font-heading text-base font-medium leading-tight">
                   IITTM — Indian Institute of Travel &amp; Tourism Management
@@ -309,13 +308,19 @@ export function HowItStarted() {
 
         <Turn side="left" />
 
-        {/* RUN 3 — left to right */}
-        <Row dots={[16.7, 50]}>
+        {/* RUN 3 — left to right, ending at Triplin */}
+        <Row dots={[16.7, 50]} end={50}>
           <Chapter
             num="07"
             meta="Hospitality"
             title="Shalom Backpackers &amp; Moustache Escapes"
-            tags={["Hostels", "F&B", "Listings & OTAs"]}
+            tags={["Social Media", "Content Creation", "Local SEO", "Photoshoot", "Events", "Loyalty Program", "Agency Management", "Influencer Collab"]}
+            visual={
+              <span className="inline-flex items-baseline gap-2 rounded-full border border-ink/15 bg-white px-4 py-2 shadow-sm">
+                <span className="font-mono text-sm font-bold tracking-tight">₹1.4Cr</span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-muted-foreground">Monthly revenue target</span>
+              </span>
+            }
             testId="chapter-07"
           >
             Social media &amp; SEO for backpacker hostels across Rishikesh, Shimla and McLeodganj —
