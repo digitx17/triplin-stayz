@@ -108,7 +108,7 @@ function Row({
           aria-hidden="true"
           viewBox="0 0 64 100"
           preserveAspectRatio="none"
-          className={`absolute bottom-[-136px] top-6 hidden w-16 overflow-visible md:block ${turn === "right" ? "right-0" : "left-0"}`}
+          className={`absolute top-6 hidden h-[calc(100%+112px)] w-16 overflow-visible md:block ${turn === "right" ? "right-0" : "left-0"}`}
         >
           <motion.path
             d={turn === "right" ? "M 62 0 C 100 25, 100 75, 62 100" : "M 2 0 C -36 25, -36 75, 2 100"}
