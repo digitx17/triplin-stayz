@@ -56,12 +56,12 @@ function ExpBlock({
       initial={{ opacity: 0, y: 44 }}
       animate={seen ? { opacity: 1, y: 0 } : { opacity: 0, y: 44 }}
       transition={{ duration: 0.9, delay, ease: EASE }}
-      className="relative"
+      className="relative rounded-md border border-ink/10 bg-white p-6 shadow-sm sm:p-8"
       data-testid={testId}
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -top-12 right-0 select-none font-heading text-8xl leading-none text-ink/[0.06] md:text-9xl"
+        className="pointer-events-none absolute right-5 top-4 select-none font-heading text-8xl leading-none text-ink/[0.05]"
       >
         {num}
       </span>
@@ -81,7 +81,7 @@ function ExpBlock({
       {locations && (
         <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{locations}</p>
       )}
-      <div className={`img-frame group mt-6 aspect-[4/3] rounded-sm ${tilt ? "rotate-[1.2deg] border-4 border-white shadow-lg" : ""}`}>
+      <div className={`img-frame group mt-6 aspect-[4/3] rounded-sm ${tilt ? "rotate-[1.2deg] shadow-lg" : ""}`}>
         <img src={image} alt={imageAlt} loading="lazy" className="h-full w-full object-cover group-hover:scale-105" />
       </div>
       {metric && (
@@ -97,8 +97,8 @@ function ExpBlock({
             suffix="%"
             className="text-6xl font-bold tracking-tight sm:text-7xl"
           />
-          <span className="max-w-[140px] font-mono text-[9px] uppercase leading-relaxed tracking-[0.18em] text-muted-foreground">
-            F&amp;B Bar &amp; À La Carte revenue target
+          <span className="max-w-[150px] font-mono text-[9px] uppercase leading-relaxed tracking-[0.18em] text-muted-foreground">
+            Achieved · F&amp;B Bar &amp; À La Carte revenue targets
           </span>
         </motion.div>
       )}
@@ -129,17 +129,7 @@ export function ExperienceTimeline() {
   return (
     <section id="experience" className="grain relative overflow-hidden bg-[#F7F2E8] py-24 text-ink sm:py-28" data-testid="experience-section">
       <div className="mx-auto max-w-6xl px-6">
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="font-mono text-xs font-semibold uppercase tracking-[0.3em]"
-          style={{ color: ORANGE }}
-        >
-          Section 03
-        </motion.p>
-        <h2 className="mt-4 font-heading text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl" data-testid="experience-heading">
+        <h2 className="font-heading text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl" data-testid="experience-heading">
           <WordReveal text="PROFESSIONAL EXPERIENCE" />
         </h2>
         <div className="mt-5 font-heading text-base italic leading-snug text-ink/80 sm:text-lg">
@@ -211,22 +201,17 @@ export function ExperienceTimeline() {
               delay={1.0}
               num="01"
               org="Shalom Backpackers"
-              role="Social Media Marketing Intern"
+              role="Social Media Intern"
               duration="2 MONTHS · JUNE 2025 — JULY 2025"
               note="2 months"
-              locations="Rishikesh · Shimla · McLeodganj"
+              locations="Rishikesh"
               image={IMG.rishikeshRiver}
               imageAlt="The Ganges flowing through Rishikesh valley, backpacker country"
               tags={["Reels", "Posts", "Stories", "SEO", "Google Business", "Influencers", "Events", "Reviews"]}
               bullets={[
-                "Created engaging reels, posts and stories",
-                "Conducted SEO optimization",
-                "Improved Google Business listing visibility",
-                "Coordinated marketing campaigns",
-                "Worked on influencer tie-ups",
-                "Supported on-ground event promotions",
-                "Managed online reviews across hostel properties",
-                "Maintained brand-consistent communication across Google and OTAs",
+                "Created engaging reels, posts & stories for social media platforms",
+                "Conducted SEO optimization and improved Google Business listing ranking",
+                "Coordinated with property managers for marketing campaigns, influencer tie-ups, and on-ground event promotions across Rishikesh, Shimla, and McLeodganj",
               ]}
               testId="exp-shalom"
             />
@@ -235,23 +220,22 @@ export function ExperienceTimeline() {
               delay={2.1}
               num="02"
               org="Moustache Escapes"
-              role="Marketing Executive — F&B"
-              duration="3 MONTHS · MARCH 2026 — MAY 2026"
+              role="Marketing Executive"
+              duration="3 MONTHS · MARCH 2026 — JUNE 2026"
               note="3 months"
+              locations="Indian Hostel Pvt. Ltd"
               image={IMG.chefPlating}
               imageAlt="Chef plating a dish in a restaurant kitchen"
               tilt
               metric
-              tags={["F&B Social", "Events", "Photoshoots", "Agency Mgmt", "Zomato", "Swiggy Dineout", "EazyDiner", "CRM"]}
+              tags={["F&B Social", "Events", "Photoshoots", "Agency Mgmt", "Listings & OTAs", "Content Creation", "Influencer Collab", "Loyalty Program"]}
               bullets={[
-                "Managed F&B social media accounts across brands and outlets",
-                "Executed monthly events across outlets with positive P&L",
-                "Coordinated one professional photoshoot per month across Verandah, Bayleaf and The 7",
-                "Managed external marketing agency deliverables",
-                "Managed and optimized Zomato, Swiggy Dineout and EazyDiner",
-                "Managed events, offers, launches, menus and promotions",
-                "Drove customer retention through CRM campaigns",
-                "Worked with automated marketing journeys",
+                "Managed all F&B social media accounts across brands and outlets",
+                "Successfully executed monthly events across all outlets with positive P&L",
+                "Conducted 1 professional photoshoot per month for all Verandah, Bayleaf, and The 7 outlets",
+                "Managed and ensured timely delivery of all external marketing agency deliverables",
+                "Managed and optimized OTA platforms (Zomato, Swiggy Dineout, EazyDiner) for events, offers, launches, menus, and promotions",
+                "Drove customer retention through CRM campaigns, event promotions, and automated marketing journeys",
               ]}
               testId="exp-moustache"
             />
