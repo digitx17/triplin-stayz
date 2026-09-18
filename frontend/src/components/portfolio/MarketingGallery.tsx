@@ -8,16 +8,16 @@ import { SectionHeading } from "./Reveal";
 
 export function MarketingGallery() {
   const [filter, setFilter] = useState("All");
-  const uploads = (useMedia("marketing").data ?? []).map<WorkItem>((m) => ({
+  const uploads = (useMedia().data ?? []).map<WorkItem>((m) => ({
     title: m.caption || "Uploaded work",
-    categories: ["Marketing"],
+    categories: ["Graphic Design / Content"],
     medium: m.kind === "video" ? "Video — my upload" : "Photo — my upload",
     image: m.url,
     note: "Added from the media dashboard",
     kind: m.kind,
   }));
-  const base = filter === "All" ? WORK_ITEMS : WORK_ITEMS.filter((w) => w.categories.includes(filter));
-  const items = filter === "All" || filter === "Marketing" ? [...uploads, ...base] : base;
+  const all = [...uploads, ...WORK_ITEMS];
+  const items = filter === "All" ? all : all.filter((w) => w.categories.includes(filter));
 
   return (
     <section id="gallery" className="py-24 sm:py-32" data-testid="work-gallery">

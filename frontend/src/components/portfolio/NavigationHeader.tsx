@@ -8,7 +8,6 @@ const LINKS = [
   { label: "Work", id: "gallery" },
   { label: "Experience", id: "experience" },
   { label: "About", id: "story" },
-  { label: "Travel", id: "road" },
   { label: "Contact", id: "contact" },
 ];
 

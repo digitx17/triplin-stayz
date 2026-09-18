@@ -8,9 +8,8 @@ import { Marquee } from "@/components/portfolio/Marquee";
 import { HowItStarted } from "@/components/portfolio/story/HowItStarted";
 import { ExperienceTimeline } from "@/components/portfolio/ExperienceTimeline";
 import { MarketingGallery } from "@/components/portfolio/MarketingGallery";
-import { OnTheRoadGallery } from "@/components/portfolio/OnTheRoadGallery";
-import { MyApproachDiagram } from "@/components/portfolio/MyApproachDiagram";
 import { SkillsMatrix } from "@/components/portfolio/SkillsMatrix";
+import { ToolkitStrip } from "@/components/portfolio/ToolkitStrip";
 import { WhyTravel } from "@/components/portfolio/WhyTravel";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 
@@ -27,9 +26,8 @@ export default function Home() {
           <HowItStarted />
           <ExperienceTimeline />
           <MarketingGallery />
-          <OnTheRoadGallery />
-          <MyApproachDiagram />
           <SkillsMatrix />
+          <ToolkitStrip />
           <WhyTravel />
           <ContactSection />
         </main>

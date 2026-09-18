@@ -296,15 +296,15 @@ export interface WorkItem {
 }
 
 export const WORK_ITEMS: WorkItem[] = [
-  { title: "Shalom Backpackers — Rishikesh", categories: ["Marketing", "Hospitality", "Content"], medium: "Reels · Social Creatives · Calendars", image: IMG.rishikeshTown, note: "Hostel social media & attraction storytelling" },
-  { title: "The7", categories: ["F&B", "Marketing"], medium: "F&B Social · Campaign Concepts", image: IMG.foodPlating, note: "Restaurant & bar marketing content" },
-  { title: "Verandah", categories: ["F&B", "Content"], medium: "Reels · Carousels · Photoshoots", image: IMG.chefPlating, note: "Dining content & photoshoot planning" },
-  { title: "Bayleaf", categories: ["Hospitality", "F&B"], medium: "Listings · GBP · Social", image: IMG.hotelLobby, note: "Hospitality marketing & OTA/listing work" },
-  { title: "Travel Destination Content", categories: ["Travel", "Content"], medium: "Photography · Itineraries · Guides", image: IMG.varanasiGhats, note: "Destination storytelling & travel guides" },
-  { title: "Travel Marketing Concepts", categories: ["Systems", "Travel", "Marketing"], medium: "Funnels · Campaign Concepts", image: IMG.alpineHighway, note: "Concept work connecting marketing to systems" },
+  { title: "Shalom Backpackers — Rishikesh", categories: ["Graphic Design / Content"], medium: "Reels · Social Creatives · Calendars", image: IMG.rishikeshTown, note: "Hostel social media & attraction storytelling" },
+  { title: "The7", categories: ["Photoshoot", "Graphic Design / Content"], medium: "F&B Social · Campaign Concepts", image: IMG.foodPlating, note: "Restaurant & bar marketing content" },
+  { title: "Verandah", categories: ["Photoshoot", "Events"], medium: "Reels · Carousels · Photoshoots", image: IMG.chefPlating, note: "Dining content & photoshoot planning" },
+  { title: "Bayleaf", categories: ["Listings", "Photoshoot"], medium: "Listings · GBP · Social", image: IMG.hotelLobby, note: "Hospitality marketing & OTA/listing work" },
+  { title: "Travel Destination Content", categories: ["Graphic Design / Content", "Influencer Collab"], medium: "Photography · Itineraries · Guides", image: IMG.varanasiGhats, note: "Destination storytelling & travel guides" },
+  { title: "Triplin — Website & CRM", categories: ["Website & CRM"], medium: "Travel platform · Systems", image: IMG.alpineHighway, note: "Website, CRM and workflows for travel businesses" },
 ];
 
-export const WORK_FILTERS = ["All", "Marketing", "Hospitality", "F&B", "Travel", "Content", "Systems"];
+export const WORK_FILTERS = ["All", "Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"];
 
 export const ROAD_ITEMS = [
   { image: IMG.mountainPass, caption: "Mountain passes", tag: "FIELD NOTES" },

@@ -18,6 +18,7 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection
 from lib.db import client, db, ensure_indexes
 from routers.media import router as media_router
+from routers.content import router as content_router
 
 
 @asynccontextmanager
@@ -80,6 +81,7 @@ async def create_contact_inquiry(input: ContactInquiryCreate):
 
 
 api_router.include_router(media_router)
+api_router.include_router(content_router)
 app.include_router(api_router)
 
 app.add_middleware(

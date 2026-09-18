@@ -6,6 +6,7 @@ import { ImagePlus, Loader2, LogOut, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { useMedia } from "@/lib/media";
+import { ContentEditor } from "@/components/admin/ContentEditor";
 
 const TOKEN_KEY = "vk_admin_token";
 
@@ -138,7 +139,7 @@ export default function Admin() {
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-terracotta">Vaibhav · Media dashboard</p>
             <h1 className="mt-2 font-heading text-3xl font-medium tracking-tight" data-testid="admin-title">Add photos & videos</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Uploads go live on the site instantly — Travel shows in “On the road”, Marketing in the work gallery.
+              Uploads go live instantly in the Marketing work gallery on the site.
             </p>
           </div>
           <div className="flex gap-2">
@@ -243,6 +244,8 @@ export default function Admin() {
             Nothing uploaded yet — your first photo or video will appear here and on the site.
           </p>
         )}
+
+        <ContentEditor token={token} />
       </div>
       <Toaster />
     </div>
