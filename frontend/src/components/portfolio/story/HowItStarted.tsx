@@ -70,18 +70,20 @@ function Row({
   reverse = false,
   dots,
   end,
+  turn,
   children,
 }: {
   reverse?: boolean;
   dots: number[];
   end?: number;
+  turn?: "right" | "left";
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useInView(ref, { once: true, margin: "-140px" });
   const delays = reverse ? [0.95, 0.55, 0.2] : [0.2, 0.55, 0.95];
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className={`relative ${turn ? "mb-16 md:mb-28" : ""}`}>
       <motion.div
         initial={{ scaleX: 0 }}
         animate={seen ? { scaleX: 1 } : { scaleX: 0 }}
@@ -101,31 +103,27 @@ function Row({
           style={{ left: `${x}%`, borderColor: ORANGE }}
         />
       ))}
+      {turn && (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 64 100"
+          preserveAspectRatio="none"
+          className={`absolute bottom-[-136px] top-6 hidden w-16 overflow-visible md:block ${turn === "right" ? "right-0" : "left-0"}`}
+        >
+          <motion.path
+            d={turn === "right" ? "M 62 0 C 100 25, 100 75, 62 100" : "M 2 0 C -36 25, -36 75, 2 100"}
+            stroke={ORANGE}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            fill="none"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0 }}
+            animate={seen ? { pathLength: 1 } : { pathLength: 0 }}
+            transition={{ duration: 1.1, delay: 1.2, ease: "easeInOut" }}
+          />
+        </svg>
+      )}
       <div className="grid gap-12 pl-8 md:grid-cols-3 md:gap-8 md:pl-0">{children}</div>
-    </div>
-  );
-}
-
-function Turn({ side }: { side: "right" | "left" }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const seen = useInView(ref, { once: true, margin: "-100px" });
-  return (
-    <div ref={ref} className="relative my-2 hidden h-24 md:block" aria-hidden="true">
-      <svg
-        className={`absolute top-0 h-full w-[124px] ${side === "right" ? "-right-[6px]" : "-left-[6px]"}`}
-        viewBox={side === "right" ? "0 0 124 96" : "-24 0 124 96"}
-        fill="none"
-      >
-        <motion.path
-          d={side === "right" ? "M 100 0 C 130 32, 130 64, 100 96" : "M 24 0 C -6 32, -6 64, 24 96"}
-          stroke={ORANGE}
-          strokeWidth={2.5}
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={seen ? { pathLength: 1 } : { pathLength: 0 }}
-          transition={{ duration: 0.9, ease: "easeInOut" }}
-        />
-      </svg>
     </div>
   );
 }
@@ -195,7 +193,7 @@ export function HowItStarted() {
         </div>
 
         {/* RUN 1 — left to right */}
-        <Row dots={[16.7, 50, 83.3]}>
+        <Row dots={[16.7, 50, 83.3]} turn="right">
           <Chapter num="01" meta="2020" title="Digital Marketing" tags={["Digital Marketing", "SEO", "Freelancing"]} testId="chapter-01">
             Started learning digital marketing independently and freelancing — social media, SEO,
             advertising and online brand building.
@@ -229,10 +227,8 @@ export function HowItStarted() {
           </Chapter>
         </Row>
 
-        <Turn side="right" />
-
         {/* RUN 2 — right to left (visual order reversed) */}
-        <Row reverse dots={[16.7, 50, 83.3]}>
+        <Row reverse dots={[16.7, 50, 83.3]} turn="left">
           <Chapter
             num="04"
             meta="2023"
@@ -241,23 +237,35 @@ export function HowItStarted() {
             tags={["Reels", "Storytelling"]}
             visual={
               <div className="flex flex-wrap gap-2">
-                <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
-                  <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@nagpurtaveler</span>
+                <a
+                  href="https://www.instagram.com/nagpurtraveler"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="link-nagpurtraveler"
+                  className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                >
+                  <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@nagpurtraveler</span>
                   <span className="h-3 w-px bg-white/20" />
                   <CountUp to={10} suffix="K+" className="font-mono text-[10px] font-bold" />
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
-                </div>
-                <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
+                </a>
+                <a
+                  href="https://www.instagram.com/par_yatanwala"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="link-par-yatanwala"
+                  className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                >
                   <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@par_yatanwala</span>
                   <span className="h-3 w-px bg-white/20" />
                   <span className="font-mono text-[10px] font-bold">1.5K</span>
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
-                </div>
+                </a>
               </div>
             }
             testId="chapter-04"
           >
-            “Travel became more than an interest.” Started @nagpurtaveler — destinations and
+            “Travel became more than an interest.” Started @nagpurtraveler — destinations and
             experiences from a local traveler's perspective.
           </Chapter>
           <Chapter
@@ -305,8 +313,6 @@ export function HowItStarted() {
             music-jamming shows.
           </Chapter>
         </Row>
-
-        <Turn side="left" />
 
         {/* RUN 3 — left to right, ending at Triplin */}
         <Row dots={[16.7, 50]} end={50}>

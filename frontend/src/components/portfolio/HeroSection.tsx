@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import type { LucideIcon } from "lucide-react";
-import { ArrowDown, ArrowUpRight, Building2, Clapperboard, Megaphone, Plane, Star } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Bot, Building2, Clapperboard, Megaphone, Plane, Star } from "lucide-react";
 import { EASE } from "@/lib/anim";
 import { scrollToId } from "@/lib/smoothScroll";
 import { MaskedLine } from "./Reveal";
@@ -19,8 +19,9 @@ const TAGS: Tag[] = [
   { label: "Social Media", icon: Megaphone, className: "left-[2%] top-[14%] sm:left-[6%] sm:top-[20%]", delay: 1.5, float: 0 },
   { label: "Hospitality", icon: Building2, className: "left-[1%] top-[44%] sm:left-[3%] sm:top-[48%]", delay: 1.65, float: 0.6, hideOnMobile: true },
   { label: "Brand Strategy", icon: Star, className: "left-[6%] bottom-[28%] sm:left-[12%] sm:bottom-[26%]", delay: 1.8, float: 1.2 },
-  { label: "Content", icon: Clapperboard, className: "right-[3%] top-[46%] sm:right-[7%] sm:top-[50%]", delay: 1.95, float: 0.9 },
-  { label: "Travel Marketing", icon: Plane, className: "right-[2%] top-[10%] sm:right-[5%] sm:bottom-[20%] sm:top-auto", delay: 2.1, float: 1.5 },
+  { label: "CRM & AI Automation", icon: Bot, className: "right-[2%] top-[22%] sm:right-[3%] sm:top-[30%]", delay: 1.95, float: 1.8 },
+  { label: "Content", icon: Clapperboard, className: "right-[3%] top-[46%] sm:right-[7%] sm:top-[56%]", delay: 2.1, float: 0.9 },
+  { label: "Travel Marketing", icon: Plane, className: "right-[2%] top-[62%] sm:right-[5%] sm:bottom-[16%] sm:top-auto", delay: 2.25, float: 1.5 },
 ];
 
 export function HeroSection() {
