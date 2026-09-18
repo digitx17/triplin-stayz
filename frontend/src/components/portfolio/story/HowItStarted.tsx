@@ -1,124 +1,151 @@
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useInView, useScroll } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import { EASE } from "@/lib/anim";
+import { EASE, fadeUp, staggerParent } from "@/lib/anim";
 import { MaskedLine } from "../Reveal";
-import {
-  BodyText,
-  CountUp,
-  DetailList,
-  ORANGE,
-  SquiggleArrow,
-  TagRow,
-  WordReveal,
-  fadeUp,
-  staggerParent,
-} from "./shared";
-import {
-  DeskVisual,
-  EcomVisual,
-  EventsVisual,
-  HospitalityCard,
-  IndiaMapVisual,
-  MbaVisual,
-  SocialVisual,
-  TriplinDiagram,
-} from "./visuals";
+import { CountUp, ORANGE, SquiggleArrow, Tag, WordReveal } from "./shared";
+import { IndiaMapVisual } from "./visuals";
 
 function Chapter({
   num,
-  year,
-  label,
+  meta,
   title,
-  flip = false,
-  dark = false,
-  wide = false,
-  bg = "",
+  tags,
   visual,
+  order = "",
   children,
   testId,
 }: {
   num: string;
-  year: string;
-  label?: string;
+  meta: string;
   title: string;
-  flip?: boolean;
-  dark?: boolean;
-  wide?: boolean;
-  bg?: string;
+  tags?: string[];
   visual?: ReactNode;
+  order?: string;
   children: ReactNode;
   testId: string;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const numY = useTransform(scrollYProgress, [0, 1], [110, -110]);
-
   return (
-    <article
-      ref={ref}
+    <motion.article
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      className={`relative pt-14 md:pt-16 ${order}`}
       data-testid={testId}
-      className={`relative overflow-hidden py-16 md:py-20 ${dark ? "bg-night text-[#F5F5F3]" : ""} ${bg}`}
     >
-      <motion.span
+      <span
         aria-hidden="true"
-        style={{ y: numY }}
-        className={`pointer-events-none absolute -top-4 select-none font-heading leading-none ${
-          flip ? "-right-6 md:-right-12" : "-left-6 md:-left-12"
-        } text-[30vw] md:text-[18vw] ${dark || bg ? "text-black/[0.06]" : "text-ink/[0.045]"}`}
+        className="absolute -left-[25px] top-[62px] h-3 w-3 rounded-full border-2 bg-[#F7F2E8] md:hidden"
+        style={{ borderColor: ORANGE }}
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-4 select-none font-heading text-7xl leading-none text-ink/[0.06] md:text-8xl"
       >
         {num}
-      </motion.span>
-      <motion.span
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: "-35%" }}
-        transition={{ duration: 0.4 }}
-        className="absolute left-3 top-20 z-10 h-3 w-3 -translate-x-[5px] rounded-full border-2 md:left-1/2 md:top-24 md:-translate-x-1.5"
-        style={{ borderColor: ORANGE, background: dark ? "#121415" : "#F7F2E8" }}
-        aria-hidden="true"
-      />
-      <div
-        className={`relative z-10 mx-auto w-full px-6 pl-10 md:px-10 ${
-          wide ? "max-w-5xl" : "grid max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-16"
-        }`}
-      >
-        <motion.div
-          variants={staggerParent}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className={flip ? "md:order-2" : ""}
-        >
-          <motion.p
-            variants={fadeUp}
-            className="font-mono text-xs font-semibold uppercase tracking-[0.3em]"
-            style={{ color: ORANGE }}
-          >
-            {year}
-            {label ? ` · ${label}` : ""}
-          </motion.p>
-          <h3 className="mt-4 font-heading text-3xl font-medium leading-[1.15] tracking-tight sm:text-4xl">
-            <WordReveal text={title} />
-          </h3>
-          {children}
+      </span>
+      <motion.p variants={fadeUp} className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em]" style={{ color: ORANGE }}>
+        {meta}
+      </motion.p>
+      <motion.h3 variants={fadeUp} className="mt-2 font-heading text-2xl font-medium tracking-tight sm:text-[1.65rem]">
+        {title}
+      </motion.h3>
+      <motion.div variants={fadeUp} className="mt-3 text-sm leading-relaxed text-ink/65">
+        {children}
+      </motion.div>
+      {tags && (
+        <motion.div variants={staggerParent} className="mt-4 flex flex-wrap gap-1.5">
+          {tags.map((t) => (
+            <Tag key={t}>{t}</Tag>
+          ))}
         </motion.div>
-        {visual && !wide && <div className={flip ? "md:order-1" : ""}>{visual}</div>}
-      </div>
-    </article>
+      )}
+      {visual && <motion.div variants={fadeUp} className="mt-5">{visual}</motion.div>}
+    </motion.article>
+  );
+}
+
+function Row({
+  reverse = false,
+  dots,
+  children,
+}: {
+  reverse?: boolean;
+  dots: number[];
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const seen = useInView(ref, { once: true, margin: "-140px" });
+  const delays = reverse ? [0.95, 0.55, 0.2] : [0.2, 0.55, 0.95];
+  return (
+    <div ref={ref} className="relative">
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={seen ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: 1.5, ease: EASE }}
+        aria-hidden="true"
+        className={`absolute left-0 right-0 top-6 hidden h-[2px] rounded-full md:block ${reverse ? "origin-right" : "origin-left"}`}
+        style={{ background: ORANGE }}
+      />
+      {dots.map((x, i) => (
+        <motion.span
+          key={x}
+          initial={{ scale: 0 }}
+          animate={seen ? { scale: 1 } : { scale: 0 }}
+          transition={{ duration: 0.35, delay: delays[Math.min(i, 2)] ?? 0.4 }}
+          aria-hidden="true"
+          className="absolute top-[19px] z-10 hidden h-3.5 w-3.5 -translate-x-1/2 rounded-full border-[3px] bg-[#F7F2E8] md:block"
+          style={{ left: `${x}%`, borderColor: ORANGE }}
+        />
+      ))}
+      <div className="grid gap-12 pl-8 md:grid-cols-3 md:gap-8 md:pl-0">{children}</div>
+    </div>
+  );
+}
+
+function Turn({ side }: { side: "right" | "left" }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const seen = useInView(ref, { once: true, margin: "-100px" });
+  return (
+    <div ref={ref} className="relative my-2 hidden h-24 md:block" aria-hidden="true">
+      <svg
+        className={`absolute top-0 h-full w-[124px] ${side === "right" ? "-right-[6px]" : "-left-[6px]"}`}
+        viewBox={side === "right" ? "0 0 124 96" : "-24 0 124 96"}
+        fill="none"
+      >
+        <motion.path
+          d={side === "right" ? "M 100 0 C 130 32, 130 64, 100 96" : "M 24 0 C -6 32, -6 64, 24 96"}
+          stroke={ORANGE}
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={seen ? { pathLength: 1 } : { pathLength: 0 }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+function MetricChip({ value, label }: { value: ReactNode; label: string }) {
+  return (
+    <span className="inline-flex items-baseline gap-1.5 rounded-full border border-ink/15 bg-white px-3 py-1.5">
+      <span className="font-mono text-xs font-bold tracking-tight">{value}</span>
+      <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-muted-foreground">{label}</span>
+    </span>
   );
 }
 
 export function HowItStarted() {
   const chaptersRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: chaptersRef, offset: ["start 0.75", "end 0.9"] });
+  const { scrollYProgress } = useScroll({ target: chaptersRef, offset: ["start 0.8", "end 0.85"] });
 
   return (
     <section id="story" className="grain relative bg-[#F7F2E8] text-ink" data-testid="story-section">
-
-      {/* section intro — left title, right statement */}
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-14 pt-24 sm:pt-28 md:grid-cols-2">
+      {/* intro — left title, right statement */}
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-24 sm:pt-28 md:grid-cols-2">
         <div>
           <motion.p
             variants={fadeUp}
@@ -166,236 +193,165 @@ export function HowItStarted() {
         </motion.div>
       </div>
 
-      {/* chapters + progress rail */}
-      <div ref={chaptersRef} className="relative">
-        <div aria-hidden="true" className="absolute inset-y-0 left-3 z-[6] w-px bg-ink/10 md:left-1/2">
-          <motion.div style={{ scaleY: scrollYProgress }} className="h-full w-px origin-top bg-[#FF6B1A]" />
-        </div>
-
-      {/* CH 01 — 2020 Digital Marketing */}
-      <Chapter num="01" year="2020" title="I started with Digital Marketing" flip visual={<DeskVisual />} testId="chapter-01">
-        <BodyText>
-          I started learning digital marketing independently and began working as a freelance
-          digital marketer.
-        </BodyText>
-        <motion.p variants={fadeUp} className="mt-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/50">
-          Social media. SEO. Advertising. Online brand building.
-        </motion.p>
-        <TagRow tags={["Digital Marketing", "SEO", "Social Media", "Freelancing"]} />
-      </Chapter>
-
-      {/* CH 02 — Mar 2022 E-commerce */}
-      <Chapter num="02" year="March 2022" title="My first E-commerce project" flip wide testId="chapter-02">
-        <BodyText>
-          While pursuing my Bachelor's degree in Marketing, I helped a home-appliance brand
-          establish its online presence.
-        </BodyText>
-        <div className="mt-10 grid gap-12 md:grid-cols-2 md:gap-14">
-          <EcomVisual />
-          <motion.div variants={staggerParent}>
-            <motion.p variants={fadeUp} className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-              What I handled
-            </motion.p>
-            <DetailList
-              items={[
-                "Registered the brand on Amazon, Flipkart and IndiaMART",
-                "Created and optimized product listings",
-                "Worked on product visibility and search ranking",
-                "Managed incoming orders and delivery fulfillment",
-                "Tracked sales and overall performance",
-                "Ran advertising campaigns for product visibility",
-                "Identified opportunities to improve sales",
-              ]}
-            />
+      {/* journey */}
+      <div ref={chaptersRef} className="relative mx-auto max-w-6xl px-6 pb-24 md:pb-28">
+        {/* mobile vertical rail */}
+        <div aria-hidden="true" className="absolute bottom-0 left-3 top-0 w-px bg-ink/10 md:hidden">
+          <motion.div style={{ scaleY: scrollYProgress }} className="h-full w-px origin-top" >
+            <div className="h-full w-full" style={{ background: ORANGE }} />
           </motion.div>
         </div>
-        <motion.div variants={staggerParent} className="mt-14 grid gap-4 sm:grid-cols-3" data-testid="ecom-metrics">
-          {[
-            { to: 20, prefix: "₹", suffix: "K", decimals: 0, label: "Sales" },
-            { to: 2.5, prefix: "₹", suffix: "K", decimals: 1, label: "Ad Spend" },
-            { to: 2, prefix: "", suffix: "", decimals: 0, label: "Months · Project" },
-          ].map((m) => (
-            <motion.div
-              key={m.label}
-              variants={fadeUp}
-              className="rounded-md border border-ink/10 bg-white p-6 text-center shadow-sm"
-            >
-              <CountUp
-                to={m.to}
-                prefix={m.prefix}
-                suffix={m.suffix}
-                decimals={m.decimals}
-                className="text-3xl font-bold tracking-tight sm:text-4xl"
-              />
-              <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{m.label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-        <motion.p variants={fadeUp} className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50">
-          My first experience managing an online business — listing → marketing → order → fulfillment → analysis.
-        </motion.p>
-      </Chapter>
 
-      {/* CH 03 — 2022 First website */}
-      <Chapter num="03" year="2022" title="I built my first website" flip visual={<IndiaMapVisual />} testId="chapter-03">
-        <BodyText>I built my first website using Wix and took responsibility for its SEO.</BodyText>
-        <motion.p variants={fadeUp} className="mt-6 flex items-baseline gap-3">
-          <CountUp to={13} suffix="+" className="text-5xl font-bold tracking-tight sm:text-6xl" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em]" style={{ color: ORANGE }}>
-            Cities ranked
-          </span>
-        </motion.p>
-        <BodyText>
-          The website ranked for location-specific keywords across 13+ cities, giving me my first
-          hands-on experience combining website building with search visibility.
-        </BodyText>
-      </Chapter>
+        {/* RUN 1 — left to right */}
+        <Row dots={[16.7, 50, 83.3]}>
+          <Chapter num="01" meta="2020" title="Digital Marketing" tags={["Digital Marketing", "SEO", "Freelancing"]} testId="chapter-01">
+            Started learning digital marketing independently and freelancing — social media, SEO,
+            advertising and online brand building.
+          </Chapter>
+          <Chapter
+            num="02"
+            meta="March 2022"
+            title="E-commerce"
+            tags={["Amazon", "Flipkart", "IndiaMART"]}
+            visual={
+              <div className="flex flex-wrap gap-1.5">
+                <MetricChip value={<CountUp to={20} prefix="₹" suffix="K" />} label="Sales" />
+                <MetricChip value={<CountUp to={2.5} prefix="₹" suffix="K" decimals={1} />} label="Ad spend" />
+                <MetricChip value={<CountUp to={2} />} label="Months" />
+              </div>
+            }
+            testId="chapter-02"
+          >
+            Helped a home-appliance brand go online — listings, search ranking, ads, orders and
+            fulfillment.
+          </Chapter>
+          <Chapter
+            num="03"
+            meta="2022"
+            title="Website &amp; SEO"
+            tags={["Wix", "SEO"]}
+            visual={<IndiaMapVisual />}
+            testId="chapter-03"
+          >
+            Built my first website on Wix and owned its SEO — ranked for location keywords across{" "}
+            <span className="font-semibold text-ink">13+ cities</span>.
+          </Chapter>
+        </Row>
 
-      {/* CH 04 — 2023 Travel stories */}
-      <Chapter num="04" year="2023" title="I started telling travel stories" visual={<SocialVisual />} testId="chapter-04">
-        <motion.p variants={fadeUp} className="mt-5 font-heading text-xl italic text-ink/85 sm:text-2xl">
-          “Travel became more than an interest.”
-        </motion.p>
-        <BodyText>
-          I started creating travel content under @nagpurtaveler, documenting destinations,
-          experiences and places from a local traveler's perspective.
-        </BodyText>
-        <SquiggleArrow className="mt-8 w-24 -rotate-6" />
-      </Chapter>
+        <Turn side="right" />
 
-      {/* CH 05 — 2023–2026 Tourism */}
-      <Chapter num="05" year="2023–2026" title="I went deeper into Tourism" flip visual={<MbaVisual />} testId="chapter-05">
-        <BodyText>I moved from learning about travel independently to studying it professionally.</BodyText>
-        <motion.p variants={fadeUp} className="mt-8 font-bold leading-[1.05] tracking-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          <span className="block text-5xl sm:text-6xl">MBA</span>
-          <span className="mt-1 block text-2xl sm:text-3xl" style={{ color: ORANGE }}>
-            Travel &amp; Tourism
-          </span>
-          <span className="block text-2xl sm:text-3xl">Management</span>
-        </motion.p>
-        <motion.p variants={fadeUp} className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/50">
-          Indian Institute of Travel and Tourism Management (IITTM)
-        </motion.p>
-      </Chapter>
-
-      {/* CH 06 — Events */}
-      <Chapter num="06" year="Events" label="UrbanHook" title="UrbanHook Events" visual={<EventsVisual />} testId="chapter-06">
-        <motion.p variants={fadeUp} className="mt-4 font-heading text-xl italic text-ink/85">
-          Where marketing met the real world.
-        </motion.p>
-        <BodyText>
-          I worked on marketing and event execution for live experiences including stand-up comedy
-          and music-jamming shows.
-        </BodyText>
-        <TagRow tags={["Event Marketing", "Creative Design", "Social Media", "Influencer Collabs", "Brand Partnerships", "Event Operations"]} />
-        <DetailList
-          items={[
-            "Planned and executed marketing strategies for live events",
-            "Designed posters, banners and promotional creatives",
-            "Created reels, posts, stories and teaser videos",
-            "Collaborated with local and regional influencers",
-            "Worked on event promotions and brand partnerships",
-            "Assisted with venue coordination and branding setup",
-            "Supported audience management and event operations",
-          ]}
-        />
-      </Chapter>
-
-      {/* CH 07 — Hospitality (biggest) */}
-      <Chapter
-        num="07"
-        year="Hospitality"
-        title="My work moved from promoting businesses online to understanding how travel businesses actually operate."
-        wide
-        testId="chapter-07"
-      >
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          <HospitalityCard
-            org="Shalom Backpackers"
-            role="Social Media Marketing Intern"
-            locations="Rishikesh · Shimla · McLeodganj"
-            tags={["Reels", "Posts", "Stories", "SEO", "Google Business", "Influencers", "Events", "Reviews"]}
-            details={[
-              "Created engaging reels, posts and stories",
-              "Conducted SEO optimization",
-              "Improved Google Business listing visibility",
-              "Coordinated marketing campaigns",
-              "Worked on influencer tie-ups",
-              "Supported on-ground event promotions",
-              "Managed online reviews across hostel properties",
-              "Maintained brand-consistent communication across Google and OTAs",
-            ]}
-            from={-60}
-            testId="story-card-shalom"
-          />
-          <HospitalityCard
-            org="Moustache Escapes"
-            role="Marketing Executive — F&B"
-            metric={
-              <div className="mt-4 rounded-md border border-ink/10 bg-[#F7F2E8] p-4">
-                <p className="flex items-baseline gap-2">
-                  <CountUp to={100} suffix="%" className="text-3xl font-bold tracking-tight sm:text-4xl" />
-                  <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
-                    F&amp;B Bar &amp; À La Carte revenue target
-                  </span>
+        {/* RUN 2 — right to left (visual order reversed) */}
+        <Row reverse dots={[16.7, 50, 83.3]}>
+          <Chapter
+            num="04"
+            meta="2023"
+            title="Travel Content"
+            order="md:order-3"
+            tags={["Reels", "Storytelling"]}
+            visual={
+              <div className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg">
+                <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@nagpurtaveler</span>
+                <span className="h-3 w-px bg-white/20" />
+                <CountUp to={10} suffix="K+" className="font-mono text-[10px] font-bold" />
+                <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
+              </div>
+            }
+            testId="chapter-04"
+          >
+            “Travel became more than an interest.” Started @nagpurtaveler — destinations and
+            experiences from a local traveler's perspective.
+          </Chapter>
+          <Chapter
+            num="05"
+            meta="2023–2026"
+            title="Tourism Education"
+            order="md:order-2"
+            tags={["MBA", "Travel & Tourism"]}
+            visual={
+              <div className="inline-block -rotate-2 rounded-md border border-ink/10 bg-white px-4 py-3 shadow-md">
+                <p className="font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
+                  Admission · 2023–2026
+                </p>
+                <p className="mt-1 font-heading text-base font-medium leading-tight">
+                  IITTM — Indian Institute of Travel &amp; Tourism Management
                 </p>
               </div>
             }
-            tags={["F&B Social", "Events", "Photoshoots", "Agency Mgmt", "Zomato · Swiggy · EazyDiner", "CRM Campaigns"]}
-            details={[
-              "Managed F&B social media accounts across brands and outlets",
-              "Executed monthly events across outlets with positive P&L",
-              "Coordinated one professional photoshoot per month across Verandah, Bayleaf and The 7",
-              "Managed external marketing agency deliverables",
-              "Managed and optimized Zomato, Swiggy Dineout and EazyDiner",
-              "Managed events, offers, launches, menus and promotions",
-              "Drove customer retention through CRM campaigns",
-              "Worked with automated marketing journeys",
-            ]}
-            from={60}
-            testId="story-card-moustache"
-          />
-        </div>
-      </Chapter>
-
-      {/* CH 08 — The Turn */}
-      <Chapter num="08" year="2026" label="The Turn" title="I'm building Triplin." wide bg="bg-white text-ink" testId="chapter-08">
-        <motion.p variants={fadeUp} className="mt-5 font-heading text-xl italic leading-snug sm:text-2xl">
-          “A travel company built for travelers.”
-        </motion.p>
-        <BodyText dark={false}>
-          <span className="block text-ink/70">
-            After working across digital marketing, e-commerce, content, events and hospitality, I
-            wanted to bring everything together.
-          </span>
-          <span className="mt-3 block text-ink/70">
-            So I started building Triplin — a travel company focused on making travel easier.
-          </span>
-        </BodyText>
-        <motion.div variants={fadeUp} className="mt-10 text-center">
-          <p className="font-bold tracking-tight text-ink" style={{ fontFamily: "'Poppins', sans-serif", fontSize: "clamp(2.5rem, 7vw, 4.5rem)", lineHeight: 1 }}>
-            TRIPLIN
-          </p>
-          <p className="mt-2 font-mono text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: ORANGE }}>
-            Travel Made Easier
-          </p>
-        </motion.div>
-        <div className="mt-10">
-          <TriplinDiagram />
-        </div>
-        <motion.div variants={fadeUp} className="mt-10 flex flex-col items-center gap-4">
-          <a
-            href="https://triplin.co.in"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-9 py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-paper shadow-xl transition-transform duration-300 hover:-translate-y-1"
-            data-testid="triplin-cta"
+            testId="chapter-05"
           >
-            Explore Triplin <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">triplin.co.in</span>
-        </motion.div>
-      </Chapter>
+            Moved from learning travel independently to studying it professionally — MBA in Travel
+            &amp; Tourism Management.
+          </Chapter>
+          <Chapter
+            num="06"
+            meta="Events"
+            title="UrbanHook Events"
+            order="md:order-1"
+            tags={["Event Marketing", "Creatives", "Influencer Collabs"]}
+            visual={
+              <div className="flex items-start">
+                <div className="flex h-20 w-16 -rotate-6 flex-col justify-between rounded-sm p-2 shadow-md" style={{ background: ORANGE }}>
+                  <span className="font-mono text-[6px] font-bold uppercase tracking-[0.15em] text-ink/70">UrbanHook</span>
+                  <span className="font-heading text-xs font-medium leading-none text-ink">STAND-UP</span>
+                </div>
+                <div className="-ml-2 flex h-20 w-16 rotate-3 flex-col justify-between rounded-sm bg-night p-2 shadow-md">
+                  <span className="font-mono text-[6px] font-bold uppercase tracking-[0.15em] text-white/50">UrbanHook</span>
+                  <span className="font-heading text-xs font-medium leading-none text-paper">JAM</span>
+                </div>
+              </div>
+            }
+            testId="chapter-06"
+          >
+            Where marketing met the real world — marketing and execution for stand-up comedy and
+            music-jamming shows.
+          </Chapter>
+        </Row>
+
+        <Turn side="left" />
+
+        {/* RUN 3 — left to right */}
+        <Row dots={[16.7, 50]}>
+          <Chapter
+            num="07"
+            meta="Hospitality"
+            title="Shalom Backpackers &amp; Moustache Escapes"
+            tags={["Hostels", "F&B", "Listings & OTAs"]}
+            testId="chapter-07"
+          >
+            Social media &amp; SEO for backpacker hostels across Rishikesh, Shimla and McLeodganj —
+            then F&amp;B marketing for restaurant and bar brands, from photoshoots to retention.
+          </Chapter>
+          <Chapter
+            num="08"
+            meta="2026 · The Turn"
+            title="I'm building Triplin."
+            tags={["Travel Systems", "Triplin"]}
+            visual={
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute h-full w-full animate-ping rounded-full opacity-60" style={{ background: ORANGE }} />
+                    <span className="h-2 w-2 rounded-full" style={{ background: ORANGE }} />
+                  </span>
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em]">Currently building</span>
+                </span>
+                <a
+                  href="https://triplin.co.in"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-paper transition-transform duration-300 hover:-translate-y-0.5"
+                  data-testid="triplin-cta"
+                >
+                  triplin.co.in <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            }
+            testId="chapter-08"
+          >
+            A travel company built for travelers — bringing together everything from marketing,
+            content, events and hospitality into one journey.
+          </Chapter>
+        </Row>
       </div>
     </section>
   );
