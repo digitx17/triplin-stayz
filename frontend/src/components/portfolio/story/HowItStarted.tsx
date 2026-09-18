@@ -275,13 +275,22 @@ export function HowItStarted() {
             order="md:order-2"
             tags={["MBA", "Travel & Tourism"]}
             visual={
-              <div className="inline-block -rotate-2 rounded-md border border-ink/10 bg-white px-4 py-3 shadow-md">
-                <p className="font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
-                  Admission · 2024–2026
-                </p>
-                <p className="mt-1 font-heading text-base font-medium leading-tight">
-                  IITTM — Indian Institute of Travel &amp; Tourism Management
-                </p>
+              <div>
+                <div className="inline-block -rotate-2 rounded-md border border-ink/10 bg-white px-4 py-3 shadow-md">
+                  <p className="font-mono text-[8px] uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
+                    Admission · 2024–2026
+                  </p>
+                  <p className="mt-1 font-heading text-base font-medium leading-tight">
+                    IITTM — Indian Institute of Travel &amp; Tourism Management
+                  </p>
+                </div>
+                <img
+                  src="/mot-stamp.webp"
+                  alt="An autonomous body under Ministry of Tourism, Government of India"
+                  loading="lazy"
+                  className="mt-4 w-52 mix-blend-multiply opacity-90"
+                  data-testid="mot-stamp"
+                />
               </div>
             }
             testId="chapter-05"
@@ -296,15 +305,21 @@ export function HowItStarted() {
             order="md:order-1"
             tags={["Event Marketing", "Creatives", "Influencer Collabs"]}
             visual={
-              <div className="flex items-start">
-                <div className="flex h-20 w-16 -rotate-6 flex-col justify-between rounded-sm p-2 shadow-md" style={{ background: ORANGE }}>
-                  <span className="font-mono text-[6px] font-bold uppercase tracking-[0.15em] text-ink/70">UrbanHook</span>
-                  <span className="font-heading text-xs font-medium leading-none text-ink">STAND-UP</span>
-                </div>
-                <div className="-ml-2 flex h-20 w-16 rotate-3 flex-col justify-between rounded-sm bg-night p-2 shadow-md">
-                  <span className="font-mono text-[6px] font-bold uppercase tracking-[0.15em] text-white/50">UrbanHook</span>
-                  <span className="font-heading text-xs font-medium leading-none text-paper">JAM</span>
-                </div>
+              <div className="flex items-start gap-3">
+                <img
+                  src="/event-standup.webp"
+                  alt="UrbanHook Events poster — Ladies Aadmi stand-up comedy ft. Vivek Samtani"
+                  loading="lazy"
+                  className="h-40 w-auto -rotate-3 rounded-sm border-2 border-white object-cover shadow-lg"
+                  data-testid="event-poster-standup"
+                />
+                <img
+                  src="/event-jam.jpg"
+                  alt="Saaz jamming session poster — Gwalior, Teagather Grand"
+                  loading="lazy"
+                  className="mt-4 h-40 w-auto rotate-2 rounded-sm border-2 border-white object-cover shadow-lg"
+                  data-testid="event-poster-jam"
+                />
               </div>
             }
             testId="chapter-06"
