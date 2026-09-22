@@ -99,54 +99,56 @@ function ExpColumn({ exp }: { exp: Experience }) {
       </div>
 
       {/* content */}
-      <div className="grid gap-x-6 gap-y-8 lg:grid-cols-[minmax(0,1fr)_auto]">
-        <div className="min-w-0 pt-2">
-          <div className="flex items-center gap-2.5">
-            <span className="h-[2px] w-6 shrink-0" style={{ background: ORANGE }} />
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
-              {exp.date}
-            </span>
-          </div>
-          <h3
-            className="mt-3 font-heading text-3xl font-semibold leading-[1.08] tracking-tight break-words sm:text-[2.25rem]"
-            data-testid={`${exp.testId}-title`}
-          >
-            {exp.org}
-          </h3>
-          <p className="mt-3 text-lg text-ink/85">{exp.role}</p>
-          <p className="mt-3 flex items-center gap-1.5 text-[13px] text-ink/60">
-            <MapPin className="h-4 w-4 shrink-0" style={{ color: ORANGE }} />
-            {exp.location}
-          </p>
-          <p className="mt-5 text-[15px] leading-relaxed text-ink/70">{exp.description}</p>
-          <div className="mt-6 flex flex-wrap gap-2.5">
-            {exp.tags.map((t, i) => (
-              <OutlineTag key={t} dark={i % 2 === 1}>
-                {t}
-              </OutlineTag>
-            ))}
-          </div>
-
-          <div className="mt-9">
+      <div>
+        <div className="grid gap-x-6 gap-y-8 lg:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="min-w-0 pt-2">
             <div className="flex items-center gap-2.5">
-              <span className="h-[2px] w-6" style={{ background: ORANGE }} />
-              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-ink/60">
-                Key contributions
+              <span className="h-[2px] w-6 shrink-0" style={{ background: ORANGE }} />
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>
+                {exp.date}
               </span>
             </div>
-            <ul className="mt-4 space-y-2.5">
-              {exp.contributions.map((c) => (
-                <li key={c} className="flex items-start gap-3 text-[15px] leading-relaxed text-ink/75">
-                  <span className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: ORANGE }} />
-                  {c}
-                </li>
+            <h3
+              className="mt-3 font-heading text-3xl font-semibold leading-[1.08] tracking-tight break-words sm:text-[2.25rem]"
+              data-testid={`${exp.testId}-title`}
+            >
+              {exp.org}
+            </h3>
+            <p className="mt-3 text-lg text-ink/85">{exp.role}</p>
+            <p className="mt-3 flex items-center gap-1.5 text-[13px] text-ink/60">
+              <MapPin className="h-4 w-4 shrink-0" style={{ color: ORANGE }} />
+              {exp.location}
+            </p>
+            <p className="mt-5 text-[15px] leading-relaxed text-ink/70">{exp.description}</p>
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              {exp.tags.map((t, i) => (
+                <OutlineTag key={t} dark={i % 2 === 1}>
+                  {t}
+                </OutlineTag>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          <div className="lg:pt-2">
+            <Polaroid exp={exp} />
           </div>
         </div>
 
-        <div className="lg:pt-2">
-          <Polaroid exp={exp} />
+        <div className="mt-9">
+          <div className="flex items-center gap-2.5">
+            <span className="h-[2px] w-6" style={{ background: ORANGE }} />
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-ink/60">
+              Key contributions
+            </span>
+          </div>
+          <ul className="mt-4 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
+            {exp.contributions.map((c) => (
+              <li key={c} className="flex items-start gap-3 text-[15px] leading-relaxed text-ink/75">
+                <span className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: ORANGE }} />
+                {c}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </motion.article>
