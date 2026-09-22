@@ -4,9 +4,8 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { EASE } from "@/lib/anim";
 import { useMedia } from "@/lib/media";
 import type { MediaItem } from "@/lib/media";
+import { useSiteContent } from "@/lib/content";
 import { SectionHeading } from "./Reveal";
-
-const CATEGORIES = ["Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"];
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
@@ -32,6 +31,8 @@ function MediaCard({ m, i }: { m: MediaItem; i: number }) {
 }
 
 export function MarketingGallery() {
+  const { content } = useSiteContent();
+  const CATEGORIES = content.categories;
   const media = (useMedia().data ?? []).filter((m) => m.brand !== "site-assets");
   const [cat, setCat] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);

@@ -10,10 +10,10 @@ from pydantic import BaseModel
 from lib.admin_auth import create_admin_token, require_admin
 from lib.db import db
 from lib.storage import APP_NAME, get_object, put_object
+from routers.content import get_allowed_categories
 
 router = APIRouter()
 
-ALLOWED_CATEGORIES = {"Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"}
 MAX_BYTES = 60 * 1024 * 1024
 
 
@@ -79,7 +79,7 @@ async def upload_media(
     brand: str = Form("General"),
     caption: str = Form(""),
 ):
-    if category not in ALLOWED_CATEGORIES:
+    if category not in await get_allowed_categories():
         raise HTTPException(status_code=422, detail="Unknown category")
     ctype = file.content_type or "application/octet-stream"
     if not (ctype.startswith("image/") or ctype.startswith("video/")):

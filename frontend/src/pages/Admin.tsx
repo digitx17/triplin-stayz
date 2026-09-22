@@ -6,12 +6,14 @@ import { ImagePlus, Loader2, LogOut, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { useMedia } from "@/lib/media";
+import { useSiteContent } from "@/lib/content";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 
 const TOKEN_KEY = "vk_admin_token";
 
 export default function Admin() {
   const qc = useQueryClient();
+  const { content } = useSiteContent();
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY));
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -182,7 +184,7 @@ export default function Admin() {
                   className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
                   data-testid="admin-category-select"
                 >
-                  {["Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"].map((c) => (
+                  {content.categories.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>

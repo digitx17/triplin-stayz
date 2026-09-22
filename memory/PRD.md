@@ -40,6 +40,12 @@ Hero (masked line reveal, parallax) → Story journey (7 steps) → Experience (
 - SEO + Open Graph metadata; data-testids on all interactive elements
 - Verified: typecheck clean; API curl via public URL; Playwright passes (desktop flows + mobile menu)
 
+## Update (2026-09-22)
+- Restored missing `backend/.env` (lost on fork; had crashed backend with KeyError MONGO_URL). Contains MONGO_URL, DB_NAME, CORS_ORIGINS, APP_URL, JWT_SECRET, ADMIN_PASSWORD (= `vaibhav-admin-2026`), EMERGENT_LLM_KEY.
+- Dynamic gallery categories: categories now stored in site_content (`categories: string[]`), editable from /admin ContentEditor ("Gallery categories" comma-separated field). Backend `routers/content.py` exposes DEFAULT_CATEGORIES + `get_allowed_categories()` (defaults ∪ stored); `media.py` upload validates against it. Frontend `lib/content.ts` DEFAULT_CATEGORIES + SiteContent.categories; Admin.tsx upload select and MarketingGallery.tsx buckets both read `content.categories`.
+- Experience image editing from dashboard: ContentEditor now renders "Experience photos" with preview + "Change photo" upload for both Shalom & Moustache (uploads to /media/upload brand=site-assets, then Save content persists to site_content.experience).
+- Professional Experience section redesigned (ExperienceTimeline.tsx) to match provided reference: orange-underlined eyebrow, oversized serif title, italic subtitle, top-right blurb + dashed airplane arc with handwritten "Same dream. Bigger plans.", two numbered columns (01/02) with center divider + orange rails + faded big numbers, tilted taped polaroids with handwritten "Good people/food. Great vibes." + arrows, outline tag pills, KEY CONTRIBUTIONS bullets, mountain/pine footer with TRAVEL / MARKETING / HOSPITALITY. NOTE: removed the old 100% F&B metric block (exp-metric-100) — intentional per new design. Dates per reference: Shalom Jun–Jul 2025, Moustache Mar–May 2026; Moustache org line "Indian Hotels Pvt. Ltd.".
+
 ## Backlog / next tasks
 - P0: Replace placeholder contact details (email/LinkedIn/WhatsApp in `data.ts` CONTACT) with real ones
 - P0: Swap placeholder imagery with Vaibhav's own travel photography/videos and real campaign creatives
