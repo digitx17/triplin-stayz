@@ -50,7 +50,7 @@ export function HeroSection() {
           Hello!
         </motion.span>
         <h1
-          className="mt-6 font-bold tracking-tight text-ink"
+          className="mt-6 font-medium tracking-tight text-ink"
           style={{ fontFamily: "'Poppins', sans-serif" }}
           data-testid="hero-headline"
         >

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { MapPin, Mountain, Plane, TreePine } from "lucide-react";
+import { MapPin, Plane } from "lucide-react";
 import { EASE } from "@/lib/anim";
 import { MaskedLine } from "./Reveal";
 import { ORANGE, WordReveal } from "./story/shared";
@@ -24,9 +24,15 @@ interface Experience {
   testId: string;
 }
 
-function OutlineTag({ children }: { children: string }) {
+function OutlineTag({ children, dark = false }: { children: string; dark?: boolean }) {
   return (
-    <span className="rounded-full border border-ink/25 px-3.5 py-1.5 font-sans text-[13px] text-ink/75">
+    <span
+      className={
+        dark
+          ? "rounded-full bg-ink px-3.5 py-1.5 font-sans text-[13px] text-paper"
+          : "rounded-full border border-ink/25 px-3.5 py-1.5 font-sans text-[13px] text-ink/75"
+      }
+    >
       {children}
     </span>
   );
@@ -114,8 +120,10 @@ function ExpColumn({ exp }: { exp: Experience }) {
           </p>
           <p className="mt-5 text-[15px] leading-relaxed text-ink/70">{exp.description}</p>
           <div className="mt-6 flex flex-wrap gap-2.5">
-            {exp.tags.map((t) => (
-              <OutlineTag key={t}>{t}</OutlineTag>
+            {exp.tags.map((t, i) => (
+              <OutlineTag key={t} dark={i % 2 === 1}>
+                {t}
+              </OutlineTag>
             ))}
           </div>
 
@@ -154,7 +162,7 @@ export function ExperienceTimeline() {
       date: "June 2025 – July 2025",
       org: "Shalom Backpackers",
       role: "Social Media Marketing Intern",
-      location: "Rishikesh · Shimla · McLeodganj",
+      location: "Rishikesh",
       description:
         "Created engaging content, planned campaigns and helped grow the brand's online presence for solo travellers, backpackers and digital nomads.",
       tags: ["Reels", "Posts", "Stories", "SEO", "Google Business", "Influencers", "Events", "Reviews"],
@@ -210,12 +218,6 @@ export function ExperienceTimeline() {
         {/* Header */}
         <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:items-start">
           <div>
-            <p
-              className="inline-block -rotate-1 border-b-2 pb-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em]"
-              style={{ color: ORANGE, borderColor: ORANGE }}
-            >
-              Professional Experience
-            </p>
             <h2
               className="mt-5 font-heading text-5xl font-bold uppercase leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl"
               data-testid="experience-heading"
@@ -258,18 +260,6 @@ export function ExperienceTimeline() {
           {EXPERIENCES.map((exp) => (
             <ExpColumn key={exp.testId} exp={exp} />
           ))}
-        </div>
-
-        {/* Footer */}
-        <div className="mt-20 flex items-center gap-6">
-          <div className="flex items-end gap-1 text-ink/55">
-            <Mountain className="h-8 w-8" strokeWidth={1} />
-            <TreePine className="h-6 w-6" strokeWidth={1} />
-          </div>
-          <span className="h-px flex-1 bg-ink/15" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/45">
-            Travel&nbsp;&nbsp;/&nbsp;&nbsp;Marketing&nbsp;&nbsp;/&nbsp;&nbsp;Hospitality
-          </span>
         </div>
       </div>
     </section>

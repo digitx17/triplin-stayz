@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useInView, useScroll } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Bell, Youtube } from "lucide-react";
 import { EASE, fadeUp, staggerParent } from "@/lib/anim";
 import { MaskedLine } from "../Reveal";
 import { CountUp, ORANGE, Tag, WordReveal } from "./shared";
@@ -260,6 +260,20 @@ export function HowItStarted() {
                   <span className="h-3 w-px bg-white/20" />
                   <span className="font-mono text-[10px] font-bold">1.5K</span>
                   <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">followers</span>
+                </a>
+                <a
+                  href="https://www.youtube.com/@paryatan_wala"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="link-youtube-paryatanwala"
+                  className="inline-flex items-center gap-3 rounded-full border-2 border-ink bg-night px-4 py-2 text-white shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                >
+                  <Youtube className="h-3.5 w-3.5 text-[#FF0000]" />
+                  <span className="font-mono text-[10px] font-semibold tracking-[0.08em]">@paryatan_wala</span>
+                  <span className="h-3 w-px bg-white/20" />
+                  <Bell className="h-3 w-3 text-white/70" />
+                  <span className="font-mono text-[10px] font-bold">2.4K</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[0.15em] text-white/50">subscribers</span>
                 </a>
               </div>
             }
