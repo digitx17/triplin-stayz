@@ -15,7 +15,8 @@ export default function Admin() {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY));
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [section, setSection] = useState("travel");
+  const [category, setCategory] = useState("Photoshoot");
+  const [brand, setBrand] = useState("");
   const [caption, setCaption] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -69,7 +70,8 @@ export default function Admin() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      fd.append("section", section);
+      fd.append("category", category);
+      fd.append("brand", brand || "General");
       fd.append("caption", caption);
       await authFetch("/media/upload", { method: "POST", body: fd });
       toast.success("Uploaded — it's live on the site");
@@ -173,23 +175,41 @@ export default function Admin() {
             </label>
             <div className="flex flex-col gap-3">
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Section</span>
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Category</span>
                 <select
-                  value={section}
-                  onChange={(e) => setSection(e.target.value)}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                   className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
-                  data-testid="admin-section-select"
+                  data-testid="admin-category-select"
                 >
-                  <option value="travel">Travel — On the road</option>
-                  <option value="marketing">Marketing — Work gallery</option>
+                  {["Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"].map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
                 </select>
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Brand</span>
+                <input
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                  placeholder="e.g. Shalom Backpackers"
+                  maxLength={60}
+                  list="brand-list"
+                  className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                  data-testid="admin-brand-input"
+                />
+                <datalist id="brand-list">
+                  {Array.from(new Set((media.data ?? []).map((m) => m.brand))).map((b) => (
+                    <option key={b} value={b} />
+                  ))}
+                </datalist>
               </label>
               <label className="block">
                 <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Caption</span>
                 <input
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
-                  placeholder="e.g. Rishikesh evening"
+                  placeholder="e.g. Rooftop cafe shoot"
                   maxLength={140}
                   className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
                   data-testid="admin-caption-input"
@@ -223,7 +243,7 @@ export default function Admin() {
                 <img src={m.url} alt={m.caption || "Uploaded media"} loading="lazy" className="aspect-square w-full object-cover" />
               )}
               <figcaption className="flex items-center justify-between gap-2 px-3 py-2">
-                <span className="truncate text-xs text-muted-foreground">{m.caption || m.section}</span>
+                <span className="truncate text-xs text-muted-foreground">{m.caption || m.brand}</span>
                 <button
                   onClick={() => remove(m.id)}
                   aria-label="Delete"
@@ -234,7 +254,7 @@ export default function Admin() {
                 </button>
               </figcaption>
               <span className="absolute left-2 top-2 rounded-full bg-black/70 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.15em] text-white">
-                {m.section}
+                {m.brand} · {m.category}
               </span>
             </figure>
           ))}

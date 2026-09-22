@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Response, UploadFile
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from lib.admin_auth import create_admin_token, require_admin
 from lib.db import db
@@ -13,7 +13,7 @@ from lib.storage import APP_NAME, get_object, put_object
 
 router = APIRouter()
 
-ALLOWED_SECTIONS = {"travel", "marketing"}
+ALLOWED_CATEGORIES = {"Photoshoot", "Website & CRM", "Graphic Design / Content", "Events", "Influencer Collab", "Listings"}
 MAX_BYTES = 60 * 1024 * 1024
 
 
@@ -23,7 +23,8 @@ class AdminLogin(BaseModel):
 
 class MediaItem(BaseModel):
     id: str
-    section: str
+    category: str
+    brand: str
     caption: str = ""
     kind: str
     content_type: str
@@ -35,7 +36,8 @@ class MediaItem(BaseModel):
 def to_item(doc: dict) -> MediaItem:
     return MediaItem(
         id=doc["id"],
-        section=doc["section"],
+        category=doc.get("category") or "Graphic Design / Content",
+        brand=doc.get("brand") or "General",
         caption=doc.get("caption", ""),
         kind=doc["kind"],
         content_type=doc["content_type"],
@@ -59,18 +61,26 @@ async def admin_check():
 
 
 @router.get("/media", response_model=List[MediaItem])
-async def list_media(section: Optional[str] = None):
+async def list_media(category: Optional[str] = None, brand: Optional[str] = None):
     query: dict = {"is_deleted": False}
-    if section in ALLOWED_SECTIONS:
-        query["section"] = section
     docs = await db.media.find(query).sort("created_at", -1).to_list(500)
-    return [to_item(d) for d in docs]
+    items = [to_item(d) for d in docs]
+    if category:
+        items = [i for i in items if i.category == category]
+    if brand:
+        items = [i for i in items if i.brand == brand]
+    return items
 
 
 @router.post("/media/upload", response_model=MediaItem, dependencies=[Depends(require_admin)])
-async def upload_media(file: UploadFile = File(...), section: str = Form(...), caption: str = Form("")):
-    if section not in ALLOWED_SECTIONS:
-        raise HTTPException(status_code=422, detail="section must be travel or marketing")
+async def upload_media(
+    file: UploadFile = File(...),
+    category: str = Form("Graphic Design / Content"),
+    brand: str = Form("General"),
+    caption: str = Form(""),
+):
+    if category not in ALLOWED_CATEGORIES:
+        raise HTTPException(status_code=422, detail="Unknown category")
     ctype = file.content_type or "application/octet-stream"
     if not (ctype.startswith("image/") or ctype.startswith("video/")):
         raise HTTPException(status_code=422, detail="Only image or video files allowed")
@@ -84,7 +94,8 @@ async def upload_media(file: UploadFile = File(...), section: str = Form(...), c
         "id": str(uuid.uuid4()),
         "storage_path": result["path"],
         "original_filename": file.filename,
-        "section": section,
+        "category": category,
+        "brand": brand.strip()[:60] or "General",
         "caption": caption.strip()[:140],
         "kind": "video" if ctype.startswith("video/") else "image",
         "content_type": ctype,

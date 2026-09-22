@@ -17,6 +17,7 @@ class SkillCluster(BaseModel):
 class SiteContent(BaseModel):
     skills: List[SkillCluster] = []
     toolkit: List[str] = []
+    experience: dict = {}
 
 
 @router.get("/content")

@@ -32,12 +32,11 @@ export function MaskedLine({
 }
 
 export function SectionHeading({
-  eyebrow,
   title,
   dark = false,
   testId,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   dark?: boolean;
   testId?: string;
@@ -48,12 +47,9 @@ export function SectionHeading({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      className="mb-12 sm:mb-16"
+      className="mb-10"
       data-testid={testId}
     >
-      <p className={`mb-4 font-mono text-xs font-semibold uppercase tracking-[0.25em] ${dark ? "text-[#E87A54]" : "text-terracotta"}`}>
-        {eyebrow}
-      </p>
       <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-serif font-medium tracking-tight leading-snug">
         {title}
       </h2>

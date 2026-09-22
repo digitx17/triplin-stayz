@@ -3,7 +3,8 @@ import { apiGet } from "@/lib/api";
 
 export interface MediaItem {
   id: string;
-  section: string;
+  category: string;
+  brand: string;
   caption: string;
   kind: "image" | "video";
   content_type: string;

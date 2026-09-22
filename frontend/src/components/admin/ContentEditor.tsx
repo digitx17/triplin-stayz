@@ -10,10 +10,37 @@ export function ContentEditor({ token }: { token: string }) {
   const { content } = useSiteContent();
   const [skills, setSkills] = useState<SkillCluster[] | null>(null);
   const [toolkit, setToolkit] = useState<string | null>(null);
+  const [experience, setExperience] = useState<{ shalom: string; moustache: string } | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState<string | null>(null);
 
   const currentSkills = skills ?? content.skills;
   const currentToolkit = toolkit ?? content.toolkit.join(", ");
+  const currentExp = experience ?? content.experience;
+
+  const uploadAsset = async (file: File, key: "shalom" | "moustache") => {
+    setUploading(key);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("category", "Listings");
+      fd.append("brand", "site-assets");
+      fd.append("caption", "experience image");
+      const res = await fetch("/api/media/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+      if (!res.ok) throw new Error("Upload failed");
+      const item = await res.json();
+      setExperience({ ...currentExp, [key]: item.url });
+      toast.success("Image uploaded — press Save content to publish");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(null);
+    }
+  };
 
   const save = async () => {
     setSaving(true);
@@ -27,6 +54,7 @@ export function ContentEditor({ token }: { token: string }) {
             items: c.items.map((i) => i.trim()).filter(Boolean),
           })),
           toolkit: currentToolkit.split(",").map((t) => t.trim()).filter(Boolean),
+          experience: currentExp,
         }),
       });
       if (!res.ok) throw new Error("Save failed");
