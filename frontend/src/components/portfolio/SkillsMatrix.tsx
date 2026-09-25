@@ -22,7 +22,8 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { EASE } from "@/lib/anim";
-import { useMedia } from "@/lib/media";
+import { useMedia, embedSrc } from "@/lib/media";
+import type { MediaItem } from "@/lib/media";
 import { IMAGES, INFLUENCERS, PHOTOSHOOT } from "@/lib/marketingData";
 
 const ORANGE = "#E16428";
@@ -256,10 +257,10 @@ export function SkillsMatrix() {
   const media = useMedia();
 
   const customImages = useMemo(() => {
-    const map = new Map<string, string>();
+    const map = new Map<string, MediaItem>();
     for (const m of media.data ?? []) {
-      if (m.category === "Skill Cards" && m.kind === "image" && !map.has(m.brand)) {
-        map.set(m.brand, m.url);
+      if (m.category === "Skill Cards" && m.kind !== "video" && !map.has(m.brand)) {
+        map.set(m.brand, m);
       }
     }
     return map;
@@ -285,9 +286,20 @@ export function SkillsMatrix() {
           </div>
           <div className="relative w-[42%] shrink-0" data-testid={`skill-image-${s.key}`}>
             {custom ? (
-              <figure className="h-full w-full rotate-2 rounded-md bg-white p-1 pb-2 shadow-md">
-                <img src={custom} alt={s.title} loading="lazy" className="h-full min-h-[110px] w-full rounded-sm object-cover" />
-              </figure>
+              custom.kind === "embed" ? (
+                <iframe
+                  src={embedSrc(custom)}
+                  title={s.title}
+                  loading="lazy"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  className={`w-full rounded-md border-0 bg-white shadow-md ${custom.provider === "instagram" ? "aspect-[4/5]" : "aspect-video"}`}
+                />
+              ) : (
+                <figure className="h-full w-full rotate-2 rounded-md bg-white p-1 pb-2 shadow-md">
+                  <img src={custom.url} alt={s.title} loading="lazy" className="h-full min-h-[110px] w-full rounded-sm object-cover" />
+                </figure>
+              )
             ) : (
               <DefaultVisual k={s.key} />
             )}

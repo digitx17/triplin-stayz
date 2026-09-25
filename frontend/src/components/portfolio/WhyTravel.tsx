@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
 import { EASE } from "@/lib/anim";
-import { useMedia } from "@/lib/media";
+import { useMedia, embedSrc } from "@/lib/media";
+import type { MediaItem } from "@/lib/media";
 import { IMAGES, INFLUENCERS, PHOTOSHOOT } from "@/lib/marketingData";
 
 function Word({ children, i, base = 0, accent = false }: { children: string; i: number; base?: number; accent?: boolean }) {
@@ -47,7 +48,7 @@ const STRIP = [
   { src: IMAGES.personalHero, cap: "On the road", rotate: "-rotate-1", range: [26, -40] as const },
 ];
 
-function StripPhoto({ src, cap, rotate, range, progress, i }: { src: string; cap: string; rotate: string; range: readonly [number, number]; progress: MotionValue<number>; i: number }) {
+function StripPhoto({ src, cap, rotate, range, progress, i, embed }: { src: string; cap: string; rotate: string; range: readonly [number, number]; progress: MotionValue<number>; i: number; embed?: MediaItem }) {
   const y = useTransform(progress, [0, 1], [range[0], range[1]]);
   return (
     <motion.figure
@@ -59,7 +60,18 @@ function StripPhoto({ src, cap, rotate, range, progress, i }: { src: string; cap
       className={`group bg-white p-1.5 pb-3 shadow-md transition-transform duration-300 hover:z-10 hover:scale-[1.04] hover:rotate-0 ${rotate}`}
       data-testid={`why-photo-${i}`}
     >
-      <img src={src} alt={cap || "Travel photograph"} loading="lazy" className="aspect-[3/4] w-full object-cover" />
+      {embed ? (
+        <iframe
+          src={embedSrc(embed)}
+          title={cap || embed.caption || "Travel embed"}
+          loading="lazy"
+          allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          className="aspect-[3/4] w-full rounded-sm border-0 bg-white"
+        />
+      ) : (
+        <img src={src} alt={cap || "Travel photograph"} loading="lazy" className="aspect-[3/4] w-full object-cover" />
+      )}
       {cap && (
         <figcaption className="pt-1.5 text-center font-hand text-sm leading-none text-ink/70">{cap}</figcaption>
       )}
@@ -75,11 +87,11 @@ export function WhyTravel() {
   const media = useMedia();
 
   const overrides = useMemo(() => {
-    const map = new Map<number, string>();
+    const map = new Map<number, MediaItem>();
     for (const m of media.data ?? []) {
-      if (m.category === "Why Travel" && m.kind === "image" && m.brand.startsWith("Why Travel ")) {
+      if (m.category === "Why Travel" && m.kind !== "video" && m.brand.startsWith("Why Travel ")) {
         const slot = parseInt(m.brand.replace("Why Travel ", ""), 10) - 1;
-        if (slot >= 0 && slot < STRIP.length && !map.has(slot)) map.set(slot, m.url);
+        if (slot >= 0 && slot < STRIP.length && !map.has(slot)) map.set(slot, m);
       }
     }
     return map;
@@ -137,9 +149,12 @@ export function WhyTravel() {
       {/* photo strip with staggered parallax — photos changeable from /admin (category: Why Travel) */}
       <div className="relative z-10 mx-auto mt-14 max-w-5xl px-4 sm:px-6 lg:px-8" data-testid="why-photo-strip">
         <div className="grid grid-cols-2 items-center gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
-          {STRIP.map((p, i) => (
-            <StripPhoto key={i} {...p} src={overrides.get(i) ?? p.src} progress={scrollYProgress} i={i} />
-          ))}
+          {STRIP.map((p, i) => {
+            const o = overrides.get(i);
+            return (
+              <StripPhoto key={i} {...p} src={o?.kind === "image" ? o.url : p.src} embed={o?.kind === "embed" ? o : undefined} progress={scrollYProgress} i={i} />
+            );
+          })}
         </div>
       </div>
 
