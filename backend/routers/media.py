@@ -1,4 +1,5 @@
 import hmac
+import mimetypes
 import os
 import time
 import uuid
@@ -116,13 +117,19 @@ async def upload_media(
 ):
     if category not in await get_allowed_categories():
         raise HTTPException(status_code=422, detail="Unknown category")
-    ctype = file.content_type or "application/octet-stream"
+    ext = (file.filename or "bin").rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else "bin"
+    ctype = file.content_type or ""
     if not (ctype.startswith("image/") or ctype.startswith("video/")):
-        raise HTTPException(status_code=422, detail="Only image or video files allowed")
+        # browsers often send phone photos (HEIC etc.) as octet-stream — fall back to extension
+        EXTRA_TYPES = {"heic": "image/heic", "heif": "image/heif", "avif": "image/avif"}
+        guessed = EXTRA_TYPES.get(ext) or mimetypes.guess_type(f"file.{ext}")[0]
+        if guessed and (guessed.startswith("image/") or guessed.startswith("video/")):
+            ctype = guessed
+        else:
+            raise HTTPException(status_code=422, detail="Only image or video files allowed")
     data = await file.read()
     if len(data) > MAX_BYTES:
         raise HTTPException(status_code=413, detail="File too large (60MB max)")
-    ext = (file.filename or "bin").rsplit(".", 1)[-1].lower() if "." in (file.filename or "") else "bin"
     path = f"{APP_NAME}/media/{uuid.uuid4()}.{ext}"
     result = put_object(path, data, ctype)
     doc = {
