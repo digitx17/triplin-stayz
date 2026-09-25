@@ -173,7 +173,7 @@ interface Item {
 }
 
 const ITEMS: Item[] = [
-  { num: "01", title: "Photoshoot", desc: "Capturing real moments, places and people that bring brands to life.", tags: ["Product Shoots", "Property Shoots", "Food & Beverage", "Lifestyle"], kind: "photoshoot", category: "Photoshoot", anno: "Real people.\nReal places.\nReal stories.", annoClass: "right-0 -top-2 text-lg text-right" },
+  { num: "01", title: "Photoshoot", desc: "Capturing real moments, places and people that bring brands to life.", tags: ["Product Shoots", "Property Shoots", "Food & Beverage", "Lifestyle"], kind: "photoshoot", category: "Photoshoot", anno: "Real people.\nReal places.\nReal stories.", annoClass: "-right-1 -bottom-10 text-base text-right" },
   { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", category: "Graphic Design / Content", anno: "Plan\nCreate\nPost\nGrow", annoClass: "right-0 -top-3 text-base text-right" },
   { num: "03", title: "Events", desc: "From concept to execution — creating memorable experiences for brands and guests.", tags: ["Concept & Planning", "On-ground Execution", "Guest Experience", "Brand Activations"], kind: "events", category: "Events", anno: "Great vibes,\nreal connections.", annoClass: "right-0 -top-3 text-base text-right" },
   { num: "04", title: "Influencer Collaborations", desc: "Partnering with creators to bring authentic stories to life.", tags: ["Travel Creators", "Lifestyle Creators", "Barter Collabs", "Campaigns"], kind: "influencer", category: "Influencer Collab", anno: "Real people.\nReal reach.", annoClass: "left-0 -top-3 text-base" },
@@ -234,8 +234,7 @@ export function MarketingGallery() {
         {/* header */}
         <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-start">
           <div>
-            <p className="inline-block border-b-2 pb-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ORANGE, borderColor: ORANGE }}>Marketing Work</p>
-            <h2 className="mt-4 font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
+            <h2 className="font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
             <p className="mt-3 font-heading text-lg italic text-ink/80 sm:text-2xl">Turning ideas into experiences people remember.”</p>
           </div>
           <div className="relative">
@@ -259,13 +258,6 @@ export function MarketingGallery() {
         {/* rows 07-10 — stacked layout keeps narrow columns aligned */}
         <div className="mt-14 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} stack onView={setViewing} />)}
-        </div>
-
-        {/* footer */}
-        <div className="mt-20 flex items-center gap-6 border-t border-ink/10 pt-8">
-          <svg viewBox="0 0 80 30" className="h-8 w-20" fill="#1a1a1a" opacity="0.6" aria-hidden><path d="M2 28 l18 -22 l12 14 l10 -10 l16 18 Z" /></svg>
-          <span className="h-px flex-1 bg-ink/12" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/45">Travel&nbsp;&nbsp;/&nbsp;&nbsp;Content&nbsp;&nbsp;/&nbsp;&nbsp;Marketing</span>
         </div>
       </div>
 

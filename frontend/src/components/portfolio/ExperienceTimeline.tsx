@@ -239,14 +239,6 @@ export function ExperienceTimeline() {
                 <path d="M5 62 Q 130 4 200 26" strokeLinecap="round" strokeDasharray="5 5" />
               </svg>
               <Plane className="absolute right-3 top-3 h-5 w-5 rotate-[35deg]" style={{ color: "#1a1a1a" }} />
-              <span
-                className="absolute left-16 top-1 -rotate-3 font-hand text-2xl leading-tight"
-                style={{ color: "#1a1a1a" }}
-              >
-                Same dream.
-                <br />
-                Bigger plans.
-              </span>
             </div>
           </div>
         </div>
