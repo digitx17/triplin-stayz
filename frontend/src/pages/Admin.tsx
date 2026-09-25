@@ -49,7 +49,7 @@ export default function Admin() {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY));
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<"file" | "link">("file");
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [linkUrl, setLinkUrl] = useState("");
   const [category, setCategory] = useState("Photoshoot");
   const [brand, setBrand] = useState("");
@@ -103,7 +103,7 @@ export default function Admin() {
       toast.error("Paste an Instagram or YouTube link first");
       return;
     }
-    if (mode === "file" && !file) {
+    if (mode === "file" && files.length === 0) {
       toast.error("Choose a file first");
       return;
     }
@@ -118,14 +118,27 @@ export default function Admin() {
         toast.success("Embed added — it's live on the site");
         setLinkUrl("");
       } else {
-        const fd = new FormData();
-        fd.append("file", file as File);
-        fd.append("category", category);
-        fd.append("brand", brand || "General");
-        fd.append("caption", caption);
-        await authFetch("/media/upload", { method: "POST", body: fd });
-        toast.success("Uploaded — it's live on the site");
-        setFile(null);
+        let ok = 0;
+        let failed = 0;
+        for (const f of files) {
+          try {
+            const fd = new FormData();
+            fd.append("file", f);
+            fd.append("category", category);
+            fd.append("brand", brand || "General");
+            fd.append("caption", caption);
+            await authFetch("/media/upload", { method: "POST", body: fd });
+            ok += 1;
+          } catch {
+            failed += 1;
+          }
+        }
+        if (failed === 0) {
+          toast.success(ok === 1 ? "Uploaded — it's live on the site" : `${ok} files uploaded — they're live on the site`);
+        } else {
+          toast.error(`${failed} of ${files.length} files failed — the rest are live`);
+        }
+        setFiles([]);
       }
       setCaption("");
       await qc.invalidateQueries({ queryKey: ["media"] });
@@ -233,13 +246,16 @@ export default function Admin() {
               <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-sand bg-paper px-6 py-10 text-center transition-colors hover:border-terracotta">
                 <ImagePlus className="h-8 w-8 text-terracotta" />
                 <span className="text-sm text-muted-foreground">
-                  {file ? file.name : "Click to choose an image or video (max 60MB)"}
+                  {files.length > 1
+                    ? `${files.length} files selected`
+                    : files[0]?.name ?? "Click to choose one or more images or videos (max 60MB each)"}
                 </span>
                 <input
                   type="file"
                   accept="image/*,video/*"
+                  multiple
                   className="hidden"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
                   data-testid="admin-file-input"
                 />
               </label>
@@ -321,7 +337,7 @@ export default function Admin() {
                 data-testid="admin-upload-button"
               >
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : mode === "link" ? <Link2 className="h-4 w-4" /> : <ImagePlus className="h-4 w-4" />}
-                {busy ? "Saving…" : mode === "link" ? "Add embed" : "Upload"}
+                {busy ? "Saving…" : mode === "link" ? "Add embed" : files.length > 1 ? `Upload ${files.length} files` : "Upload"}
               </button>
             </div>
           </div>

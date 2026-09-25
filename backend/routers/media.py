@@ -5,8 +5,14 @@ import time
 import uuid
 from collections import defaultdict
 from datetime import datetime, timezone
+from io import BytesIO
 from typing import List, Optional
 from urllib.parse import urlparse
+
+from PIL import Image
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, Response, UploadFile
 from pydantic import BaseModel, Field
@@ -130,6 +136,16 @@ async def upload_media(
     data = await file.read()
     if len(data) > MAX_BYTES:
         raise HTTPException(status_code=413, detail="File too large (60MB max)")
+    if ctype in ("image/heic", "image/heif"):
+        # convert to JPEG so the photo renders in every browser
+        try:
+            img = Image.open(BytesIO(data)).convert("RGB")
+            buf = BytesIO()
+            img.save(buf, "JPEG", quality=88)
+            data = buf.getvalue()
+            ctype, ext = "image/jpeg", "jpg"
+        except Exception:
+            raise HTTPException(status_code=422, detail="Couldn't read this HEIC photo — try exporting it as JPG")
     path = f"{APP_NAME}/media/{uuid.uuid4()}.{ext}"
     result = put_object(path, data, ctype)
     doc = {
