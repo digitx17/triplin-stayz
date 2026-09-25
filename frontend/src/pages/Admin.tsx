@@ -2,21 +2,54 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { ImagePlus, Loader2, LogOut, Trash2 } from "lucide-react";
+import { ImagePlus, Instagram, Link2, Loader2, LogOut, Trash2, Youtube } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { useMedia } from "@/lib/media";
+import { useMedia, embedThumb } from "@/lib/media";
+import type { MediaItem } from "@/lib/media";
 import { useSiteContent } from "@/lib/content";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 
 const TOKEN_KEY = "vk_admin_token";
+
+function MediaThumb({ m }: { m: MediaItem }) {
+  if (m.kind === "video") {
+    return <video src={m.url} controls preload="metadata" className="aspect-square w-full object-cover" />;
+  }
+  if (m.kind === "embed") {
+    const thumb = embedThumb(m);
+    const inner = (
+      <>
+        {thumb ? (
+          <img src={thumb} alt={m.caption || m.brand} loading="lazy" className="aspect-square w-full object-cover" />
+        ) : (
+          <span className="flex aspect-square w-full flex-col items-center justify-center gap-2 bg-ink text-paper">
+            {m.provider === "instagram" ? <Instagram className="h-6 w-6" /> : <Youtube className="h-6 w-6" />}
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em]">{m.provider} embed</span>
+          </span>
+        )}
+        <span className="absolute right-2 top-2 rounded-full bg-terracotta px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-white">
+          {m.provider}
+        </span>
+      </>
+    );
+    return (
+      <a href={m.url} target="_blank" rel="noreferrer" className="relative block" data-testid={`admin-embed-${m.id}`}>
+        {inner}
+      </a>
+    );
+  }
+  return <img src={m.url} alt={m.caption || "Uploaded media"} loading="lazy" className="aspect-square w-full object-cover" />;
+}
 
 export default function Admin() {
   const qc = useQueryClient();
   const { content } = useSiteContent();
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY));
   const [password, setPassword] = useState("");
+  const [mode, setMode] = useState<"file" | "link">("file");
   const [file, setFile] = useState<File | null>(null);
+  const [linkUrl, setLinkUrl] = useState("");
   const [category, setCategory] = useState("Photoshoot");
   const [brand, setBrand] = useState("");
   const [caption, setCaption] = useState("");
@@ -36,7 +69,8 @@ export default function Admin() {
         throw new Error("Session expired — log in again");
       }
       const body = await res.json().catch(() => null);
-      throw new Error(body?.detail ?? `Request failed (${res.status})`);
+      const detail = body?.detail;
+      throw new Error(typeof detail === "string" ? detail : `Request failed (${res.status})`);
     }
     return res.json();
   };
@@ -64,20 +98,34 @@ export default function Admin() {
 
   const upload = async (e: FormEvent) => {
     e.preventDefault();
-    if (!file) {
+    if (mode === "link" && !linkUrl.trim()) {
+      toast.error("Paste an Instagram or YouTube link first");
+      return;
+    }
+    if (mode === "file" && !file) {
       toast.error("Choose a file first");
       return;
     }
     setBusy(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("category", category);
-      fd.append("brand", brand || "General");
-      fd.append("caption", caption);
-      await authFetch("/media/upload", { method: "POST", body: fd });
-      toast.success("Uploaded — it's live on the site");
-      setFile(null);
+      if (mode === "link") {
+        await authFetch("/media/link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: linkUrl.trim(), category, brand: brand || "General", caption }),
+        });
+        toast.success("Embed added — it's live on the site");
+        setLinkUrl("");
+      } else {
+        const fd = new FormData();
+        fd.append("file", file as File);
+        fd.append("category", category);
+        fd.append("brand", brand || "General");
+        fd.append("caption", caption);
+        await authFetch("/media/upload", { method: "POST", body: fd });
+        toast.success("Uploaded — it's live on the site");
+        setFile(null);
+      }
       setCaption("");
       await qc.invalidateQueries({ queryKey: ["media"] });
     } catch (err) {
@@ -141,7 +189,7 @@ export default function Admin() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-terracotta">Vaibhav · Media dashboard</p>
-            <h1 className="mt-2 font-heading text-3xl font-medium tracking-tight" data-testid="admin-title">Add photos & videos</h1>
+            <h1 className="mt-2 font-heading text-3xl font-medium tracking-tight" data-testid="admin-title">Add photos, videos & embeds</h1>
             <p className="mt-1 text-sm text-muted-foreground">
               Uploads go live instantly in the Marketing work gallery on the site.
             </p>
@@ -161,20 +209,54 @@ export default function Admin() {
         </div>
 
         <form onSubmit={upload} className="mt-10 rounded-lg border border-sand bg-white p-6 sm:p-8" data-testid="admin-upload-form">
+          <div className="mb-5 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setMode("file")}
+              className={`flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors ${mode === "file" ? "bg-ink text-paper" : "border border-sand text-muted-foreground hover:border-ink"}`}
+              data-testid="admin-mode-file"
+            >
+              <ImagePlus className="h-3.5 w-3.5" /> Upload file
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("link")}
+              className={`flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors ${mode === "link" ? "bg-ink text-paper" : "border border-sand text-muted-foreground hover:border-ink"}`}
+              data-testid="admin-mode-link"
+            >
+              <Link2 className="h-3.5 w-3.5" /> Instagram / YouTube link
+            </button>
+          </div>
           <div className="grid gap-5 sm:grid-cols-[1fr_180px]">
-            <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-sand bg-paper px-6 py-10 text-center transition-colors hover:border-terracotta">
-              <ImagePlus className="h-8 w-8 text-terracotta" />
-              <span className="text-sm text-muted-foreground">
-                {file ? file.name : "Click to choose an image or video (max 60MB)"}
-              </span>
-              <input
-                type="file"
-                accept="image/*,video/*"
-                className="hidden"
-                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                data-testid="admin-file-input"
-              />
-            </label>
+            {mode === "file" ? (
+              <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-sand bg-paper px-6 py-10 text-center transition-colors hover:border-terracotta">
+                <ImagePlus className="h-8 w-8 text-terracotta" />
+                <span className="text-sm text-muted-foreground">
+                  {file ? file.name : "Click to choose an image or video (max 60MB)"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  className="hidden"
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  data-testid="admin-file-input"
+                />
+              </label>
+            ) : (
+              <label className="flex flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-sand bg-paper px-6 py-10">
+                <Link2 className="h-8 w-8 text-terracotta" />
+                <input
+                  type="url"
+                  required
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                  placeholder="https://www.instagram.com/reel/… or https://youtu.be/…"
+                  className="w-full max-w-md rounded-md border border-sand bg-white px-4 py-3 text-sm outline-none focus:border-terracotta"
+                  data-testid="admin-link-input"
+                />
+                <span className="text-xs text-muted-foreground">Reels, posts and videos embed directly on the site</span>
+              </label>
+            )}
             <div className="flex flex-col gap-3">
               <label className="block">
                 <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Category</span>
@@ -223,8 +305,8 @@ export default function Admin() {
                 className="mt-auto flex items-center justify-center gap-2 rounded-full bg-ink py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-paper transition-opacity disabled:opacity-50"
                 data-testid="admin-upload-button"
               >
-                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
-                {busy ? "Uploading…" : "Upload"}
+                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : mode === "link" ? <Link2 className="h-4 w-4" /> : <ImagePlus className="h-4 w-4" />}
+                {busy ? "Saving…" : mode === "link" ? "Add embed" : "Upload"}
               </button>
             </div>
           </div>
@@ -239,11 +321,7 @@ export default function Admin() {
         <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" data-testid="admin-media-grid">
           {(media.data ?? []).map((m) => (
             <figure key={m.id} className="group relative overflow-hidden rounded-md border border-sand bg-white" data-testid={`admin-media-${m.id}`}>
-              {m.kind === "video" ? (
-                <video src={m.url} controls preload="metadata" className="aspect-square w-full object-cover" />
-              ) : (
-                <img src={m.url} alt={m.caption || "Uploaded media"} loading="lazy" className="aspect-square w-full object-cover" />
-              )}
+              <MediaThumb m={m} />
               <figcaption className="flex items-center justify-between gap-2 px-3 py-2">
                 <span className="truncate text-xs text-muted-foreground">{m.caption || m.brand}</span>
                 <button
@@ -263,7 +341,7 @@ export default function Admin() {
         </div>
         {media.data?.length === 0 && (
           <p className="mt-6 rounded-md border border-dashed border-sand p-10 text-center text-sm text-muted-foreground">
-            Nothing uploaded yet — your first photo or video will appear here and on the site.
+            Nothing uploaded yet — your first photo, video or embed will appear here and on the site.
           </p>
         )}
 

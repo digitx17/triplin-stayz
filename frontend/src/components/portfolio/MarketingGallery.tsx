@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { motion, useInView } from "motion/react";
-import { Heart, Play, Search, Star } from "lucide-react";
+import { ArrowUpRight, Heart, Play, Search, Star } from "lucide-react";
 import { EASE } from "@/lib/anim";
 import { ORANGE } from "./story/shared";
 import { PHOTOSHOOT, INFLUENCERS, IMAGES } from "@/lib/marketingData";
+import { ProjectMediaModal } from "./ProjectMediaModal";
 
 /* helpers */
 function Rise({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
@@ -166,48 +167,67 @@ interface Item {
   desc: string;
   tags: string[];
   kind: string;
+  category: string;
   anno: string;
   annoClass: string;
 }
 
 const ITEMS: Item[] = [
-  { num: "01", title: "Photoshoot", desc: "Capturing real moments, places and people that bring brands to life.", tags: ["Product Shoots", "Property Shoots", "Food & Beverage", "Lifestyle"], kind: "photoshoot", anno: "Real people.\nReal places.\nReal stories.", annoClass: "right-0 -top-2 text-lg text-right" },
-  { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", anno: "Plan\nCreate\nPost\nGrow", annoClass: "right-0 -top-3 text-base text-right" },
-  { num: "03", title: "Events", desc: "From concept to execution — creating memorable experiences for brands and guests.", tags: ["Concept & Planning", "On-ground Execution", "Guest Experience", "Brand Activations"], kind: "events", anno: "Great vibes,\nreal connections.", annoClass: "right-0 -top-3 text-base text-right" },
-  { num: "04", title: "Influencer Collaborations", desc: "Partnering with creators to bring authentic stories to life.", tags: ["Travel Creators", "Lifestyle Creators", "Barter Collabs", "Campaigns"], kind: "influencer", anno: "Real people.\nReal reach.", annoClass: "left-0 -top-3 text-base" },
-  { num: "05", title: "Listing Directory", desc: "Optimising your presence across Google, Zomato, TripAdvisor and more.", tags: ["Google Business", "Zomato", "TripAdvisor", "OTA Listings"], kind: "listing", anno: "More visibility.\nMore bookings.", annoClass: "right-0 bottom-0 text-base text-right" },
-  { num: "06", title: "Website", desc: "Clean, modern and conversion-focused websites for travel & hospitality brands.", tags: ["UI/UX Design", "Web Development", "SEO Friendly", "Landing Pages"], kind: "website", anno: "Looks good.\nWorks hard.", annoClass: "right-0 -top-3 text-base text-right" },
-  { num: "07", title: "CRM", desc: "Managing leads, guest relationships and automation for better conversions and retention.", tags: ["Lead Management", "Guest Follow-ups", "Automations", "Analytics"], kind: "crm", anno: "Relationships.\nLonger Journeys.", annoClass: "right-0 -top-3 text-sm text-right" },
-  { num: "08", title: "Blog", desc: "Informative, SEO-friendly blogs that inspire, educate and bring organic traffic.", tags: ["Travel Guides", "Destination Blogs", "Tips & Itineraries", "SEO Articles"], kind: "blog", anno: "Plan\nExplore\nExperience\nRepeat", annoClass: "right-0 -top-3 text-sm text-right" },
-  { num: "09", title: "Personal Travel Content", desc: "Documenting my own journeys, from unexplored destinations to meaningful moments.", tags: ["Travel Vlogs", "Itineraries", "Photography", "Storytelling"], kind: "personal", anno: "Same places.\nNew stories.", annoClass: "right-0 -top-3 text-sm text-right" },
-  { num: "10", title: "Retention / Loyalty", desc: "Building communities and loyalty programs that turn guests into regulars.", tags: ["Email Campaigns", "WhatsApp", "Loyalty Programs", "Referral Programs"], kind: "retention", anno: "", annoClass: "" },
+  { num: "01", title: "Photoshoot", desc: "Capturing real moments, places and people that bring brands to life.", tags: ["Product Shoots", "Property Shoots", "Food & Beverage", "Lifestyle"], kind: "photoshoot", category: "Photoshoot", anno: "Real people.\nReal places.\nReal stories.", annoClass: "right-0 -top-2 text-lg text-right" },
+  { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", category: "Graphic Design / Content", anno: "Plan\nCreate\nPost\nGrow", annoClass: "right-0 -top-3 text-base text-right" },
+  { num: "03", title: "Events", desc: "From concept to execution — creating memorable experiences for brands and guests.", tags: ["Concept & Planning", "On-ground Execution", "Guest Experience", "Brand Activations"], kind: "events", category: "Events", anno: "Great vibes,\nreal connections.", annoClass: "right-0 -top-3 text-base text-right" },
+  { num: "04", title: "Influencer Collaborations", desc: "Partnering with creators to bring authentic stories to life.", tags: ["Travel Creators", "Lifestyle Creators", "Barter Collabs", "Campaigns"], kind: "influencer", category: "Influencer Collab", anno: "Real people.\nReal reach.", annoClass: "left-0 -top-3 text-base" },
+  { num: "05", title: "Listing Directory", desc: "Optimising your presence across Google, Zomato, TripAdvisor and more.", tags: ["Google Business", "Zomato", "TripAdvisor", "OTA Listings"], kind: "listing", category: "Listings", anno: "More visibility.\nMore bookings.", annoClass: "right-0 bottom-0 text-base text-right" },
+  { num: "06", title: "Website", desc: "Clean, modern and conversion-focused websites for travel & hospitality brands.", tags: ["UI/UX Design", "Web Development", "SEO Friendly", "Landing Pages"], kind: "website", category: "Website & CRM", anno: "Looks good.\nWorks hard.", annoClass: "right-0 -top-3 text-base text-right" },
+  { num: "07", title: "CRM", desc: "Managing leads, guest relationships and automation for better conversions and retention.", tags: ["Lead Management", "Guest Follow-ups", "Automations", "Analytics"], kind: "crm", category: "Website & CRM", anno: "Relationships.\nLonger Journeys.", annoClass: "right-0 -top-3 text-sm text-right" },
+  { num: "08", title: "Blog", desc: "Informative, SEO-friendly blogs that inspire, educate and bring organic traffic.", tags: ["Travel Guides", "Destination Blogs", "Tips & Itineraries", "SEO Articles"], kind: "blog", category: "Graphic Design / Content", anno: "Plan\nExplore\nExperience\nRepeat", annoClass: "right-0 -top-3 text-sm text-right" },
+  { num: "09", title: "Personal Travel Content", desc: "Documenting my own journeys, from unexplored destinations to meaningful moments.", tags: ["Travel Vlogs", "Itineraries", "Photography", "Storytelling"], kind: "personal", category: "Photoshoot", anno: "Same places.\nNew stories.", annoClass: "right-0 -top-3 text-sm text-right" },
+  { num: "10", title: "Retention / Loyalty", desc: "Building communities and loyalty programs that turn guests into regulars.", tags: ["Email Campaigns", "WhatsApp", "Loyalty Programs", "Referral Programs"], kind: "retention", category: "Graphic Design / Content", anno: "", annoClass: "" },
 ];
 
-function Block({ item, delay }: { item: Item; delay: number }) {
+function Block({ item, delay, stack = false, onView }: { item: Item; delay: number; stack?: boolean; onView: (it: Item) => void }) {
+  const visual = (
+    <div className={`relative ${stack ? "h-44 w-full" : "w-[148px] shrink-0 sm:w-[168px]"}`}>
+      <Visual kind={item.kind} />
+      {item.anno && (
+        <Hand className={`pointer-events-none absolute whitespace-pre-line ${item.annoClass}`}>{item.anno}</Hand>
+      )}
+    </div>
+  );
+  const viewButton = (
+    <div className="mt-auto pt-5">
+      <button
+        onClick={() => onView(item)}
+        className="inline-flex items-center gap-1.5 rounded-full border border-ink/20 bg-white/70 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/70 transition-colors duration-300 hover:border-ink hover:text-ink"
+        data-testid={`mw-view-${item.kind}`}
+      >
+        View Project <ArrowUpRight className="h-3 w-3" />
+      </button>
+    </div>
+  );
   return (
-    <Rise delay={delay} className="relative" >
-      <div data-testid={`mw-${item.kind}`}>
-        <div className="flex gap-4">
-          <div className="min-w-0 flex-1">
+    <Rise delay={delay} className="relative h-full">
+      <div data-testid={`mw-${item.kind}`} className={stack ? "flex h-full flex-col" : "flex h-full gap-4"}>
+        {stack && visual}
+        <div className={`flex min-w-0 flex-1 flex-col ${stack ? "mt-5" : ""}`}>
+          <div>
             <span aria-hidden className="font-heading text-5xl font-semibold leading-none text-ink/[0.14]">{item.num}</span>
             <span className="mt-1 block h-[3px] w-8" style={{ background: ORANGE }} />
             <h3 className="mt-3 font-heading text-xl font-semibold uppercase leading-[1.05] tracking-tight sm:text-2xl">{item.title}</h3>
             <p className="mt-2 text-[13px] leading-relaxed text-ink/60">{item.desc}</p>
             <Pills items={item.tags} />
           </div>
-          <div className="relative w-[148px] shrink-0 sm:w-[168px]">
-            <Visual kind={item.kind} />
-            {item.anno && (
-              <Hand className={`pointer-events-none absolute whitespace-pre-line ${item.annoClass}`}>{item.anno}</Hand>
-            )}
-          </div>
+          {viewButton}
         </div>
+        {!stack && visual}
       </div>
     </Rise>
   );
 }
 
 export function MarketingGallery() {
+  const [viewing, setViewing] = useState<Item | null>(null);
+
   return (
     <section id="gallery" className="grain relative overflow-hidden bg-[#F7F2E8] py-24 text-ink sm:py-28" data-testid="work-gallery">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -233,12 +253,12 @@ export function MarketingGallery() {
 
         {/* rows 01-06 */}
         <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
-          {ITEMS.slice(0, 6).map((it, i) => <Block key={it.num} item={it} delay={(i % 3) * 0.05} />)}
+          {ITEMS.slice(0, 6).map((it, i) => <Block key={it.num} item={it} delay={(i % 3) * 0.05} onView={setViewing} />)}
         </div>
 
-        {/* rows 07-10 */}
+        {/* rows 07-10 — stacked layout keeps narrow columns aligned */}
         <div className="mt-14 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} />)}
+          {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} stack onView={setViewing} />)}
         </div>
 
         {/* footer */}
@@ -248,6 +268,11 @@ export function MarketingGallery() {
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/45">Travel&nbsp;&nbsp;/&nbsp;&nbsp;Content&nbsp;&nbsp;/&nbsp;&nbsp;Marketing</span>
         </div>
       </div>
+
+      <ProjectMediaModal
+        project={viewing ? { num: viewing.num, title: viewing.title, category: viewing.category } : null}
+        onClose={() => setViewing(null)}
+      />
     </section>
   );
 }

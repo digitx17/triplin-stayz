@@ -10,9 +10,9 @@ export function OnTheRoadGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [range, setRange] = useState(0);
-  const uploads = useMedia("travel").data ?? [];
+  const uploads = (useMedia("travel").data ?? []).filter((m) => m.kind !== "embed");
   const cards: RoadCard[] = [
-    ...uploads.map((m) => ({ image: m.url, caption: m.caption || "On the road", tag: "My upload", kind: m.kind })),
+    ...uploads.map((m) => ({ image: m.url, caption: m.caption || "On the road", tag: "My upload", kind: m.kind as "image" | "video" })),
     ...ROAD_ITEMS.map((r) => ({ ...r, kind: "image" as const })),
   ];
 

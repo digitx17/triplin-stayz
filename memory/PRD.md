@@ -22,6 +22,7 @@ Import the existing `saazjam/triplin-stayz` repo (cinematic, motion-first person
 ## Implemented (2026-09-25)
 - Phase 0: repo imported into /app, backend/.env recreated (MONGO_URL, DB_NAME, CORS_ORIGINS, JWT_SECRET, fresh ADMIN_PASSWORD, EMERGENT_LLM_KEY), deps installed, `start` script added for supervisor, all services running, preview live
 - Phase 1: admin password rotated (old leaked passwords dead); CORS pinned to preview origin, wildcard+credentials removed; /api/contact honeypot field + per-IP rate limit (5/10min → 429); /api/admin/login brute-force lockout (5 fails/15min → 429); frontend honeypot input added
+- 2026-09-25 (gallery rework): Marketing work cards realigned — rows 07-10 switched to stacked layout (visual on top, no more cramped/empty columns); every category card now has a View Project button opening a full-screen project modal that groups media by brand (e.g. Photoshoot → Shalom Backpackers / Moustache Escapes); media model extended with embed kind — admin can add Instagram/YouTube links (POST /api/media/link, host-validated) which render as in-page embeds in the modal; admin dashboard gained Upload file / Instagram-YouTube link mode toggle and embed tiles in the upload grid; OnTheRoadGallery excludes embeds
 
 ## Backlog
 - P0: deploy target decision (sets final CORS origins + secret location)
