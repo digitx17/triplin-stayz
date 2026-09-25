@@ -106,27 +106,14 @@ export function ContactSection() {
             </Rise>
 
             <Rise delay={0.4}>
-              <dl className="mt-12 space-y-5 border-t border-ink/10 pt-8">
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/40">Email</dt>
-                  <dd className="mt-1 text-sm text-ink/80">{c.email}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/40">Based in</dt>
-                  <dd className="mt-1 text-sm text-ink/80">{c.basedIn}</dd>
-                </div>
-                <div>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/40">Focus</dt>
-                  <dd className="mt-1 text-sm text-ink/80">{c.focus}</dd>
-                </div>
-              </dl>
+              <div className="mt-12 border-t border-ink/10 pt-8">
+                <Hand className="hidden rotate-[-2deg] text-2xl lg:inline-block">
+                  Every project starts
+                  <br />
+                  with a conversation.
+                </Hand>
+              </div>
             </Rise>
-
-            <Hand className="mt-10 hidden rotate-[-2deg] text-2xl lg:inline-block">
-              Every project starts
-              <br />
-              with a conversation.
-            </Hand>
           </div>
 
           {/* right — form card */}
