@@ -1,7 +1,9 @@
 import { useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
+import type { MotionValue } from "motion/react";
 import { EASE } from "@/lib/anim";
+import { IMAGES, INFLUENCERS, PHOTOSHOOT } from "@/lib/marketingData";
 
 function Word({ children, i, base = 0, accent = false }: { children: string; i: number; base?: number; accent?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -36,6 +38,34 @@ function Mark({ children, delay = 0 }: { children: ReactNode; delay?: number }) 
   );
 }
 
+const STRIP = [
+  { src: PHOTOSHOOT[1].src, cap: "Rishikesh mornings", rotate: "-rotate-3", range: [36, -28] as const },
+  { src: INFLUENCERS[2].src, cap: "", rotate: "rotate-2", range: [-20, 30] as const },
+  { src: IMAGES.eventPhoto, cap: "Good vibes only", rotate: "-rotate-2", range: [44, -36] as const },
+  { src: PHOTOSHOOT[3].src, cap: "", rotate: "rotate-3", range: [-30, 22] as const },
+  { src: IMAGES.personalHero, cap: "On the road", rotate: "-rotate-1", range: [26, -40] as const },
+];
+
+function StripPhoto({ src, cap, rotate, range, progress, i }: { src: string; cap: string; rotate: string; range: readonly [number, number]; progress: MotionValue<number>; i: number }) {
+  const y = useTransform(progress, [0, 1], [range[0], range[1]]);
+  return (
+    <motion.figure
+      style={{ y }}
+      initial={{ opacity: 0, scale: 0.85 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.7, delay: i * 0.08, ease: EASE }}
+      className={`group bg-white p-1.5 pb-3 shadow-md transition-transform duration-300 hover:z-10 hover:scale-[1.04] hover:rotate-0 ${rotate}`}
+      data-testid={`why-photo-${i}`}
+    >
+      <img src={src} alt={cap || "Travel photograph"} loading="lazy" className="aspect-[3/4] w-full object-cover" />
+      {cap && (
+        <figcaption className="pt-1.5 text-center font-hand text-sm leading-none text-ink/70">{cap}</figcaption>
+      )}
+    </motion.figure>
+  );
+}
+
 export function WhyTravel() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -46,7 +76,7 @@ export function WhyTravel() {
     <section
       id="why"
       ref={ref}
-      className="grain relative overflow-hidden border-y border-sand bg-white py-24 sm:py-32"
+      className="grain relative overflow-hidden border-y border-sand bg-white pb-16 pt-24 sm:pb-20 sm:pt-28"
       data-testid="why-section"
     >
       {/* parallax watermark */}
@@ -74,16 +104,6 @@ export function WhyTravel() {
       </motion.svg>
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <motion.p
-          initial={{ opacity: 0, x: -16 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="mb-8 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-terracotta"
-        >
-          06 — Why travel?
-        </motion.p>
-
         <h2 className="font-heading text-3xl font-medium leading-[1.15] tracking-tight sm:text-4xl lg:text-5xl" data-testid="why-headline">
           <span className="block">
             {["Travel", "was", "never", "just", "a", "subject."].map((w, i) => (
@@ -99,8 +119,19 @@ export function WhyTravel() {
             ))}
           </span>
         </h2>
+      </div>
 
-        <div className="mt-12 grid gap-10 text-base leading-relaxed text-muted-foreground sm:grid-cols-2">
+      {/* photo strip with staggered parallax */}
+      <div className="relative z-10 mx-auto mt-14 max-w-5xl px-4 sm:px-6 lg:px-8" data-testid="why-photo-strip">
+        <div className="grid grid-cols-2 items-center gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+          {STRIP.map((p, i) => (
+            <StripPhoto key={p.src} {...p} progress={scrollYProgress} i={i} />
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto mt-16 max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 text-base leading-relaxed text-muted-foreground sm:grid-cols-2">
           <motion.p
             initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -126,27 +157,34 @@ export function WhyTravel() {
           </motion.p>
         </div>
 
-        <div className="relative mt-12 pl-6">
-          <motion.span
-            aria-hidden
-            initial={{ scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="absolute left-0 top-0 h-full w-[2px] origin-top bg-terracotta"
-          />
+        {/* closing quote */}
+        <div className="relative mx-auto mt-16 max-w-2xl text-center">
+          <span aria-hidden className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 select-none font-heading text-8xl leading-none text-terracotta/25">
+            &ldquo;
+          </span>
           <span className="block overflow-hidden">
             <motion.p
               initial={{ y: "60%", opacity: 0 }}
               whileInView={{ y: "0%", opacity: 1 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.8, delay: 0.25, ease: EASE }}
-              className="font-heading text-lg italic text-ink"
+              transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+              className="font-heading text-xl italic leading-snug text-ink sm:text-2xl"
             >
               I'm not chasing a title. I'm building toward something simple: travel businesses that
               market beautifully and run properly.
             </motion.p>
           </span>
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            whileInView={{ opacity: 1, scaleX: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
+            className="mx-auto mt-6 flex items-center justify-center gap-3"
+          >
+            <span className="h-[2px] w-10 bg-terracotta" />
+            <span className="font-hand text-2xl leading-none text-terracotta">Vaibhav</span>
+            <span className="h-[2px] w-10 bg-terracotta" />
+          </motion.div>
         </div>
       </div>
     </section>
