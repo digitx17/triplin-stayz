@@ -11,10 +11,6 @@ import { MaskedLine } from "./Reveal";
 
 const ORANGE = "#E16428";
 
-function Hand({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <span className={`font-hand leading-[1.1] ${className}`} style={{ color: "#1a1a1a" }}>{children}</span>;
-}
-
 function Rise({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useInView(ref, { once: true, margin: "-60px" });
@@ -105,15 +101,6 @@ export function ContactSection() {
               </div>
             </Rise>
 
-            <Rise delay={0.4}>
-              <div className="mt-12 border-t border-ink/10 pt-8">
-                <Hand className="hidden rotate-[-2deg] text-2xl lg:inline-block">
-                  Every project starts
-                  <br />
-                  with a conversation.
-                </Hand>
-              </div>
-            </Rise>
           </div>
 
           {/* right — form card */}
