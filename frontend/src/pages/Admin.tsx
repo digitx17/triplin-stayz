@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useMedia, embedThumb } from "@/lib/media";
 import type { MediaItem } from "@/lib/media";
 import { useSiteContent } from "@/lib/content";
-import { SKILL_CARD_BRANDS } from "@/lib/marketingData";
+import { SKILL_CARD_BRANDS, WHY_TRAVEL_SLOTS } from "@/lib/marketingData";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 
 const TOKEN_KEY = "vk_admin_token";
@@ -306,16 +306,18 @@ export default function Admin() {
                 </select>
               </label>
               <label className="block">
-                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Brand</span>
-                {category === "Skill Cards" ? (
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  {category === "Skill Cards" || category === "Why Travel" ? "Slot" : "Brand"}
+                </span>
+                {category === "Skill Cards" || category === "Why Travel" ? (
                   <select
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
                     className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
                     data-testid="admin-brand-input"
                   >
-                    <option value="">Choose a skill card…</option>
-                    {SKILL_CARD_BRANDS.map((b) => (
+                    <option value="">{category === "Skill Cards" ? "Choose a skill card…" : "Choose a strip photo slot…"}</option>
+                    {(category === "Skill Cards" ? SKILL_CARD_BRANDS : WHY_TRAVEL_SLOTS).map((b) => (
                       <option key={b} value={b}>{b}</option>
                     ))}
                   </select>

@@ -16,6 +16,7 @@ DEFAULT_CATEGORIES = [
     "Influencer Collab",
     "Listings",
     "Skill Cards",
+    "Why Travel",
 ]
 
 

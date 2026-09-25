@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import type { ReactNode } from "react";
 import { motion, useInView, useScroll, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
 import { EASE } from "@/lib/anim";
+import { useMedia } from "@/lib/media";
 import { IMAGES, INFLUENCERS, PHOTOSHOOT } from "@/lib/marketingData";
 
 function Word({ children, i, base = 0, accent = false }: { children: string; i: number; base?: number; accent?: boolean }) {
@@ -71,6 +72,18 @@ export function WhyTravel() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const watermarkX = useTransform(scrollYProgress, [0, 1], ["5%", "-8%"]);
   const compassRotate = useTransform(scrollYProgress, [0, 1], [-40, 140]);
+  const media = useMedia();
+
+  const overrides = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const m of media.data ?? []) {
+      if (m.category === "Why Travel" && m.kind === "image" && m.brand.startsWith("Why Travel ")) {
+        const slot = parseInt(m.brand.replace("Why Travel ", ""), 10) - 1;
+        if (slot >= 0 && slot < STRIP.length && !map.has(slot)) map.set(slot, m.url);
+      }
+    }
+    return map;
+  }, [media.data]);
 
   return (
     <section
@@ -121,11 +134,11 @@ export function WhyTravel() {
         </h2>
       </div>
 
-      {/* photo strip with staggered parallax */}
+      {/* photo strip with staggered parallax — photos changeable from /admin (category: Why Travel) */}
       <div className="relative z-10 mx-auto mt-14 max-w-5xl px-4 sm:px-6 lg:px-8" data-testid="why-photo-strip">
         <div className="grid grid-cols-2 items-center gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
           {STRIP.map((p, i) => (
-            <StripPhoto key={p.src} {...p} progress={scrollYProgress} i={i} />
+            <StripPhoto key={i} {...p} src={overrides.get(i) ?? p.src} progress={scrollYProgress} i={i} />
           ))}
         </div>
       </div>

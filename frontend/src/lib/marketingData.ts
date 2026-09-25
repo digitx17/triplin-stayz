@@ -81,3 +81,11 @@ export const SKILL_CARD_BRANDS = [
   "Graphic Design",
   "Website / CRM",
 ];
+
+export const WHY_TRAVEL_SLOTS = [
+  "Why Travel 1",
+  "Why Travel 2",
+  "Why Travel 3",
+  "Why Travel 4",
+  "Why Travel 5",
+];
