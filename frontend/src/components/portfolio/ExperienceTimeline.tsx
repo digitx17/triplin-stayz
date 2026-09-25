@@ -52,7 +52,7 @@ function Polaroid({ exp }: { exp: Experience }) {
         </div>
       </div>
       <div className={`mt-4 flex items-end gap-1 ${exp.noteAlign === "end" ? "flex-row-reverse" : ""}`}>
-        <span className="font-hand text-[26px] leading-[1.05]" style={{ color: ORANGE }}>
+        <span className="font-hand text-[26px] leading-[1.05]" style={{ color: "#1a1a1a" }}>
           {exp.note.split("\n").map((l, i) => (
             <span key={i} className="block">
               {l}

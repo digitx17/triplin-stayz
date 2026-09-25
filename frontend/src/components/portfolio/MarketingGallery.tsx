@@ -92,12 +92,12 @@ function Visual({ kind }: { kind: string }) {
       );
     case "listing":
       return (
-        <div className="relative h-48">
-          <div className="absolute inset-x-0 top-2 rounded-md border border-ink/12 bg-white p-3 shadow-md">
+        <div className="relative h-56">
+          <div className="absolute left-0 top-0 w-[88%] rounded-md border border-ink/12 bg-white p-2.5 shadow-md">
             <div className="flex items-center gap-2">
-              <img src={IMAGES.listingPhoto} alt="" loading="lazy" className="h-11 w-11 rounded object-cover" />
+              <img src={IMAGES.listingPhoto} alt="" loading="lazy" className="h-9 w-9 rounded object-cover" />
               <div>
-                <p className="font-heading text-xs leading-none">Shalom Backpackers</p>
+                <p className="font-heading text-[11px] leading-none">Shalom Backpackers</p>
                 <p className="mt-1 flex items-center gap-0.5 text-[9px] text-ink/50">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} className="h-2 w-2 fill-current" style={{ color: ORANGE }} />
@@ -106,7 +106,7 @@ function Visual({ kind }: { kind: string }) {
                 </p>
               </div>
             </div>
-            <div className="mt-2.5 flex flex-wrap gap-1">
+            <div className="mt-2 flex flex-wrap gap-1">
               {["Google", "Tripadvisor", "Zomato"].map((b) => (
                 <span key={b} className="rounded border border-ink/12 px-1.5 py-0.5 font-mono text-[8px] font-semibold text-ink/70">{b}</span>
               ))}
@@ -114,6 +114,25 @@ function Visual({ kind }: { kind: string }) {
             <div className="mt-2 space-y-1 border-t border-ink/8 pt-2">
               {["Reviews answered", "Photos updated"].map((s) => (
                 <p key={s} className="flex items-center gap-1 text-[9px] text-ink/60"><span style={{ color: ORANGE }}>✓</span>{s}</p>
+              ))}
+            </div>
+          </div>
+          <div className="absolute bottom-0 right-0 w-[88%] rotate-1 rounded-md border border-ink/12 bg-white p-2.5 shadow-md">
+            <div className="flex items-center gap-2">
+              <img src={PHOTOSHOOT[0].src} alt="" loading="lazy" className="h-9 w-9 rounded object-cover" />
+              <div>
+                <p className="font-heading text-[11px] leading-none">Moustache Escapes — F&amp;B</p>
+                <p className="mt-1 flex items-center gap-0.5 text-[9px] text-ink/50">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-2 w-2 fill-current" style={{ color: ORANGE }} />
+                  ))}
+                  4.6
+                </p>
+              </div>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {["Google", "EazyDiner", "Zomato", "Dineout"].map((b) => (
+                <span key={b} className="rounded border border-ink/12 px-1.5 py-0.5 font-mono text-[8px] font-semibold text-ink/70">{b}</span>
               ))}
             </div>
           </div>
@@ -202,7 +221,7 @@ const ITEMS: Item[] = [
   { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", category: "Graphic Design / Content", anno: "Plan\nCreate\nPost\nGrow", annoClass: "-left-1 -bottom-9 text-base" },
   { num: "03", title: "Events", desc: "From concept to execution — creating memorable experiences for brands and guests.", tags: ["Concept & Planning", "On-ground Execution", "Guest Experience", "Brand Activations"], kind: "events", category: "Events", anno: "Great vibes,\nreal connections.", annoClass: "right-0 -top-3 text-base text-right" },
   { num: "04", title: "Influencer Collaborations", desc: "Partnering with creators to bring authentic stories to life.", tags: ["Travel Creators", "Lifestyle Creators", "Barter Collabs", "Campaigns"], kind: "influencer", category: "Influencer Collab", anno: "Real people.\nReal reach.", annoClass: "left-0 -top-3 text-base" },
-  { num: "05", title: "Listing Directory", desc: "Optimising your presence across Google, Zomato, TripAdvisor and more.", tags: ["Google Business", "Zomato", "TripAdvisor", "OTA Listings"], kind: "listing", category: "Listings", anno: "More visibility.\nMore bookings.", annoClass: "right-0 bottom-0 text-base text-right" },
+  { num: "05", title: "Listing Directory", desc: "Optimising your presence across Google, Zomato, TripAdvisor and more.", tags: ["Google Business", "Zomato", "TripAdvisor", "OTA Listings"], kind: "listing", category: "Listings", anno: "More visibility.\nMore bookings.", annoClass: "-right-1 -top-4 text-base text-right" },
   { num: "06", title: "Website", desc: "Clean, modern and conversion-focused websites for travel & hospitality brands.", tags: ["UI/UX Design", "Web Development", "SEO Friendly", "Landing Pages"], kind: "website", category: "Website & CRM", anno: "Looks good.\nWorks hard.", annoClass: "right-0 -top-3 text-base text-right" },
   { num: "07", title: "CRM", desc: "Managing leads, guest relationships and automation for better conversions and retention.", tags: ["Lead Management", "Guest Follow-ups", "Automations", "Analytics"], kind: "crm", category: "Website & CRM", anno: "Relationships.\nLonger Journeys.", annoClass: "right-0 -top-3 text-sm text-right" },
   { num: "08", title: "Blog", desc: "Informative, SEO-friendly blogs that inspire, educate and bring organic traffic.", tags: ["Travel Guides", "Destination Blogs", "Tips & Itineraries", "SEO Articles"], kind: "blog", category: "Graphic Design / Content", anno: "Plan\nExplore\nExperience\nRepeat", annoClass: "right-0 -top-3 text-sm text-right" },
