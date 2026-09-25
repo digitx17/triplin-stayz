@@ -4,7 +4,7 @@ import { MaskedLine } from "./Reveal";
 
 export function WhyTravel() {
   return (
-    <section id="why" className="border-y border-sand bg-paper py-24 sm:py-32" data-testid="why-section">
+    <section id="why" className="grain relative overflow-hidden border-y border-sand bg-white py-24 sm:py-32" data-testid="why-section">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <p className="mb-8 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-terracotta">
           06 — Why travel?
