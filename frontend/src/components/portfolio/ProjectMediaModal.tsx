@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
@@ -32,6 +32,51 @@ function Tile({ m }: { m: MediaItem }) {
     );
   }
   return <img src={m.url} alt={m.caption || m.brand} loading="lazy" className="aspect-video w-full rounded-sm object-cover" />;
+}
+
+function BrandSection({ brand, items }: { brand: string; items: MediaItem[] }) {
+  const [filter, setFilter] = useState("All");
+  const groups = [...new Set(items.map((m) => m.group).filter(Boolean))];
+  const loose = items.some((m) => !m.group);
+  const pills = ["All", ...groups, ...(loose ? ["More"] : [])];
+  const visible = filter === "All" ? items : filter === "More" ? items.filter((m) => !m.group) : items.filter((m) => m.group === filter);
+
+  return (
+    <section className="mb-12" data-testid={`project-brand-${brand.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+      <div className="mb-5 flex items-baseline gap-3 border-b border-sand pb-3">
+        <h3 className="font-heading text-2xl font-medium tracking-tight">{brand}</h3>
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+          {items.length} {items.length === 1 ? "item" : "items"}
+        </span>
+      </div>
+      {pills.length > 2 && (
+        <div className="mb-6 flex flex-wrap gap-2" data-testid="project-filters">
+          {pills.map((p) => (
+            <button
+              key={p}
+              onClick={() => setFilter(p)}
+              className={`rounded-full px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors duration-300 ${
+                filter === p
+                  ? "bg-terracotta text-white"
+                  : "border border-ink/20 bg-white/70 text-ink/60 hover:border-ink hover:text-ink"
+              }`}
+              data-testid={`project-filter-${p.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {visible.map((m) => (
+          <figure key={m.id} data-testid={`project-media-${m.id}`}>
+            <Tile m={m} />
+            {m.caption && <figcaption className="mt-2 text-xs text-muted-foreground">{m.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 export function ProjectMediaModal({ project, onClose }: { project: ProjectRef | null; onClose: () => void }) {
@@ -113,50 +158,9 @@ export function ProjectMediaModal({ project, onClose }: { project: ProjectRef | 
                   </p>
                 </div>
               )}
-              {[...brands.entries()].map(([brand, items]) => {
-                const groups = new Map<string, MediaItem[]>();
-                const loose: MediaItem[] = [];
-                for (const m of items) {
-                  if (m.group) {
-                    const list = groups.get(m.group) ?? [];
-                    list.push(m);
-                    groups.set(m.group, list);
-                  } else {
-                    loose.push(m);
-                  }
-                }
-                const tileGrid = (list: MediaItem[]) => (
-                  <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {list.map((m) => (
-                      <figure key={m.id} data-testid={`project-media-${m.id}`}>
-                        <Tile m={m} />
-                        {m.caption && <figcaption className="mt-2 text-xs text-muted-foreground">{m.caption}</figcaption>}
-                      </figure>
-                    ))}
-                  </div>
-                );
-                return (
-                  <section key={brand} className="mb-12" data-testid={`project-brand-${brand.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
-                    <div className="mb-5 flex items-baseline gap-3 border-b border-sand pb-3">
-                      <h3 className="font-heading text-2xl font-medium tracking-tight">{brand}</h3>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                        {items.length} {items.length === 1 ? "item" : "items"}
-                      </span>
-                    </div>
-                    {loose.length > 0 && tileGrid(loose)}
-                    {[...groups.entries()].map(([g, gitems]) => (
-                      <div key={g} className="mt-8 first:mt-0" data-testid={`project-group-${g.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
-                        <h4 className="mb-4 flex items-center gap-2.5 font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-terracotta">
-                          <span className="h-[2px] w-6 bg-terracotta" />
-                          {g}
-                          <span className="font-normal text-ink/40">{gitems.length}</span>
-                        </h4>
-                        {tileGrid(gitems)}
-                      </div>
-                    ))}
-                  </section>
-                );
-              })}
+              {[...brands.entries()].map(([brand, items]) => (
+                <BrandSection key={brand} brand={brand} items={items} />
+              ))}
             </div>
           </div>
         </motion.div>
