@@ -1,0 +1,262 @@
+{
+  "theme": "Light editorial foundation with deep charcoal/ink typography, warm travertine stone tones, subtle terracotta/burnt ochre accents, and cinematic dark scrim hero layers",
+  "archetype": "Organic & Earthy meets High-End Editorial Travel Documentary (Archetype 1 + Luxury Editorial)",
+  "colors": {
+    "surfaces": [
+      {
+        "name": "page",
+        "kind": "solid",
+        "bg": "#F9F8F5",
+        "on_bg": "#141413",
+        "on_bg_muted": "#57564E",
+        "roles": {
+          "link": "#A84320",
+          "error": "#B91C1C",
+          "success": "#1E6B4B"
+        }
+      },
+      {
+        "name": "panel",
+        "kind": "solid",
+        "bg": "#EFECE6",
+        "on_bg": "#141413",
+        "on_bg_muted": "#57564E",
+        "roles": {
+          "link": "#A84320",
+          "error": "#B91C1C",
+          "success": "#1E6B4B"
+        }
+      },
+      {
+        "name": "card_elevated",
+        "kind": "solid",
+        "bg": "#FFFFFF",
+        "on_bg": "#141413",
+        "on_bg_muted": "#68665E",
+        "roles": {
+          "border": "#E5E1D8",
+          "tag_bg": "#F2EFEB",
+          "tag_text": "#2C2B27"
+        }
+      },
+      {
+        "name": "inverse_slate",
+        "kind": "solid",
+        "bg": "#121415",
+        "on_bg": "#F5F5F3",
+        "on_bg_muted": "#A5A49D",
+        "roles": {
+          "link": "#E87A54",
+          "error": "#F87171",
+          "success": "#34D399"
+        }
+      },
+      {
+        "name": "hero_scrim",
+        "kind": "image",
+        "contrast_against": "#121415",
+        "guarantee": "scrim: linear-gradient(180deg, rgba(14,16,18,0.72) 0%, rgba(14,16,18,0.5) 45%, rgba(14,16,18,0.85) 100%)",
+        "on_bg": "#FDFDFD",
+        "on_bg_muted": "#D1D0C9",
+        "roles": {
+          "link": "#F59E0B",
+          "badge_bg": "rgba(255,255,255,0.12)",
+          "badge_text": "#FFFFFF"
+        }
+      },
+      {
+        "name": "system_diagram_panel",
+        "kind": "solid",
+        "bg": "#0D1113",
+        "on_bg": "#F3F4F6",
+        "on_bg_muted": "#9CA3AF",
+        "roles": {
+          "active_node_bg": "#1F2937",
+          "active_node_border": "#E87A54",
+          "warning_state_bg": "#451A1A",
+          "warning_state_text": "#FCA5A5",
+          "link_connector": "#374151"
+        }
+      },
+      {
+        "name": "modal_overlay",
+        "kind": "solid",
+        "bg": "#FAFAF8",
+        "on_bg": "#111827",
+        "on_bg_muted": "#4B5563",
+        "roles": {
+          "chapter_marker": "#A84320",
+          "sidebar_bg": "#F3EFEA"
+        }
+      }
+    ],
+    "accent": "#A84320",
+    "on_accent": "#FFFFFF",
+    "secondary_accent": "#2D5A47",
+    "on_secondary_accent": "#FFFFFF",
+    "status_warning": "#DC2626",
+    "status_warning_bg": "#FEF2F2"
+  },
+  "typography": {
+    "pairing_strategy": "Editorial Future & Documentarian Contrast: Playfair Display / Lora (Serif Display & Headings) + DM Sans / Instrument Sans (Modern Geometric Body) + JetBrains Mono (Technical Systems, Workflows, Timestamps)",
+    "font_family_imports": [
+      "@import \"@fontsource-variable/playfair-display\";",
+      "@import \"@fontsource-variable/dm-sans\";",
+      "@import \"@fontsource-variable/jetbrains-mono\";"
+    ],
+    "font_variables": {
+      "--font-heading": "'Playfair Display Variable', Georgia, serif",
+      "--font-sans": "'DM Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif",
+      "--font-mono": "'JetBrains Mono Variable', monospace"
+    },
+    "scale_px": {
+      "display": 60,
+      "h1": 48,
+      "h2": 36,
+      "h3": 24,
+      "h4": 20,
+      "body": 16,
+      "caption": 14
+    },
+    "typesetting_rules": {
+      "hero_headline": "text-4xl sm:text-5xl lg:text-6xl font-serif font-normal tracking-tight leading-[1.08]",
+      "section_headline": "text-2xl sm:text-3xl lg:text-4xl font-serif font-medium tracking-tight leading-snug",
+      "eyebrow_label": "text-xs font-mono font-semibold uppercase tracking-[0.2em] text-accent",
+      "body_text": "text-base leading-relaxed tracking-normal",
+      "system_code": "text-xs sm:text-sm font-mono tracking-tight"
+    }
+  },
+  "entry_surfaces": {
+    "/": "cinematic full-viewport hero with layered parallax travel imagery, kinetic line-by-line reveal, positioning badge, primary showcase CTA, and live status beacon"
+  },
+  "layout_and_grids": {
+    "spacing_scale": "p-2, p-4, p-6, p-8, p-12, p-16, p-20, p-24, p-32",
+    "container_max_width": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "bento_grid_style": "Tetris Grid with 12 columns on desktop (col-span-8 dominant visuals, col-span-4 interactive specs, col-span-6 side-by-side workflow comparisons)",
+    "editorial_rhythm": "Asymmetrical section balance, generous top/bottom whitespace (py-24 to py-32), delicate 1px borders in #E5E1D8 / rgba(255,255,255,0.1), numbered manifesto chapters (01–09)"
+  },
+  "motion_and_interactions": {
+    "smooth_scroll": "Lenis smooth scroll integration with customized wheel damping for documentary feel",
+    "hero_reveal": "Masked staggered line-by-line kinetic reveal using Framer Motion (motion/react) variants",
+    "journey_path": "Scroll-linked SVG path trace connecting Marketing -> Tourism -> Hospitality -> Content -> Operations -> Digital Products -> Travel Systems",
+    "system_workflows": "Interactive node-by-node animated workflow simulator with live state toggles (e.g. Normal vs Low Margin Warning triggers in CRM simulator)",
+    "case_study_drawer": "Seamless full-screen / expanded modal reading view for the 3 major systems with 9 structured chapters each",
+    "travel_gallery": "Smooth horizontal drag/scroll gallery with custom progress bar and location metadata overlays",
+    "reduced_motion": "Respects prefers-reduced-motion: automatically flattens transforms and replaces positional spring animations with instant opacity fades"
+  },
+  "media_and_assets": {
+    "image_urls": [
+      {
+        "category": "hero_cover",
+        "description": "Epic winding mountain pass highway in dramatic lighting (representing the travel journey and systems)",
+        "url": "https://images.unsplash.com/photo-1658309266844-331746044e9b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHw0fHx0cmF2ZWwlMjBkb2N1bWVudGFyeSUyMG1vdW50YWlucyUyMHJvYWQlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzg5MDMzNzU1fDA&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "shalom_backpackers_rishikesh",
+        "description": "Serene turquoise Ganges river in Rishikesh valley surrounded by mountains and bridges (Rishikesh internship story)",
+        "url": "https://images.unsplash.com/photo-1624807136278-e2973be118ff?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2OTV8MHwxfHNlYXJjaHwxfHxoaW1hbGF5YXMlMjByaXNoaWtlc2glMjByaXZlciUyMGluZGlhJTIwdHJhdmVsfGVufDB8fHx8MTc4OTAzMzc1NXww&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "rishikesh_ashram_town",
+        "description": "Historic riverside ashrams and mountain landscape in Rishikesh (Hospitality & Content storytelling)",
+        "url": "https://images.unsplash.com/photo-1712510817140-917938f92e5b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2OTV8MHwxfHNlYXJjaHwzfHxoaW1hbGF5YXMlMjByaXNoaWtlc2glMjByaXZlciUyMGluZGlhJTIwdHJhdmVsfGVufDB8fHx8MTc4OTAzMzc1NXww&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "moustache_escapes_hospitality",
+        "description": "Boutique heritage hotel entrance and architectural character (Moustache Escapes F&B and stays context)",
+        "url": "https://images.unsplash.com/photo-1784386178105-e6bd1133c049?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDZ8MHwxfHNlYXJjaHwzfHxib3V0aXF1ZSUyMGhlcml0YWdlJTIwaG90ZWwlMjBob3NwaXRhbGl0eSUyMHRyYXZlbHxlbnwwfHx8fDE3ODkwMzM3NTV8MA&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "hotel_dining_interior",
+        "description": "Heritage hotel checkered lobby and curated space (F&B and guest experience touchpoints)",
+        "url": "https://images.unsplash.com/photo-1787070377490-9a2d780f3011?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDZ8MHwxfHNlYXJjaHw0fHxib3V0aXF1ZSUyMGhlcml0YWdlJTIwaG90ZWwlMjBob3NwaXRhbGl0eSUyMHRyYXZlbHxlbnwwfHx8fDE3ODkwMzM3NTV8MA&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "road_expedition_mountains",
+        "description": "Dramatic atmospheric mountain pass asphalt road under cloud cover (Field explorations & logistics)",
+        "url": "https://images.unsplash.com/photo-1537000413083-5cf29e3cfcd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwzfHx0cmF2ZWwlMjBkb2N1bWVudGFyeSUyMG1vdW50YWlucyUyMHJvYWQlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzg5MDMzNzU1fDA&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "category": "scenic_route_travel",
+        "description": "Long open highway extending toward alpine peaks (The builder's path)",
+        "url": "https://images.unsplash.com/photo-1637139498630-9a580b24fa75?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHx0cmF2ZWwlMjBkb2N1bWVudGFyeSUyMG1vdW50YWlucyUyMHJvYWQlMjBsYW5kc2NhcGV8ZW58MHx8fHwxNzg5MDMzNzU1fDA&ixlib=rb-4.1.0&q=85"
+      }
+    ]
+  },
+  "key_components_to_build": [
+    {
+      "name": "NavigationHeader",
+      "path": "frontend/src/components/portfolio/NavigationHeader.tsx",
+      "description": "Floating crystal glass sticky navigation bar with active section highlight pill, Vaibhav mark, direct anchor jumps (Work, Systems, Experience, Approach, Travel, Contact), resume download / get in touch CTA, and responsive full-screen mobile drawer."
+    },
+    {
+      "name": "HeroSection",
+      "path": "frontend/src/components/portfolio/HeroSection.tsx",
+      "description": "Cinematic full-screen opener with masked headline reveal ('I market travel businesses — and I build the systems behind them.'), background parallax highway photography with dark gradient scrim, interactive quick stat pills, and scroll prompt."
+    },
+    {
+      "name": "JourneyPathway",
+      "path": "frontend/src/components/portfolio/JourneyPathway.tsx",
+      "description": "Animated visual narrative progression: Marketing -> Tourism -> Hospitality -> Content -> Travel Operations -> Digital Products -> Travel Systems with milestone cards and node highlight animations."
+    },
+    {
+      "name": "ExperienceTimeline",
+      "path": "frontend/src/components/portfolio/ExperienceTimeline.tsx",
+      "description": "Cinematic editorial cards for Shalom Backpackers Rishikesh (Social Media Marketing Intern) and Moustache Escapes (Marketing Executive - F&B & Stays) with high-res location photography, impact metrics, and key deliverables."
+    },
+    {
+      "name": "ThingsIveBuilt",
+      "path": "frontend/src/components/portfolio/ThingsIveBuilt.tsx",
+      "description": "Flagship interactive systems showcase covering TRIPLIN Platform, Travel CRM Engine, and Hospitality CRM. Features live step-by-step interactive workflow visualizer, dynamic margin warning state simulator, and interactive 'Open Deep Case Study' trigger."
+    },
+    {
+      "name": "CaseStudyModal",
+      "path": "frontend/src/components/portfolio/CaseStudyModal.tsx",
+      "description": "Deep-dive reader covering 9 structured chapters (01 Problem, 02 Architecture, 03 Flow, 04 Tech Stack, 05 Margin Engine, 06 Automation, 07 UX Decisions, 08 Business Impact, 09 Key Learnings) with chapter index navigation."
+    },
+    {
+      "name": "MarketingGallery",
+      "path": "frontend/src/components/portfolio/MarketingGallery.tsx",
+      "description": "Filterable work gallery (All, Content Campaigns, F&B Launches, Community & Stays, Performance & SEO) with rich preview cards, live metrics tags, and modal previews."
+    },
+    {
+      "name": "OnTheRoadGallery",
+      "path": "frontend/src/components/portfolio/OnTheRoadGallery.tsx",
+      "description": "Horizontal-scrolling cinematic travel photography gallery with field notes, GPS coordinates tags, and location stories."
+    },
+    {
+      "name": "MyApproachDiagram",
+      "path": "frontend/src/components/portfolio/MyApproachDiagram.tsx",
+      "description": "Interactive 5-pillar ecosystem: CUSTOMER, CONTENT, DISTRIBUTION, OPERATIONS, TECHNOLOGY centered around 'Marketing connects the pieces' with hover inspect states."
+    },
+    {
+      "name": "SkillsMatrix",
+      "path": "frontend/src/components/portfolio/SkillsMatrix.tsx",
+      "description": "Interactive visual skills clusters (Growth & Performance, Hospitality Ops & F&B, Travel Tech & Systems Architecture, Creative Production & Storytelling)."
+    },
+    {
+      "name": "WhyTravelManifesto",
+      "path": "frontend/src/components/portfolio/WhyTravelManifesto.tsx",
+      "description": "Editorial quote block & philosophy on why travel operations require both soul and software systems."
+    },
+    {
+      "name": "ContactSection",
+      "path": "frontend/src/components/portfolio/ContactSection.tsx",
+      "description": "Cinematic contact hub with direct copyable email, social channels (LinkedIn, Instagram, GitHub), timezone & availability indicator, and an interactive project inquiry form."
+    }
+  ],
+  "accessibility_requirements": {
+    "wcag_level": "WCAG AA compliant (4.5:1 text contrast minimum against backgrounds)",
+    "data_testids": "MANDATORY: all interactive elements, filters, modals, form inputs, buttons, and navigation links must carry clear kebab-case data-testid tags (e.g. data-testid=\"nav-work-link\", data-testid=\"project-card-triplin\", data-testid=\"case-study-open-triplin\", data-testid=\"crm-warning-toggle\", data-testid=\"contact-submit-button\")",
+    "keyboard_navigation": "Full keyboard focus trap for modal views, Escape to close, visible focus rings with ring-accent",
+    "reduced_motion": "prefers-reduced-motion media query detection via Framer Motion useReducedMotion"
+  },
+  "instructions_to_main_agent": [
+    "Follow the cinematic documentary art direction strictly. Avoid generic SaaS blue or standard AI-gradient aesthetics.",
+    "Install lenis via yarn if smooth scrolling is enabled, or use native CSS smooth scroll and Framer Motion for scroll-linked animations.",
+    "Ensure 'Things I've Built' workflow diagram is truly interactive: users should be able to click through steps (Destination -> Vendors -> B2B Rates -> Package -> Costing -> Marketing -> Enquiry -> Quotation -> Booking), see the active node highlight, and inspect the Margin Engine logic with the 'LOW MARGIN — REVIEW PRICING' alert switch.",
+    "CaseStudyModal must support reading all 9 numbered chapters in a comfortable editorial drawer layout with quick sidebar jump links.",
+    "Every photo specified in media_and_assets is an authentic Unsplash asset - render them using img tags with object-cover and subtle scale-up hover animations.",
+    "Ensure the contact section includes an interactive inquiry form that triggers a toast confirmation via sonner."
+  ]
+}
