@@ -15,6 +15,7 @@ DEFAULT_CATEGORIES = [
     "Events",
     "Influencer Collab",
     "Listings",
+    "Skill Cards",
 ]
 
 

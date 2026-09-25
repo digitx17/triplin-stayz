@@ -65,3 +65,18 @@ export const IMAGES = {
   personalThumb: T_CANOES,
   loyalty: H_ROOM,
 };
+
+export const SKILL_CARD_BRANDS = [
+  "Photoshoot",
+  "Cinematography",
+  "Event Marketing",
+  "OTA Management",
+  "Local SEO",
+  "Google & Meta Ads",
+  "Ecommerce",
+  "Content Writing",
+  "Social Media Marketing",
+  "Email / SMS Marketing",
+  "Virtual Tour",
+  "Graphic Design",
+];

@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useMedia, embedThumb } from "@/lib/media";
 import type { MediaItem } from "@/lib/media";
 import { useSiteContent } from "@/lib/content";
+import { SKILL_CARD_BRANDS } from "@/lib/marketingData";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 
 const TOKEN_KEY = "vk_admin_token";
@@ -273,15 +274,29 @@ export default function Admin() {
               </label>
               <label className="block">
                 <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Brand</span>
-                <input
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                  placeholder="e.g. Shalom Backpackers"
-                  maxLength={60}
-                  list="brand-list"
-                  className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
-                  data-testid="admin-brand-input"
-                />
+                {category === "Skill Cards" ? (
+                  <select
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                    data-testid="admin-brand-input"
+                  >
+                    <option value="">Choose a skill card…</option>
+                    {SKILL_CARD_BRANDS.map((b) => (
+                      <option key={b} value={b}>{b}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    placeholder="e.g. Shalom Backpackers"
+                    maxLength={60}
+                    list="brand-list"
+                    className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                    data-testid="admin-brand-input"
+                  />
+                )}
                 <datalist id="brand-list">
                   {Array.from(new Set((media.data ?? []).map((m) => m.brand))).map((b) => (
                     <option key={b} value={b} />
