@@ -22,11 +22,11 @@ function Hand({ children, className = "" }: { children: ReactNode; className?: s
   return <span className={`font-hand leading-[1.05] ${className}`} style={{ color: "#1a1a1a" }}>{children}</span>;
 }
 
-function Pills({ items }: { items: string[] }) {
+function Pills({ items, twoCol = false }: { items: string[]; twoCol?: boolean }) {
   return (
-    <div className="mt-4 flex flex-wrap gap-2">
+    <div className={twoCol ? "mt-4 grid grid-cols-2 gap-2" : "mt-4 flex flex-wrap gap-2"}>
       {items.map((t) => (
-        <span key={t} className="rounded-full border border-ink/15 bg-white/70 px-3 py-1 text-[11px] text-ink/70">{t}</span>
+        <span key={t} className="w-fit rounded-full border border-ink/15 bg-white/70 px-3 py-1 text-[11px] text-ink/70">{t}</span>
       ))}
     </div>
   );
@@ -55,49 +55,64 @@ function Visual({ kind }: { kind: string }) {
   switch (kind) {
     case "photoshoot":
       return (
-        <div className="relative h-40">
-          <Poly src={PHOTOSHOOT[1].src} rotate="-rotate-3" className="absolute left-0 top-1 h-32 w-24" />
-          <Poly src={PHOTOSHOOT[0].src} rotate="rotate-3" className="absolute right-0 top-6 h-28 w-28" />
+        <div className="relative h-48">
+          <Poly src={PHOTOSHOOT[1].src} rotate="-rotate-3" className="absolute left-0 top-0 h-36 w-32" />
+          <Poly src={PHOTOSHOOT[2].src} rotate="rotate-2" className="absolute right-0 top-6 h-32 w-28" />
+          <Poly src={PHOTOSHOOT[3].src} rotate="rotate-1" className="absolute bottom-0 left-8 h-20 w-24" />
         </div>
       );
     case "social":
       return (
-        <div className="relative h-44">
-          <div className="absolute left-2 top-0 w-24 rounded-[1.1rem] border-4 border-ink bg-ink p-0.5 shadow-xl">
-            <div className="relative overflow-hidden rounded-[0.8rem]">
+        <div className="relative h-52">
+          <Poly src={IMAGES.personalThumb} rotate="rotate-2" className="absolute right-0 top-4 h-28 w-24" />
+          <div className="absolute left-1 top-0 w-28 rounded-[1.3rem] border-4 border-ink bg-ink p-0.5 shadow-xl">
+            <div className="relative overflow-hidden rounded-[0.9rem]">
               <img src={IMAGES.websitePhoto} alt="" loading="lazy" className="aspect-[9/16] w-full object-cover" />
               <span className="absolute inset-0 bg-black/15" />
               <span className="absolute bottom-1.5 left-1.5 flex items-center gap-1 text-white"><Heart className="h-2.5 w-2.5 fill-white" /><span className="font-mono text-[7px]">12.4K</span></span>
             </div>
           </div>
-          <DarkCard lines={["Good", "Vibes", "Only"]} rotate="rotate-3 absolute right-0 top-8 w-20" />
+          <DarkCard lines={["Good", "Vibes", "Only"]} rotate="-rotate-3 absolute bottom-1 right-1 w-20" />
         </div>
       );
     case "events":
       return (
-        <div className="relative h-40">
-          <Poly src={IMAGES.eventPhoto} rotate="-rotate-2" className="absolute left-0 top-0 h-28 w-32" />
+        <div className="relative h-48">
+          <Poly src={IMAGES.eventPhoto} rotate="-rotate-2" className="absolute left-0 top-0 h-36 w-40" />
           <DarkCard lines={["Good Food", "Good People", "Good Vibes"]} rotate="rotate-2 absolute right-0 bottom-0 w-32" />
         </div>
       );
     case "influencer":
       return (
-        <div className="relative h-40">
-          <Poly src={INFLUENCERS[2].src} rotate="rotate-2" className="absolute right-0 top-0 h-28 w-24" />
-          <Poly src={IMAGES.personalHero} rotate="-rotate-3" className="absolute left-0 bottom-0 h-24 w-24" />
+        <div className="relative h-48">
+          <Poly src={INFLUENCERS[2].src} rotate="rotate-2" className="absolute right-0 top-0 h-36 w-28" />
+          <Poly src={IMAGES.personalHero} rotate="-rotate-3" className="absolute left-0 bottom-0 h-28 w-28" />
         </div>
       );
     case "listing":
       return (
-        <div className="relative h-40">
-          <div className="absolute inset-x-0 top-2 rounded-md border border-ink/12 bg-white p-2 shadow-md">
-            <div className="flex items-center gap-1.5">
-              <img src={IMAGES.listingPhoto} alt="" loading="lazy" className="h-9 w-9 rounded object-cover" />
-              <div><p className="font-heading text-[11px] leading-none">Shalom Backpackers</p><p className="flex items-center gap-0.5 text-[8px] text-ink/50"><Star className="h-2 w-2 fill-current" style={{ color: ORANGE }} />4.8</p></div>
+        <div className="relative h-48">
+          <div className="absolute inset-x-0 top-2 rounded-md border border-ink/12 bg-white p-3 shadow-md">
+            <div className="flex items-center gap-2">
+              <img src={IMAGES.listingPhoto} alt="" loading="lazy" className="h-11 w-11 rounded object-cover" />
+              <div>
+                <p className="font-heading text-xs leading-none">Shalom Backpackers</p>
+                <p className="mt-1 flex items-center gap-0.5 text-[9px] text-ink/50">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-2 w-2 fill-current" style={{ color: ORANGE }} />
+                  ))}
+                  4.8
+                </p>
+              </div>
             </div>
-            <div className="mt-2 flex flex-wrap gap-1">
+            <div className="mt-2.5 flex flex-wrap gap-1">
               {["Google", "Tripadvisor", "Zomato"].map((b) => (
                 <span key={b} className="rounded border border-ink/12 px-1.5 py-0.5 font-mono text-[8px] font-semibold text-ink/70">{b}</span>
+              ))}
+            </div>
+            <div className="mt-2 space-y-1 border-t border-ink/8 pt-2">
+              {["Reviews answered", "Photos updated"].map((s) => (
+                <p key={s} className="flex items-center gap-1 text-[9px] text-ink/60"><span style={{ color: ORANGE }}>✓</span>{s}</p>
               ))}
             </div>
           </div>
@@ -105,21 +120,30 @@ function Visual({ kind }: { kind: string }) {
       );
     case "website":
       return (
-        <div className="relative h-40">
-          <div className="absolute inset-x-1 top-3 overflow-hidden rounded-md border border-ink/15 bg-white shadow-lg">
-            <div className="flex items-center gap-1 border-b border-ink/10 bg-[#f3ece0] px-2 py-1"><span className="h-1.5 w-1.5 rounded-full bg-ink/20" /><span className="h-1.5 w-1.5 rounded-full bg-ink/20" /></div>
-            <div className="relative"><img src={IMAGES.websitePhoto} alt="" loading="lazy" className="aspect-[16/8] w-full object-cover" /><span className="absolute inset-0 bg-black/25" /><span className="absolute bottom-2 left-2 font-heading text-sm text-paper">Explore More</span></div>
+        <div className="relative h-48">
+          <svg viewBox="0 0 24 24" className="absolute right-1 top-0 h-6 w-6" fill="none" stroke={ORANGE} strokeWidth="1.4" aria-hidden>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+          </svg>
+          <div className="absolute inset-x-0 top-6 overflow-hidden rounded-md border border-ink/15 bg-white shadow-lg">
+            <div className="flex items-center gap-1 border-b border-ink/10 bg-[#f3ece0] px-2 py-1.5"><span className="h-1.5 w-1.5 rounded-full bg-ink/20" /><span className="h-1.5 w-1.5 rounded-full bg-ink/20" /><span className="h-1.5 w-1.5 rounded-full bg-ink/20" /></div>
+            <div className="relative">
+              <img src={IMAGES.websitePhoto} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+              <span className="absolute inset-0 bg-black/30" />
+              <span className="absolute bottom-2 left-2 font-heading text-base leading-none text-paper">Explore<br />More</span>
+              <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-paper/90 px-2 py-0.5 font-mono text-[7px] uppercase tracking-wider text-ink"><Search className="h-2 w-2" />Rishikesh</span>
+            </div>
           </div>
         </div>
       );
     case "crm":
       return (
-        <div className="relative h-40">
-          <div className="absolute inset-x-0 top-2 rounded-md border border-ink/12 bg-white p-2.5 shadow-md">
+        <div className="relative flex h-44 items-center">
+          <div className="w-full rounded-md border border-ink/12 bg-white p-2.5 shadow-md">
             <p className="font-mono text-[9px] font-semibold uppercase tracking-wider text-ink/50">Leads</p>
             {[["New", 0.3], ["Contacted", 0.5], ["Confirmed", 0.7], ["Booked", 1]].map(([s, w]) => (
               <div key={s as string} className="mt-1.5 flex items-center gap-2">
-                <span className="w-16 text-[9px] text-ink/60">{s as string}</span>
+                <span className="w-14 text-[9px] text-ink/60">{s as string}</span>
                 <span className="h-1.5 flex-1 rounded-full bg-ink/8"><span className="block h-full rounded-full" style={{ width: `${(w as number) * 100}%`, background: ORANGE }} /></span>
               </div>
             ))}
@@ -128,7 +152,7 @@ function Visual({ kind }: { kind: string }) {
       );
     case "blog":
       return (
-        <div className="relative h-44">
+        <div className="relative h-48">
           <div className="absolute left-0 top-0 w-36 overflow-hidden rounded-md border border-ink/12 bg-white shadow-md">
             <img src={IMAGES.blogPhoto} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover" />
             <p className="px-2 py-1.5 font-heading text-[11px] leading-tight">Top 5 Places to Visit in Rishikesh</p>
@@ -143,8 +167,8 @@ function Visual({ kind }: { kind: string }) {
       );
     case "personal":
       return (
-        <div className="relative h-40">
-          <Poly src={INFLUENCERS[2].src} rotate="rotate-2" className="absolute right-0 top-0 h-28 w-24" />
+        <div className="relative h-44">
+          <Poly src={INFLUENCERS[2].src} rotate="rotate-2" className="absolute right-0 top-0 h-32 w-24" />
           <div className="absolute left-0 bottom-0 w-20 rounded-[0.9rem] border-4 border-ink bg-ink p-0.5 shadow-lg">
             <div className="relative overflow-hidden rounded-[0.6rem]"><img src={IMAGES.blogPhoto} alt="" loading="lazy" className="aspect-[9/16] w-full object-cover" /><Play className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 fill-white text-white" /></div>
           </div>
@@ -152,7 +176,7 @@ function Visual({ kind }: { kind: string }) {
       );
     case "retention":
       return (
-        <div className="relative flex h-40 items-center justify-center">
+        <div className="relative flex h-44 items-center justify-center">
           <DarkCard lines={["Good", "Vibes", "Keep", "Coming"]} rotate="rotate-2 w-24" />
         </div>
       );
@@ -185,41 +209,34 @@ const ITEMS: Item[] = [
   { num: "10", title: "Retention / Loyalty", desc: "Building communities and loyalty programs that turn guests into regulars.", tags: ["Email Campaigns", "WhatsApp", "Loyalty Programs", "Referral Programs"], kind: "retention", category: "Graphic Design / Content", anno: "", annoClass: "" },
 ];
 
-function Block({ item, delay, stack = false, onView }: { item: Item; delay: number; stack?: boolean; onView: (it: Item) => void }) {
-  const visual = (
-    <div className={`relative ${stack ? "h-44 w-full" : "w-[148px] shrink-0 sm:w-[168px]"}`}>
-      <Visual kind={item.kind} />
-      {item.anno && (
-        <Hand className={`pointer-events-none absolute whitespace-pre-line ${item.annoClass}`}>{item.anno}</Hand>
-      )}
-    </div>
-  );
-  const viewButton = (
-    <div className="mt-auto pt-5">
-      <button
-        onClick={() => onView(item)}
-        className="inline-flex items-center gap-1.5 rounded-full border border-ink/20 bg-white/70 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/70 transition-colors duration-300 hover:border-ink hover:text-ink"
-        data-testid={`mw-view-${item.kind}`}
-      >
-        View Project <ArrowUpRight className="h-3 w-3" />
-      </button>
-    </div>
-  );
+function Block({ item, delay, compact = false, onView }: { item: Item; delay: number; compact?: boolean; onView: (it: Item) => void }) {
   return (
     <Rise delay={delay} className="relative h-full">
-      <div data-testid={`mw-${item.kind}`} className={stack ? "flex h-full flex-col" : "flex h-full gap-4"}>
-        {stack && visual}
-        <div className={`flex min-w-0 flex-1 flex-col ${stack ? "mt-5" : ""}`}>
+      <div data-testid={`mw-${item.kind}`} className="flex h-full gap-5">
+        <div className="flex min-w-0 flex-1 flex-col">
           <div>
             <span aria-hidden className="font-heading text-5xl font-semibold leading-none text-ink/[0.14]">{item.num}</span>
             <span className="mt-1 block h-[3px] w-8" style={{ background: ORANGE }} />
-            <h3 className="mt-3 font-heading text-xl font-semibold uppercase leading-[1.05] tracking-tight sm:text-2xl">{item.title}</h3>
+            <h3 className={`mt-3 font-heading font-semibold uppercase leading-[1.05] tracking-tight ${compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}>{item.title}</h3>
             <p className="mt-2 text-[13px] leading-relaxed text-ink/60">{item.desc}</p>
-            <Pills items={item.tags} />
+            <Pills items={item.tags} twoCol={!compact} />
           </div>
-          {viewButton}
+          <div className="mt-auto pt-5">
+            <button
+              onClick={() => onView(item)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-ink/20 bg-white/70 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/70 transition-colors duration-300 hover:border-ink hover:text-ink"
+              data-testid={`mw-view-${item.kind}`}
+            >
+              View Project <ArrowUpRight className="h-3 w-3" />
+            </button>
+          </div>
         </div>
-        {!stack && visual}
+        <div className={`relative shrink-0 ${compact ? "w-[42%]" : "w-[46%]"}`}>
+          <Visual kind={item.kind} />
+          {item.anno && (
+            <Hand className={`pointer-events-none absolute whitespace-pre-line ${item.annoClass}`}>{item.anno}</Hand>
+          )}
+        </div>
       </div>
     </Rise>
   );
@@ -234,18 +251,19 @@ export function MarketingGallery() {
         {/* header */}
         <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-start">
           <div>
-            <h2 className="font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
+            <p className="inline-block border-b-2 pb-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ORANGE, borderColor: ORANGE }}>Marketing Work</p>
+            <h2 className="mt-4 font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
             <p className="mt-3 font-heading text-lg italic text-ink/80 sm:text-2xl">Turning ideas into experiences people remember.”</p>
           </div>
-          <div className="relative">
+          <div className="relative lg:border-l lg:border-ink/15 lg:pl-8">
             <p className="max-w-sm text-sm leading-relaxed text-ink/70">I work across content, social media, hospitality marketing and brand storytelling — from the first idea to execution.</p>
-            <div className="pointer-events-none relative mt-3 hidden h-16 sm:block" aria-hidden>
-              <svg viewBox="0 0 220 60" className="h-14 w-56" fill="none" stroke="#1a1a1a" strokeWidth="1.2">
-                <path d="M2 50 l14 -18 l10 12 l16 -26 l18 40 Z" fill="#1a1a1a" opacity="0.7" stroke="none" />
-                <path d="M60 44 Q 150 44 210 14" stroke={ORANGE} strokeDasharray="4 4" strokeLinecap="round" />
+            <div className="pointer-events-none relative mt-3 hidden h-20 sm:block" aria-hidden>
+              <svg viewBox="0 0 240 70" className="h-16 w-64" fill="none" stroke="#1a1a1a" strokeWidth="1.2">
+                <path d="M2 56 l18 -24 l12 15 l20 -32 l22 44 Z" fill="#1a1a1a" opacity="0.7" stroke="none" />
+                <path d="M80 50 Q 160 50 226 16" stroke={ORANGE} strokeDasharray="4 4" strokeLinecap="round" />
               </svg>
-              <svg viewBox="0 0 24 24" className="absolute right-1 top-1 h-5 w-5" fill="#1a1a1a"><path d="M2 16l20-7L2 2v5l14 2L2 11z" /></svg>
-              <Hand className="absolute right-0 -bottom-6 text-lg text-right">Better Brands.<br />Bigger Journeys.</Hand>
+              <svg viewBox="0 0 24 24" className="absolute right-2 top-0 h-5 w-5" fill="#1a1a1a"><path d="M2 16l20-7L2 2v5l14 2L2 11z" /></svg>
+              <Hand className="absolute -right-2 -bottom-7 rotate-[7deg] text-lg text-right">Better Brands.<br />Bigger Journeys.</Hand>
             </div>
           </div>
         </div>
@@ -255,9 +273,17 @@ export function MarketingGallery() {
           {ITEMS.slice(0, 6).map((it, i) => <Block key={it.num} item={it} delay={(i % 3) * 0.05} onView={setViewing} />)}
         </div>
 
-        {/* rows 07-10 — stacked layout keeps narrow columns aligned */}
-        <div className="mt-14 grid gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} stack onView={setViewing} />)}
+        {/* rows 07-10 */}
+        <div className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+          {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} compact onView={setViewing} />)}
+        </div>
+
+        {/* footer */}
+        <div className="mt-20 flex items-center gap-6 border-t border-ink/10 pt-8">
+          <svg viewBox="0 0 80 30" className="h-8 w-20" fill="#1a1a1a" opacity="0.6" aria-hidden><path d="M2 28 l18 -22 l12 14 l10 -10 l16 18 Z" /></svg>
+          <span className="h-2 w-2 rounded-full" style={{ background: ORANGE }} />
+          <span className="h-px flex-1 bg-ink/12" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/45">Travel&nbsp;&nbsp;/&nbsp;&nbsp;Content&nbsp;&nbsp;/&nbsp;&nbsp;Marketing</span>
         </div>
       </div>
 
