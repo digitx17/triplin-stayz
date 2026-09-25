@@ -53,6 +53,7 @@ export default function Admin() {
   const [linkUrl, setLinkUrl] = useState("");
   const [category, setCategory] = useState("Photoshoot");
   const [brand, setBrand] = useState("");
+  const [sectionGroup, setSectionGroup] = useState("");
   const [caption, setCaption] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -113,7 +114,7 @@ export default function Admin() {
         await authFetch("/media/link", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: linkUrl.trim(), category, brand: brand || "General", caption }),
+          body: JSON.stringify({ url: linkUrl.trim(), category, brand: brand || "General", caption, group: sectionGroup }),
         });
         toast.success("Embed added — it's live on the site");
         setLinkUrl("");
@@ -127,6 +128,7 @@ export default function Admin() {
             fd.append("category", category);
             fd.append("brand", brand || "General");
             fd.append("caption", caption);
+            fd.append("group", sectionGroup);
             await authFetch("/media/upload", { method: "POST", body: fd });
             ok += 1;
           } catch {
@@ -140,6 +142,7 @@ export default function Admin() {
         }
         setFiles([]);
       }
+      setSectionGroup("");
       setCaption("");
       await qc.invalidateQueries({ queryKey: ["media"] });
     } catch (err) {
@@ -156,6 +159,20 @@ export default function Admin() {
       await qc.invalidateQueries({ queryKey: ["media"] });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Delete failed");
+    }
+  };
+
+  const patchMedia = async (id: string, body: Record<string, string>) => {
+    try {
+      await authFetch(`/media/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      toast.success("Section saved");
+      await qc.invalidateQueries({ queryKey: ["media"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Save failed");
     }
   };
 
@@ -320,6 +337,23 @@ export default function Admin() {
                 </datalist>
               </label>
               <label className="block">
+                <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Section (optional)</span>
+                <input
+                  value={sectionGroup}
+                  onChange={(e) => setSectionGroup(e.target.value)}
+                  placeholder="e.g. Cafe, Rooms"
+                  maxLength={60}
+                  list="group-list"
+                  className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                  data-testid="admin-group-input"
+                />
+                <datalist id="group-list">
+                  {Array.from(new Set((media.data ?? []).map((m) => m.group).filter(Boolean))).map((g) => (
+                    <option key={g} value={g} />
+                  ))}
+                </datalist>
+              </label>
+              <label className="block">
                 <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Caption</span>
                 <input
                   value={caption}
@@ -364,6 +398,18 @@ export default function Admin() {
                   <Trash2 className="h-4 w-4" />
                 </button>
               </figcaption>
+              <input
+                key={`${m.id}-${m.group}`}
+                defaultValue={m.group}
+                placeholder="Section — e.g. Cafe, Rooms"
+                maxLength={60}
+                onBlur={(e) => {
+                  const v = e.target.value.trim();
+                  if (v !== m.group) patchMedia(m.id, { group: v });
+                }}
+                className="w-full border-t border-sand/70 bg-paper/60 px-3 py-1.5 text-[11px] text-muted-foreground outline-none placeholder:text-ink/25 focus:text-ink"
+                data-testid={`admin-group-${m.id}`}
+              />
               <span className="absolute left-2 top-2 rounded-full bg-black/70 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.15em] text-white">
                 {m.brand} · {m.category}
               </span>

@@ -36,6 +36,7 @@ class MediaItem(BaseModel):
     category: str
     brand: str
     caption: str = ""
+    group: str = ""
     kind: str  # image | video | embed
     provider: str = ""
     content_type: str
@@ -49,6 +50,13 @@ class MediaLink(BaseModel):
     category: str = "Graphic Design / Content"
     brand: str = "General"
     caption: str = ""
+    group: str = ""
+
+
+class MediaPatch(BaseModel):
+    group: Optional[str] = None
+    caption: Optional[str] = None
+    brand: Optional[str] = None
 
 
 def to_item(doc: dict) -> MediaItem:
@@ -58,6 +66,7 @@ def to_item(doc: dict) -> MediaItem:
         category=doc.get("category") or "Graphic Design / Content",
         brand=doc.get("brand") or "General",
         caption=doc.get("caption", ""),
+        group=doc.get("group", ""),
         kind=kind,
         provider=doc.get("provider", ""),
         content_type=doc["content_type"],
@@ -120,6 +129,7 @@ async def upload_media(
     category: str = Form("Graphic Design / Content"),
     brand: str = Form("General"),
     caption: str = Form(""),
+    group: str = Form(""),
 ):
     if category not in await get_allowed_categories():
         raise HTTPException(status_code=422, detail="Unknown category")
@@ -155,6 +165,7 @@ async def upload_media(
         "category": category,
         "brand": brand.strip()[:60] or "General",
         "caption": caption.strip()[:140],
+        "group": group.strip()[:60],
         "kind": "video" if ctype.startswith("video/") else "image",
         "provider": "",
         "content_type": ctype,
@@ -178,6 +189,7 @@ async def add_media_link(body: MediaLink):
         "category": body.category,
         "brand": body.brand.strip()[:60] or "General",
         "caption": body.caption.strip()[:140],
+        "group": body.group.strip()[:60],
         "kind": "embed",
         "provider": provider,
         "embed_url": body.url.strip(),
@@ -197,6 +209,23 @@ async def serve_media(media_id: str):
         raise HTTPException(status_code=404, detail="Not found")
     data, ctype = get_object(doc["storage_path"])
     return Response(content=data, media_type=doc.get("content_type", ctype))
+
+
+@router.patch("/media/{media_id}", dependencies=[Depends(require_admin)])
+async def update_media(media_id: str, body: MediaPatch):
+    patch: dict = {}
+    if body.group is not None:
+        patch["group"] = body.group.strip()[:60]
+    if body.caption is not None:
+        patch["caption"] = body.caption.strip()[:140]
+    if body.brand is not None:
+        patch["brand"] = body.brand.strip()[:60] or "General"
+    if not patch:
+        return {"ok": True}
+    res = await db.media.update_one({"id": media_id, "is_deleted": False}, {"$set": patch})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Not found")
+    return {"ok": True}
 
 
 @router.delete("/media/{media_id}", dependencies=[Depends(require_admin)])

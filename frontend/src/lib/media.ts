@@ -6,6 +6,7 @@ export interface MediaItem {
   category: string;
   brand: string;
   caption: string;
+  group: string;
   kind: "image" | "video" | "embed";
   provider: string;
   content_type: string;
