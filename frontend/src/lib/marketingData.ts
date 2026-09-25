@@ -79,4 +79,5 @@ export const SKILL_CARD_BRANDS = [
   "Email / SMS Marketing",
   "Virtual Tour",
   "Graphic Design",
+  "Website / CRM",
 ];

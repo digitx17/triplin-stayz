@@ -5,6 +5,7 @@ import {
   CalendarDays,
   Camera,
   Clapperboard,
+  Globe,
   Heart,
   Mail,
   MapPin,
@@ -186,6 +187,22 @@ function DefaultVisual({ k }: { k: string }) {
           </div>
         </div>
       );
+    case "websitecrm":
+      return (
+        <div className="relative flex h-full min-h-[110px] items-center">
+          <div className="w-full overflow-hidden rounded-md border border-ink/10 bg-white shadow-md">
+            <div className="flex items-center gap-1 border-b border-ink/8 bg-[#f3ece0] px-2 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-ink/15" /><span className="h-1.5 w-1.5 rounded-full bg-ink/15" /><span className="h-1.5 w-1.5 rounded-full bg-ink/15" />
+            </div>
+            <div className="relative">
+              <img src={IMAGES.websitePhoto} alt="" loading="lazy" className="aspect-[16/8] w-full object-cover" />
+              <span className="absolute inset-0 bg-black/25" />
+              <span className="absolute bottom-1.5 left-1.5 font-heading text-[10px] leading-none text-paper">Explore More</span>
+              <span className="absolute bottom-1.5 right-1.5 rounded-full bg-white/90 px-1.5 py-0.5 font-mono text-[7px] font-semibold uppercase tracking-wider text-ink">CRM</span>
+            </div>
+          </div>
+        </div>
+      );
     default:
       return null;
   }
@@ -212,9 +229,8 @@ const SKILLS: Skill[] = [
   { num: "10", title: "Email / SMS Marketing", desc: "Personalized campaigns that bring back customers and increase loyalty.", icon: Mail, key: "email" },
   { num: "11", title: "Virtual Tour", desc: "Immersive 360° experiences that bring destinations to life.", icon: Orbit, key: "virtualtour" },
   { num: "12", title: "Graphic Design", desc: "Eye-catching visuals for stronger brand presence and engagement.", icon: Palette, key: "design" },
+  { num: "13", title: "Website / CRM", desc: "Clean, conversion-focused websites and CRM setups that turn visitors into bookings.", icon: Globe, key: "websitecrm" },
 ];
-
-const SLUGS: Record<string, string> = Object.fromEntries(SKILLS.map((s) => [s.title, s.key]));
 
 function CenterBadge() {
   return (
@@ -285,12 +301,7 @@ export function SkillsMatrix() {
     <section id="skills" className="grain relative overflow-hidden bg-[#FDFBF6] py-24 text-ink sm:py-28" data-testid="skills-section">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {/* header */}
-        <div className="flex items-center gap-3">
-          <span className="rounded-full bg-terracotta px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-white">Section 05</span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60">Skills &amp; Expertise</span>
-          <span className="h-px flex-1 bg-ink/15" />
-        </div>
-        <div className="mt-6 grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-start">
+        <div className="grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-start">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.35em] text-ink/70">My Digital Marketing</p>
             <h2 className="mt-1 font-heading text-6xl font-bold tracking-tight sm:text-7xl" data-testid="skills-heading">Skill Set</h2>
@@ -310,7 +321,7 @@ export function SkillsMatrix() {
           </div>
         </div>
 
-        {/* grid — 12 cards around the center badge */}
+        {/* grid — 13 cards around the center badge */}
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SKILLS.slice(0, 3).map((s, i) => card(s, i))}
           {card(SKILLS[3], 3)}
@@ -320,7 +331,8 @@ export function SkillsMatrix() {
           {card(SKILLS[4], 4)}
           {SKILLS.slice(5, 8).map((s, i) => card(s, i + 5))}
           {SKILLS.slice(8, 11).map((s, i) => card(s, i + 8))}
-          {card(SKILLS[11], 11, "lg:col-span-2")}
+          {card(SKILLS[11], 11)}
+          {card(SKILLS[12], 12)}
           <Rise className="hidden items-center justify-end lg:flex">
             <div className="pr-6 text-right lg:border-l lg:border-ink/15 lg:pl-8">
               <Hand className="text-2xl" color="#1a1a1a">Different skills.<br />One goal.</Hand>
@@ -330,10 +342,6 @@ export function SkillsMatrix() {
             </div>
           </Rise>
         </div>
-
-        <p className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-ink/40">
-          Card photos can be changed anytime from the admin dashboard — category “Skill Cards”
-        </p>
       </div>
     </section>
   );

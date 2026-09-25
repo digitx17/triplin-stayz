@@ -22,11 +22,11 @@ function Hand({ children, className = "" }: { children: ReactNode; className?: s
   return <span className={`font-hand leading-[1.05] ${className}`} style={{ color: "#1a1a1a" }}>{children}</span>;
 }
 
-function Pills({ items, twoCol = false }: { items: string[]; twoCol?: boolean }) {
+function Pills({ items }: { items: string[] }) {
   return (
-    <div className={twoCol ? "mt-4 grid grid-cols-2 gap-2" : "mt-4 flex flex-wrap gap-2"}>
+    <div className="mt-4 flex flex-wrap gap-2">
       {items.map((t) => (
-        <span key={t} className="w-fit rounded-full border border-ink/15 bg-white/70 px-3 py-1 text-[11px] text-ink/70">{t}</span>
+        <span key={t} className="w-fit whitespace-nowrap rounded-full border border-ink/15 bg-white/70 px-3 py-1 text-[11px] text-ink/70">{t}</span>
       ))}
     </div>
   );
@@ -239,12 +239,12 @@ function Block({ item, delay, compact = false, onView }: { item: Item; delay: nu
             <span className="mt-1 block h-[3px] w-8" style={{ background: ORANGE }} />
             <h3 className={`mt-3 font-heading font-semibold uppercase leading-[1.05] tracking-tight ${compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl"}`}>{item.title}</h3>
             <p className="mt-2 text-[13px] leading-relaxed text-ink/60">{item.desc}</p>
-            <Pills items={item.tags} twoCol={!compact} />
+            <Pills items={item.tags} />
           </div>
           <div className="mt-auto pt-5">
             <button
               onClick={() => onView(item)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-ink/20 bg-white/70 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/70 transition-colors duration-300 hover:border-ink hover:text-ink"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-ink/20 bg-white/70 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink/70 transition-colors duration-300 hover:border-ink hover:text-ink"
               data-testid={`mw-view-${item.kind}`}
             >
               View Project <ArrowUpRight className="h-3 w-3" />
