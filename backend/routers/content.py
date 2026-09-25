@@ -29,6 +29,7 @@ class SiteContent(BaseModel):
     toolkit: List[str] = []
     categories: List[str] = []
     experience: dict = {}
+    contact: dict = {}
 
 
 async def get_allowed_categories() -> set[str]:

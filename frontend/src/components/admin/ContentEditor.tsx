@@ -3,7 +3,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ImageUp, Loader2, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useSiteContent } from "@/lib/content";
-import type { SkillCluster } from "@/lib/content";
+import type { ContactInfo, SkillCluster } from "@/lib/content";
+
+const fieldCls = "w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta";
+const fieldLabelCls = "mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground";
 
 function ExperienceImageField({
   label,
@@ -58,6 +61,7 @@ export function ContentEditor({ token }: { token: string }) {
   const [toolkit, setToolkit] = useState<string | null>(null);
   const [categories, setCategories] = useState<string | null>(null);
   const [experience, setExperience] = useState<{ shalom: string; moustache: string } | null>(null);
+  const [contact, setContact] = useState<ContactInfo | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState<string | null>(null);
 
@@ -65,6 +69,10 @@ export function ContentEditor({ token }: { token: string }) {
   const currentToolkit = toolkit ?? content.toolkit.join(", ");
   const currentCategories = categories ?? content.categories.join(", ");
   const currentExp = experience ?? content.experience;
+  const currentContact = contact ?? content.contact;
+
+  const setContactField = (key: keyof ContactInfo, value: string) =>
+    setContact({ ...currentContact, [key]: value });
 
   const uploadAsset = async (file: File, key: "shalom" | "moustache") => {
     setUploading(key);
@@ -104,6 +112,7 @@ export function ContentEditor({ token }: { token: string }) {
           toolkit: currentToolkit.split(",").map((t) => t.trim()).filter(Boolean),
           categories: currentCategories.split(",").map((t) => t.trim()).filter(Boolean),
           experience: currentExp,
+          contact: currentContact,
         }),
       });
       if (!res.ok) throw new Error("Save failed");
@@ -125,7 +134,7 @@ export function ContentEditor({ token }: { token: string }) {
     <div className="mt-14 border-t border-sand pt-10" data-testid="content-editor">
       <h2 className="font-heading text-2xl font-medium tracking-tight">Edit site content</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Experience photos, gallery categories, skills clusters and the toolkit strip — changes go live when you save.
+        Experience photos, gallery categories, skills clusters, the toolkit strip and the contact section — changes go live when you save.
       </p>
 
       <h3 className="mt-8 font-mono text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
@@ -149,14 +158,12 @@ export function ContentEditor({ token }: { token: string }) {
       </div>
 
       <label className="mt-6 block rounded-md border border-sand bg-white p-5">
-        <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Gallery categories (comma separated)
-        </span>
+        <span className={fieldLabelCls}>Gallery categories (comma separated)</span>
         <textarea
           rows={2}
           value={currentCategories}
           onChange={(e) => setCategories(e.target.value)}
-          className="w-full resize-none rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+          className={`${fieldCls} resize-none`}
           data-testid="content-categories-input"
         />
         <span className="mt-2 block text-xs text-muted-foreground">
@@ -165,31 +172,69 @@ export function ContentEditor({ token }: { token: string }) {
       </label>
 
       <h3 className="mt-10 font-mono text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+        Contact section
+      </h3>
+      <div className="mt-4 grid gap-5 md:grid-cols-2" data-testid="content-contact-editor">
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Heading line 1</span>
+          <input value={currentContact.headingA} onChange={(e) => setContactField("headingA", e.target.value)} className={fieldCls} data-testid="content-contact-headinga" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Heading line 2 (orange)</span>
+          <input value={currentContact.headingB} onChange={(e) => setContactField("headingB", e.target.value)} className={fieldCls} data-testid="content-contact-headingb" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5 md:col-span-2">
+          <span className={fieldLabelCls}>Intro paragraph</span>
+          <textarea rows={3} value={currentContact.intro} onChange={(e) => setContactField("intro", e.target.value)} className={`${fieldCls} resize-none`} data-testid="content-contact-intro" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Email address</span>
+          <input value={currentContact.email} onChange={(e) => setContactField("email", e.target.value)} className={fieldCls} data-testid="content-contact-email" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>LinkedIn URL</span>
+          <input value={currentContact.linkedin} onChange={(e) => setContactField("linkedin", e.target.value)} className={fieldCls} data-testid="content-contact-linkedin" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>WhatsApp link (wa.me)</span>
+          <input value={currentContact.whatsapp} onChange={(e) => setContactField("whatsapp", e.target.value)} className={fieldCls} data-testid="content-contact-whatsapp" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Based in</span>
+          <input value={currentContact.basedIn} onChange={(e) => setContactField("basedIn", e.target.value)} className={fieldCls} data-testid="content-contact-basedin" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Focus line</span>
+          <input value={currentContact.focus} onChange={(e) => setContactField("focus", e.target.value)} className={fieldCls} data-testid="content-contact-focus" />
+        </label>
+        <label className="block rounded-md border border-sand bg-white p-5">
+          <span className={fieldLabelCls}>Footer tagline</span>
+          <input value={currentContact.footerTagline} onChange={(e) => setContactField("footerTagline", e.target.value)} className={fieldCls} data-testid="content-contact-footertagline" />
+        </label>
+      </div>
+
+      <h3 className="mt-10 font-mono text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
         Skills clusters
       </h3>
       <div className="mt-4 grid gap-5 md:grid-cols-2">
         {currentSkills.map((cluster, i) => (
           <div key={i} className="rounded-md border border-sand bg-white p-5" data-testid={`content-cluster-${i}`}>
             <label className="block">
-              <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                Cluster {i + 1} title
-              </span>
+              <span className={fieldLabelCls}>Cluster {i + 1} title</span>
               <input
                 value={cluster.title}
                 onChange={(e) => setCluster(i, { title: e.target.value })}
-                className="w-full rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                className={fieldCls}
                 data-testid={`content-skill-title-${i}`}
               />
             </label>
             <label className="mt-4 block">
-              <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                Skills (comma separated)
-              </span>
+              <span className={fieldLabelCls}>Skills (comma separated)</span>
               <textarea
                 rows={4}
                 value={cluster.items.join(", ")}
                 onChange={(e) => setCluster(i, { items: e.target.value.split(",") })}
-                className="w-full resize-none rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+                className={`${fieldCls} resize-none`}
                 data-testid={`content-skill-items-${i}`}
               />
             </label>
@@ -198,14 +243,12 @@ export function ContentEditor({ token }: { token: string }) {
       </div>
 
       <label className="mt-6 block rounded-md border border-sand bg-white p-5">
-        <span className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Toolkit strip items (comma separated)
-        </span>
+        <span className={fieldLabelCls}>Toolkit strip items (comma separated)</span>
         <textarea
           rows={3}
           value={currentToolkit}
           onChange={(e) => setToolkit(e.target.value)}
-          className="w-full resize-none rounded-md border border-sand bg-paper px-3 py-2.5 text-sm outline-none focus:border-terracotta"
+          className={`${fieldCls} resize-none`}
           data-testid="content-toolkit-input"
         />
       </label>
