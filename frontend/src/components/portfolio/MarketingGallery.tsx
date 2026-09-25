@@ -59,6 +59,7 @@ function Visual({ kind }: { kind: string }) {
           <Poly src={PHOTOSHOOT[1].src} rotate="-rotate-3" className="absolute left-0 top-0 h-36 w-32" />
           <Poly src={PHOTOSHOOT[2].src} rotate="rotate-2" className="absolute right-0 top-6 h-32 w-28" />
           <Poly src={PHOTOSHOOT[3].src} rotate="rotate-1" className="absolute bottom-0 left-8 h-20 w-24" />
+          <Poly src={PHOTOSHOOT[4].src} rotate="-rotate-2" className="absolute bottom-0 right-4 h-16 w-20" />
         </div>
       );
     case "social":
@@ -198,7 +199,7 @@ interface Item {
 
 const ITEMS: Item[] = [
   { num: "01", title: "Photoshoot", desc: "Capturing real moments, places and people that bring brands to life.", tags: ["Product Shoots", "Property Shoots", "Food & Beverage", "Lifestyle"], kind: "photoshoot", category: "Photoshoot", anno: "Real people.\nReal places.\nReal stories.", annoClass: "-right-1 -bottom-10 text-base text-right" },
-  { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", category: "Graphic Design / Content", anno: "Plan\nCreate\nPost\nGrow", annoClass: "right-0 -top-3 text-base text-right" },
+  { num: "02", title: "Social Media Content", desc: "Scroll-stopping content for Instagram, Facebook and other platforms.", tags: ["Reels", "Stories", "Content Calendar", "Captions", "Analytics"], kind: "social", category: "Graphic Design / Content", anno: "Plan\nCreate\nPost\nGrow", annoClass: "-left-1 -bottom-9 text-base" },
   { num: "03", title: "Events", desc: "From concept to execution — creating memorable experiences for brands and guests.", tags: ["Concept & Planning", "On-ground Execution", "Guest Experience", "Brand Activations"], kind: "events", category: "Events", anno: "Great vibes,\nreal connections.", annoClass: "right-0 -top-3 text-base text-right" },
   { num: "04", title: "Influencer Collaborations", desc: "Partnering with creators to bring authentic stories to life.", tags: ["Travel Creators", "Lifestyle Creators", "Barter Collabs", "Campaigns"], kind: "influencer", category: "Influencer Collab", anno: "Real people.\nReal reach.", annoClass: "left-0 -top-3 text-base" },
   { num: "05", title: "Listing Directory", desc: "Optimising your presence across Google, Zomato, TripAdvisor and more.", tags: ["Google Business", "Zomato", "TripAdvisor", "OTA Listings"], kind: "listing", category: "Listings", anno: "More visibility.\nMore bookings.", annoClass: "right-0 bottom-0 text-base text-right" },
@@ -251,16 +252,14 @@ export function MarketingGallery() {
         {/* header */}
         <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-start">
           <div>
-            <p className="inline-block border-b-2 pb-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: ORANGE, borderColor: ORANGE }}>Marketing Work</p>
-            <h2 className="mt-4 font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
+            <h2 className="font-heading text-5xl font-bold uppercase leading-[0.9] tracking-tight sm:text-7xl" data-testid="gallery-heading">Marketing Work</h2>
             <p className="mt-3 font-heading text-lg italic text-ink/80 sm:text-2xl">Turning ideas into experiences people remember.”</p>
           </div>
           <div className="relative lg:border-l lg:border-ink/15 lg:pl-8">
             <p className="max-w-sm text-sm leading-relaxed text-ink/70">I work across content, social media, hospitality marketing and brand storytelling — from the first idea to execution.</p>
             <div className="pointer-events-none relative mt-3 hidden h-20 sm:block" aria-hidden>
               <svg viewBox="0 0 240 70" className="h-16 w-64" fill="none" stroke="#1a1a1a" strokeWidth="1.2">
-                <path d="M2 56 l18 -24 l12 15 l20 -32 l22 44 Z" fill="#1a1a1a" opacity="0.7" stroke="none" />
-                <path d="M80 50 Q 160 50 226 16" stroke={ORANGE} strokeDasharray="4 4" strokeLinecap="round" />
+                <path d="M2 50 Q 120 52 226 16" stroke={ORANGE} strokeDasharray="4 4" strokeLinecap="round" />
               </svg>
               <svg viewBox="0 0 24 24" className="absolute right-2 top-0 h-5 w-5" fill="#1a1a1a"><path d="M2 16l20-7L2 2v5l14 2L2 11z" /></svg>
               <Hand className="absolute -right-2 -bottom-7 rotate-[7deg] text-lg text-right">Better Brands.<br />Bigger Journeys.</Hand>
@@ -276,14 +275,6 @@ export function MarketingGallery() {
         {/* rows 07-10 */}
         <div className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.slice(6).map((it, i) => <Block key={it.num} item={it} delay={i * 0.05} compact onView={setViewing} />)}
-        </div>
-
-        {/* footer */}
-        <div className="mt-20 flex items-center gap-6 border-t border-ink/10 pt-8">
-          <svg viewBox="0 0 80 30" className="h-8 w-20" fill="#1a1a1a" opacity="0.6" aria-hidden><path d="M2 28 l18 -22 l12 14 l10 -10 l16 18 Z" /></svg>
-          <span className="h-2 w-2 rounded-full" style={{ background: ORANGE }} />
-          <span className="h-px flex-1 bg-ink/12" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/45">Travel&nbsp;&nbsp;/&nbsp;&nbsp;Content&nbsp;&nbsp;/&nbsp;&nbsp;Marketing</span>
         </div>
       </div>
 

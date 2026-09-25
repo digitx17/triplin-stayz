@@ -149,10 +149,6 @@ export function HowItStarted() {
           <h2 className="font-heading text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl" data-testid="story-heading">
             <WordReveal text="HOW IT STARTED" />
           </h2>
-          <div className="mt-5 font-heading text-base italic leading-snug text-ink/80 sm:text-lg">
-            <MaskedLine inView>“From learning digital marketing in 2020</MaskedLine>
-            <MaskedLine inView delay={0.15}>to building a travel company today.”</MaskedLine>
-          </div>
           <motion.p
             variants={fadeUp}
             initial="hidden"
